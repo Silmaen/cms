@@ -1,0 +1,30 @@
+/* CSS à ajouter au CSS bootstrap pour l'accorder aux styles de l'administrateur */
+.thead-vert, .bg-vert{
+  background-color: #a2c231;
+}
+
+.text-vert{
+  color: #a2c231;
+}
+
+.text-gris{
+  color: #666;
+}
+
+.thead-gris, .bg-gris {
+  background-color: #666;
+}
+
+.btn-vert{
+  background-color: #a2c231;
+  color: #fff;
+}
+
+.btn-orange{
+  background-color: #ff5500;
+  color: #fff;
+}
+
+.border-vert {
+  border-color: #a2c231 !important;
+}
