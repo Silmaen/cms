@@ -1,0 +1,51 @@
+<?php
+session_start();
+///////////////////////////////////////////
+// Configuration et initilisation Smarty //
+///////////////////////////////////////////
+require_once('../cgi-bin/smarty/Smarty.class.php');
+$smarty = new Smarty();
+$smarty->template_dir = 'templates';
+$smarty->compile_dir = 'templates_c';
+$smarty->config_dir = 'configs';
+$smarty->cache_dir = 'cache';
+$smarty->left_delimiter = '<!--{';
+$smarty->right_delimiter = '}-->';
+
+////////////////////////////////////////
+// Configuration et initilisation BDD //
+////////////////////////////////////////
+//
+// MODÈLE DE CONFIGURATION (environnement de RECETTE).
+// À copier en `config_general.php` puis renseigner.
+// Le fichier `config_general.php` est ignoré par git (voir .gitignore) :
+// il ne doit JAMAIS contenir d'identifiants réels dans le dépôt.
+//
+//   cp config_general.php.dist config_general.php
+//
+
+// --- Base de données de RECETTE (instance cloud OVH) ---
+define('utilisateur', "VOTRE_UTILISATEUR_MYSQL");
+define('mdp',         "VOTRE_MOT_DE_PASSE_MYSQL");
+define('serveur',     "VOTRE_HOTE_MYSQL");        // ex. xxxxxx-001.eu.clouddb.ovh.net:PORT
+define('bdd',         "VOTRE_NOM_DE_BASE");       // ex. cdfrecette
+
+// --- Alternative : base MySQL locale (développement) ---
+/*
+define('utilisateur', "root");
+define('mdp',         "");
+define('serveur',     "localhost");
+define('bdd',         "comitefetesrecette");
+*/
+
+$connexion="mysql:dbname=".bdd.";host=".serveur;
+
+try{
+	$connexion=new PDO($connexion,utilisateur,mdp, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''));
+}
+catch(PDOException $e){
+	printf("Échec de la connexion : %s\n", $e->getMessage());
+	exit();
+}
+
+?>
