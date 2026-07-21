@@ -44,15 +44,15 @@ adhérents, des adhésions annuelles, de l'inventaire du matériel, et des
 
 ## Pile technique
 
-| Domaine        | Choix                                                        |
-|----------------|--------------------------------------------------------------|
-| Langage        | PHP 7.2 (procédural)                                          |
-| Base de données| MySQL (PDO)                                                  |
-| Templating     | [Smarty](https://www.smarty.net/) (délimiteurs `<!--{ }-->`) |
-| PDF            | [TCPDF](https://tcpdf.org/)                                  |
-| Front          | Bootstrap 4.1.3, FontAwesome 4.7, jQuery, Popper             |
-| Composants     | gijgo (calendriers), Kartik, bootstrap-fileinput, TinyMCE, jQuery-Confirm |
-| Hébergement    | OVH mutualisé (`.ovhconfig`, `app.engine=php` 7.2)           |
+| Domaine         | Choix                                                                     |
+|-----------------|---------------------------------------------------------------------------|
+| Langage         | PHP 7.2 (procédural)                                                      |
+| Base de données | MySQL (PDO)                                                               |
+| Templating      | [Smarty](https://www.smarty.net/) (délimiteurs `<!--{ }-->`)              |
+| PDF             | [TCPDF](https://tcpdf.org/)                                               |
+| Front           | Bootstrap 4.1.3, FontAwesome 4.7, jQuery, Popper                          |
+| Composants      | gijgo (calendriers), Kartik, bootstrap-fileinput, TinyMCE, jQuery-Confirm |
+| Hébergement     | OVH mutualisé (`.ovhconfig`, `app.engine=php` 7.2)                        |
 
 ## Architecture
 
@@ -134,7 +134,7 @@ Prérequis : PHP 7.2+ avec l'extension PDO MySQL, un serveur MySQL, un serveur w
 
 > ⚠️ Le dépôt ne contient pas de dump SQL du schéma. Les structures de tables
 > doivent être reconstituées à partir des requêtes (voir
-> [`.claude/docs/base-de-donnees.md`](.claude/docs/base-de-donnees.md)) ou
+> [`docs/base-de-donnees.md`](docs/base-de-donnees.md)) ou
 > importées depuis une base existante.
 
 ## Configuration
@@ -184,10 +184,9 @@ quotidiennement (cron OVH). Il :
 
 ## Documentation détaillée
 
-Une documentation d'architecture plus fine est maintenue dans `.claude/docs/`
-(pensée pour l'assistant, mais utile à tout développeur) :
+La documentation complète se trouve dans le dossier [`docs/`](docs/README.md) :
 
-- [`architecture.md`](.claude/docs/architecture.md) — flux, patterns, cycle de requête.
-- [`base-de-donnees.md`](.claude/docs/base-de-donnees.md) — tables et relations.
-- [`domaine-metier.md`](.claude/docs/domaine-metier.md) — concepts métier.
-- [`conventions.md`](.claude/docs/conventions.md) — conventions de code du projet.
+- [`architecture.md`](docs/architecture.md) — comment l'application est construite : flux d'une requête, authentification, templates, PDF.
+- [`base-de-donnees.md`](docs/base-de-donnees.md) — les tables, leurs relations et leurs colonnes.
+- [`domaine-metier.md`](docs/domaine-metier.md) — le vocabulaire et les processus métier.
+- [`conventions.md`](docs/conventions.md) — les conventions de code du projet.

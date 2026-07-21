@@ -1,132 +1,77 @@
-# Architecture
+# Architecture (référence agent)
 
-## Vue d'ensemble
+PHP 7.2 procédural, sans framework/routeur. 1 URL = 1 fichier `www/*.php`.
+Doc humaine équivalente : `docs/architecture.md` (ne pas dupliquer, ce fichier
+est optimisé pour action rapide).
 
-Application PHP procédurale suivant un découpage **contrôleur → modèle (SQL en
-ligne) → vue (Smarty)**, sans framework. Il n'y a pas de routeur : chaque URL
-correspond à un fichier `.php` de `www/`.
+## Grounding rapide
 
-```mermaid
-flowchart TB
-    subgraph Navigateur
-        UI[HTML + Bootstrap + jQuery]
-    end
-    subgraph "www/ (docroot)"
-        CTRL["Contrôleurs *.php"]
-        TPL["Templates Smarty *.tpl"]
-    end
-    subgraph "cgi-bin/ (hors docroot)"
-        CFG[config_general.php]
-        FCT[fonctions_general.php]
-        LIBS[smarty / tcpdf / kartik]
-    end
-    DB[(MySQL via PDO)]
+| Besoin | Fichier |
+|--------|---------|
+| Connexion PDO (`$connexion`) + init Smarty + `session_start()` | `cgi-bin/config/config_general.php` |
+| Fonctions communes `Gestion*` | `cgi-bin/config/fonctions_general.php` |
+| Contrôleurs | `www/*.php` |
+| Vues | `www/templates/*.tpl` (délimiteurs `<!--{ }-->`) |
+| Login / logout | `www/index.php` (détruit la session) |
+| Cron | `cgi-bin/reservations_maj_automatique.php` |
 
-    UI -->|requête| CTRL
-    CTRL --> CFG
-    CTRL --> FCT
-    CFG --> DB
-    FCT --> DB
-    CTRL --> DB
-    CFG --> LIBS
-    CTRL --> TPL
-    TPL -->|HTML| UI
-```
-
-## Amorçage (bootstrap)
-
-Tout contrôleur commence par :
+## En-tête obligatoire de tout contrôleur
 
 ```php
-require_once('../cgi-bin/config/config_general.php');   // session_start(), PDO $connexion, objet $smarty
-require_once('../cgi-bin/config/fonctions_general.php'); // fonctions Gestion*
+require_once('../cgi-bin/config/config_general.php');
+require_once('../cgi-bin/config/fonctions_general.php');
+if (!gestionIdentification($connexion)) { header("Location:index.php"); exit(); }
 ```
 
-`config_general.php` :
-- démarre la session (`session_start()`) ;
-- instancie **Smarty** avec les délimiteurs personnalisés `<!--{` et `}-->`
-  (les répertoires `templates/`, `templates_c/`, `configs/`, `cache/`) ;
-- ouvre la **connexion PDO** MySQL à partir des constantes `utilisateur`, `mdp`,
-  `serveur`, `bdd` (variable `$connexion`, en `SET NAMES UTF8`).
+Puis : `assign` menu → lire `$_GET`/`$_POST` (`action`, `id_*`) → SQL → `display`.
 
-## Cycle de vie d'une requête
+## Fonctions de `fonctions_general.php` (signatures réelles)
 
-```mermaid
-sequenceDiagram
-    autonumber
-    participant Nav as Navigateur
-    participant Ctl as Contrôleur (www/xxx.php)
-    participant Fct as fonctions_general.php
-    participant DB as MySQL
-    participant Sm as Smarty
+| Fonction | Effet / piège |
+|----------|---------------|
+| `GestionHashage($mdp)` | SHA-256 + sel statique en dur (préfixe+suffixe). **Ne pas changer le sel** sans rehacher toute la table. |
+| `GestionIdentification($connexion)` | Lit `$_POST["email"]`/`$_POST["mdp"]`, remplit `$_SESSION`. Renvoie `false` si non identifié. Garde à appeler en tête de chaque écran. |
+| `GestionMenu($connexion)` | Items depuis `admin_menu ORDER BY ordre`. |
+| `GestionMenusDroits($connexion)` | Droit sur le menu courant → `$_SESSION["droit"]`. |
+| `GestionDate($date, $mode)` | `$mode=0` : `Y-m-d`→`d-m-Y` ; `$mode=1` : inverse. Renvoie `false` si date vide. |
+| `GestionPagination($connexion,$id_table,$nom_table)` | Écrit `$_SESSION["nombre_de_pages"]`. |
+| `GestionSuppression($connexion,$id_table,$nom_table,$id_item,$action,$nom_table_bis='')` | **Soft-delete** : `activer`→`id_etat=1`, `archiver`→2, `supprimer`/`supprimer-envoyer`→3. Jamais de `DELETE`. |
+| `GestionTri(...)` | Persiste colonne/sens/`items_par_page` dans `admin_utilisateurs_session` par (`id_utilisateur`,`id_admin_menu`). |
+| `GestionUtilisateursEtats($groupe)` | `1`→`99` (tout), `2`→`2` (actif+archivé), `3`→`1` (actif). |
 
-    Nav->>Ctl: GET/POST (action, id_*)
-    Ctl->>Ctl: require config + fonctions
-    Ctl->>Fct: gestionIdentification($connexion)
-    alt non authentifié
-        Fct-->>Ctl: false
-        Ctl-->>Nav: header("Location:index.php")
-    else authentifié
-        Ctl->>Fct: gestionMenu(), gestionMenusDroits()
-        Ctl->>DB: SELECT/INSERT/UPDATE (selon action)
-        DB-->>Ctl: données
-        Ctl->>Sm: assign(...) puis display('xxx.tpl')
-        Sm-->>Nav: HTML
-    end
-```
+## Casse des appels (piège)
 
-## Fonctions transverses (`fonctions_general.php`)
+Définition PascalCase (`function GestionMenu`), appels souvent camelCase
+(`gestionMenu(...)`). PHP insensible à la casse sur les noms de fonctions →
+cohabitation normale. **Conserver la définition en PascalCase.**
 
-| Fonction | Rôle |
-|----------|------|
-| `GestionHashage($mdp)` | Hache un mot de passe en SHA-256 avec un sel statique (préfixe + suffixe codés en dur). |
-| `GestionIdentification($connexion)` | Authentifie via `$_POST["email"]`/`$_POST["mdp"]`, remplit `$_SESSION` (utilisateur, groupe, droits). Renvoie `true`/`false`. |
-| `GestionMenu($connexion)` | Charge les items de menu depuis `admin_menu` (ordonnés). |
-| `GestionMenusDroits($connexion)` | Détermine le droit de l'utilisateur sur le menu courant (`admin_menus_groupes`). |
-| `GestionDate($date, $mode)` | Convertit entre `Y-m-d` (BDD) et `d-m-Y` (affichage). |
-| `GestionPagination(...)` / `GestionPaginationReservations(...)` | Calcule le nombre de pages selon `items_par_page`. |
-| `GestionSuppression(...)` | **Soft-delete** : passe `id_etat` à 1 (activer) / 2 (archiver) / 3 (supprimer). |
-| `GestionTri(...)` | Mémorise/restaure colonne, sens de tri et `items_par_page` **par utilisateur et par menu** (`admin_utilisateurs_session`). |
-| `DupliquerSessionUtilisateur(...)` | Copie les préférences d'affichage d'un utilisateur vers un autre. |
-| `GestionUtilisateursEtats($groupe)` | Mappe un groupe vers les états visibles (1 → actif seul, 2 → actif+archivé, 1 → tout=99). |
+## États vs statuts
 
-## Authentification & droits
+- `id_etat` (table `etats`) : technique, commun à toutes les tables métier —
+  `1`=actif, `2`=archivé, `3`=supprimé.
+- `id_statut_*` (`clients_statuts`, `reservations_statuts`, `inventaires_statuts`,
+  `inventaires_types`) : métier, propre à chaque entité. **Ne pas confondre.**
 
-```mermaid
-flowchart LR
-    L[index.php login] -->|POST email+mdp| GI[gestionIdentification]
-    GI -->|hash SHA-256| DBU[(admin_utilisateurs)]
-    GI --> SESS["$_SESSION\n(id_utilisateur, groupe, nom…)"]
-    SESS --> GARDE{gestionIdentification\nsur chaque page}
-    GARDE -->|ok| PAGE[Écran]
-    GARDE -->|ko| L
-    SESS --> DROITS[gestionMenusGroupes\ndroit par menu]
-```
+## Smarty
 
-- **Groupes** (`admin_utilisateurs_groupes`) : `1` = super-admin (voit tout),
-  `2` = actif + archivé, `3` = actif seulement (cf. `GestionUtilisateursEtats`).
-- Les **droits par menu** sont dans `admin_menus_groupes`
-  (`id_utilisateur_groupe`, `id_admin_menu`, `droit`).
-- La déconnexion (`index.php`) détruit la session.
+Délimiteurs `<!--{ $var }-->`. Fragments : `header.tpl`, `header-cdn.tpl`,
+`header_mdp.tpl`, `footer.tpl`. Compilation dans `www/templates_c/`.
 
-## Vues (Smarty)
+## PDF
 
-- Templates dans `www/templates/*.tpl`, compilés dans `templates_c/`.
-- **Délimiteurs personnalisés** : `<!--{ variable }-->` au lieu de `{ }`
-  (pour cohabiter avec le JS/CSS entre accolades).
-- Fragments communs : `header.tpl`, `header-cdn.tpl`, `header_mdp.tpl`,
-  `footer.tpl`.
+`www/impressions_*.php` (10 écrans) via TCPDF (`cgi-bin/tcpdf/`).
+`impressions_automatique_reservations_jour.php` est appelé par le cron.
 
-## Impressions PDF
+## Prod / recette
 
-Les pages `www/impressions_*.php` (10 écrans) génèrent des documents via
-**TCPDF** (`cgi-bin/tcpdf/`) : reçus de règlement, listes des réservations du
-jour, bordereaux de départ/retour, adhésions par exercice, etc. Certaines sont
-appelées automatiquement (liens envoyés par le cron).
+Code dupliqué : `www/`+`cgi-bin/` (prod) et `recette/www/`+`recette/cgi-bin/`
+(recette). **Répercuter toute évolution fonctionnelle dans les deux** ou le
+signaler. Divergence connue : le `SELECT` du cron utilise `id_etat=2` en prod et
+`id_etat=1` en recette (le prod paraît buggé — cf. `conventions.md`).
 
-## Découpage prod / recette
+## Secrets
 
-Le dépôt contient deux copies complètes du code (`www/` + `cgi-bin/` pour la
-prod, `recette/www/` + `recette/cgi-bin/` pour la recette). Elles ne diffèrent
-que par la configuration de connexion. **Toute évolution fonctionnelle doit être
-répercutée dans les deux**, sauf intention contraire explicite.
+`config_general.php` et `reservations_maj_automatique.php` sont **ignorés par
+git** (`.gitignore`, noms nus → toute profondeur). Modèles versionnés : `*.dist`.
+Ne jamais committer de credentials réels ; ne jamais retirer ces entrées du
+`.gitignore`.
