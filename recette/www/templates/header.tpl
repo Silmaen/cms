@@ -3,6 +3,7 @@
 <html lang="fr">
 <head>
 	<title>Comité des Fêtes de Genay</title>
+	<link rel="icon" type="image/svg+xml" href="images/logo_cms.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="fontawesome/css/all520.css" />
@@ -19,10 +20,10 @@
 
     <script src="kartik/js/plugins/sortable.min.js" type="text/javascript"></script>
     <script src="kartik/js/plugins/purify.min.js" type="text/javascript"></script>
-    <script src="kartik/themes/explorer-fa/theme.js" type="text/javascript"></script>
     <script src="kartik/js/plugins/piexif.min.js" type="text/javascript"></script>
 	<script src="kartik/js/fileinput.min.js" type="text/javascript"></script>
 	<script src="kartik/js/locales/fr.js" type="text/javascript"></script>
+    <script src="kartik/themes/explorer-fa/theme.js" type="text/javascript"></script>
     <script src="kartik/themes/fas/theme.js" type="text/javascript"></script>
 	
 	<script src="js/scripts.js" type="text/javascript"></script>

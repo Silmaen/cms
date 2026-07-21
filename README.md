@@ -17,6 +17,7 @@ adhérents, des adhésions annuelles, de l'inventaire du matériel, et des
 - [Pile technique](#pile-technique)
 - [Architecture](#architecture)
 - [Structure du dépôt](#structure-du-dépôt)
+- [Développement avec Docker](#développement-avec-docker)
 - [Installation locale](#installation-locale)
 - [Configuration](#configuration)
 - [Environnements (prod / recette)](#environnements-prod--recette)
@@ -122,10 +123,34 @@ cms/
 └── .ovhconfig               # Configuration hébergement OVH
 ```
 
+## Développement avec Docker
+
+Un environnement Docker Compose reproduit l'hébergement OVH (PHP 7.2 + MySQL) et
+sert **les deux environnements en parallèle** (production et recette), chacun avec
+sa propre base de données, plus un **phpMyAdmin** unique pour les consulter. Le
+dossier courant est monté dans les conteneurs : le code est modifiable à chaud.
+
+```bash
+./docker/build.sh      # construit l'image web (contourne une limite de BuildKit)
+docker compose up -d   # démarre les 5 services
+```
+
+| Service | Accès |
+|---------|-------|
+| Application **prod** | http://localhost:8080 (base `comitefetes`) |
+| Application **recette** | http://localhost:8081 (base `comitefetesrecette`) |
+| **phpMyAdmin** | http://localhost:8082 (serveurs *Production* / *Recette*, login `root` / `root`) |
+
+Pour recréer les bases, déposer un export SQL dans `docker/initdb/prod/` et
+`docker/initdb/recette/` (importé automatiquement au premier démarrage).
+
+> 📖 Détails, commandes utiles et dépannage : [`docker/README.md`](docker/README.md)
+> et [`docker/initdb/README.md`](docker/initdb/README.md).
+
 ## Installation locale
 
-Prérequis : PHP 7.2+ avec l'extension PDO MySQL, un serveur MySQL, un serveur web
-(Apache) dont la racine pointe sur `www/`.
+> Alternative sans Docker. Prérequis : PHP 7.2+ avec l'extension PDO MySQL, un
+> serveur MySQL, un serveur web (Apache) dont la racine pointe sur `www/`.
 
 1. Créer une base MySQL locale (par défaut `comitefetes`).
 2. Renseigner la connexion dans `cgi-bin/config/config_general.php`

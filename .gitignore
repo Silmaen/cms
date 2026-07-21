@@ -1,2 +1,6 @@
 config_general.php
 reservations_maj_automatique.php
+.env
+
+# Exports SQL locaux : contiennent des données personnelles (RGPD) — ne jamais versionner
+docker/initdb/**/*.sql

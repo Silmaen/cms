@@ -1,4 +1,29 @@
-<!--{include file="header.tpl"}-->
+<?php
+/* Smarty version 3.1.32, created on 2026-07-21 12:50:47
+  from '/var/www/html/www/templates/index.tpl' */
+
+/* @var Smarty_Internal_Template $_smarty_tpl */
+if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
+  'version' => '3.1.32',
+  'unifunc' => 'content_6a5f6b27bb4c19_78001390',
+  'has_nocache_code' => false,
+  'file_dependency' => 
+  array (
+    'bf0f05c38bc7796145361b0e20b06c4708f8202f' => 
+    array (
+      0 => '/var/www/html/www/templates/index.tpl',
+      1 => 1784636793,
+      2 => 'file',
+    ),
+  ),
+  'includes' => 
+  array (
+    'file:header.tpl' => 1,
+  ),
+),false)) {
+function content_6a5f6b27bb4c19_78001390 (Smarty_Internal_Template $_smarty_tpl) {
+$_smarty_tpl->_subTemplateRender("file:header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, 0, $_smarty_tpl->cache_lifetime, array(), 0, false);
+?>
 
 
 
@@ -13,9 +38,10 @@
 
 			<h3 class="mb-3 font-weight-normal">Veuillez vous connecter</h3>
 
-			<!--{if $message_identification!=""}-->
-				<h6 class="mb-3 text-danger font-weight-bold"><!--{$message_identification}--></h6>
-			<!--{/if}-->
+			<?php if ($_smarty_tpl->tpl_vars['message_identification']->value != '') {?>
+				<h6 class="mb-3 text-danger font-weight-bold"><?php echo $_smarty_tpl->tpl_vars['message_identification']->value;?>
+</h6>
+			<?php }?>
 
 
 			<div class="form-group row justify-content-center">
@@ -44,3 +70,5 @@
 
 </body>
 </html>
+<?php }
+}

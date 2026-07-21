@@ -1,10 +1,10 @@
 /* CSS à ajouter au CSS bootstrap pour l'accorder aux styles de l'administrateur */
 .thead-vert, .bg-vert{
-  background-color: #a2c231;
+  background-color: #316bc2;
 }
 
 .text-vert{
-  color: #a2c231;
+  color: #316bc2;
 }
 
 .text-gris{
@@ -16,7 +16,7 @@
 }
 
 .btn-vert{
-  background-color: #a2c231;
+  background-color: #316bc2;
   color: #fff;
 }
 
@@ -26,5 +26,5 @@
 }
 
 .border-vert {
-  border-color: #a2c231 !important;
+  border-color: #316bc2 !important;
 }
