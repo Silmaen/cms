@@ -37,7 +37,9 @@
     <script src="gijgo/js/messages/messages.fr-fr.js" type="text/javascript"></script>
  
 </head>
-<body>
+<body data-env="<!--{$cdf_env}-->">
+
+	<!--{if $cdf_env_badge}--><div class="cdf-env-badge"><!--{$cdf_env_libelle}--></div><!--{/if}-->
 
 	<!--{if isset($smarty.session.id_admin_menu_selectionne)}-->
 

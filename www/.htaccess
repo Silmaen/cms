@@ -1,0 +1,10 @@
+# Racine web de l'application.
+#
+# Sert index.php quand l'URL pointe sur un dossier (ex. https://domaine/ sans
+# préciser /index.php). Utile quel que soit le docroot :
+#   - ancienne disposition OVH : docroot = ce dossier www/ ;
+#   - nouvelle disposition (intégration Git) : le .htaccess racine réécrit vers
+#     www/ et cette directive s'y applique aussi.
+#
+# En local (Docker), AllowOverride est désactivé sur www/ : sans effet.
+DirectoryIndex index.php

@@ -13,7 +13,8 @@ moderniser sans demande explicite**. Doc humaine : `docs/conventions.md`.
 - Dates : stocker en `Y-m-d`, afficher en `d-m-Y` via `GestionDate`.
 - Suppression via `GestionSuppression` (soft-delete `id_etat`), jamais `DELETE`.
 - Renseigner `date_creation`/`date_modification`/`id_membre_auteur` sur écritures.
-- Répercuter les changements fonctionnels dans **`www/` ET `recette/www/`**.
+- Un seul code pour tous les environnements (plus de dossier `recette/` dupliqué) :
+  la distinction prod/recette/test/local est gérée par `cgi-bin/config/environnement.php`.
 - Templates : variables entre `<!--{ }-->`, réutiliser `header.tpl`/`footer.tpl`.
 
 ## À NE PAS FAIRE

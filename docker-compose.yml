@@ -1,19 +1,19 @@
 # Environnement de développement local — Comité des Fêtes
 #
-# Monte le dossier courant et expose les deux environnements (prod + recette),
-# chacun avec sa propre base MySQL, plus un phpMyAdmin unique pour les deux.
+# Site UNIQUE (comme en production) : un seul serveur web + une seule base MySQL,
+# plus phpMyAdmin. L'environnement applicatif rendu (thème + bandeau) est piloté
+# par la variable CDF_ENV (voir .env) ; par défaut « local » (thème violet + badge).
 #
 #   Démarrage :  docker compose up -d --build
 #   Accès :
-#     - Prod       → http://localhost:8080
-#     - Recette    → http://localhost:8081
-#     - phpMyAdmin → http://localhost:8082   (serveurs db-prod / db-recette)
+#     - Site       → http://localhost:8080
+#     - phpMyAdmin → http://localhost:8082   (serveur db, login root / root)
 #
-# Les ports et l'UID/GID sont paramétrables dans le fichier .env (à côté de ce fichier).
+# Les ports, l'UID/GID et CDF_ENV sont paramétrables dans le fichier .env.
 
 services:
-  # ---------- Serveurs web ----------
-  web-prod:
+  # ---------- Serveur web ----------
+  web:
     image: cms-web:local
     build:
       context: ./docker/php
@@ -22,33 +22,24 @@ services:
         GID: ${GID:-1000}
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html/www
+      # Environnement applicatif : local (défaut) | test | recette | prod.
+      # Surchargeable dans .env pour prévisualiser un thème sans changer de code.
+      CDF_ENV: ${CDF_ENV:-local}
+      # Identifiants BDD injectés (aucun fichier config_secrets.php requis en local).
+      CDF_DB_HOST: db
+      CDF_DB_NAME: comitefetes
+      CDF_DB_USER: cdf
+      CDF_DB_PASS: cdf
     volumes:
       - .:/var/www/html
     ports:
-      - "${WEB_PROD_PORT:-8080}:80"
+      - "${WEB_PORT:-8080}:80"
     depends_on:
-      - db-prod
+      - db
     restart: unless-stopped
 
-  web-recette:
-    image: cms-web:local
-    build:
-      context: ./docker/php
-      args:
-        UID: ${UID:-1000}
-        GID: ${GID:-1000}
-    environment:
-      APACHE_DOCUMENT_ROOT: /var/www/html/recette/www
-    volumes:
-      - .:/var/www/html
-    ports:
-      - "${WEB_RECETTE_PORT:-8081}:80"
-    depends_on:
-      - db-recette
-    restart: unless-stopped
-
-  # ---------- Bases de données ----------
-  db-prod:
+  # ---------- Base de données ----------
+  db:
     image: mysql:5.7
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -56,43 +47,24 @@ services:
       MYSQL_USER: cdf
       MYSQL_PASSWORD: cdf
     volumes:
-      - db-prod-data:/var/lib/mysql
-      # Déposer ici l'export SQL de la base PROD (voir docker/initdb/README.md)
-      - ./docker/initdb/prod:/docker-entrypoint-initdb.d
+      - db-data:/var/lib/mysql
+      # Déposer ici l'export SQL de la base (voir docker/initdb/README.md).
+      - ./docker/initdb:/docker-entrypoint-initdb.d
     ports:
-      - "${DB_PROD_PORT:-3307}:3306"
+      - "${DB_PORT:-3307}:3306"
     restart: unless-stopped
 
-  db-recette:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: comitefetesrecette
-      MYSQL_USER: cdf
-      MYSQL_PASSWORD: cdf
-    volumes:
-      - db-recette-data:/var/lib/mysql
-      # Déposer ici l'export SQL de la base RECETTE (voir docker/initdb/README.md)
-      - ./docker/initdb/recette:/docker-entrypoint-initdb.d
-    ports:
-      - "${DB_RECETTE_PORT:-3308}:3306"
-    restart: unless-stopped
-
-  # ---------- Administration des bases ----------
+  # ---------- Administration de la base ----------
   phpmyadmin:
     image: phpmyadmin:5
     environment:
-      # Un seul phpMyAdmin, deux serveurs proposés dans un menu déroulant.
-      PMA_HOSTS: db-prod,db-recette
-      PMA_VERBOSES: "Production,Recette"
+      PMA_HOST: db
       UPLOAD_LIMIT: 256M
     ports:
       - "${PMA_PORT:-8082}:80"
     depends_on:
-      - db-prod
-      - db-recette
+      - db
     restart: unless-stopped
 
 volumes:
-  db-prod-data:
-  db-recette-data:
+  db-data:

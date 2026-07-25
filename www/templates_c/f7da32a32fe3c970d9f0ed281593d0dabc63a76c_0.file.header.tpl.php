@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 3.1.32, created on 2026-07-21 12:50:47
+/* Smarty version 3.1.32, created on 2026-07-25 14:33:52
   from '/var/www/html/www/templates/header.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '3.1.32',
-  'unifunc' => 'content_6a5f6b27bbd646_19076603',
+  'unifunc' => 'content_6a64c95060e9d1_66608987',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'f7da32a32fe3c970d9f0ed281593d0dabc63a76c' => 
     array (
       0 => '/var/www/html/www/templates/header.tpl',
-      1 => 1784638193,
+      1 => 1784983155,
       2 => 'file',
     ),
   ),
@@ -20,7 +20,7 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   array (
   ),
 ),false)) {
-function content_6a5f6b27bbd646_19076603 (Smarty_Internal_Template $_smarty_tpl) {
+function content_6a64c95060e9d1_66608987 (Smarty_Internal_Template $_smarty_tpl) {
 ?><!DOCTYPE html>
 <meta charset="utf-8" />
 <html lang="fr">
@@ -88,7 +88,11 @@ function content_6a5f6b27bbd646_19076603 (Smarty_Internal_Template $_smarty_tpl)
 >
  
 </head>
-<body>
+<body data-env="<?php echo $_smarty_tpl->tpl_vars['cdf_env']->value;?>
+">
+
+	<?php if ($_smarty_tpl->tpl_vars['cdf_env_badge']->value) {?><div class="cdf-env-badge"><?php echo $_smarty_tpl->tpl_vars['cdf_env_libelle']->value;?>
+</div><?php }?>
 
 	<?php if (isset($_SESSION['id_admin_menu_selectionne'])) {?>
 

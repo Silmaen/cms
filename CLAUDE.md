@@ -29,14 +29,19 @@ hébergée sur mutualisé OVH.
   `gestionIdentification($connexion)` (garde, sinon redirige vers `index.php`) →
   lecture `$_GET`/`$_POST` (`action`, `id_*`) → SQL PDO → `$smarty->assign(...)` →
   `$smarty->display('xxx.tpl')`. **Respecter ce squelette** pour tout nouvel écran.
-- **Prod ET recette** : le code est dupliqué dans `www/` et `recette/www/`. Une
-  correction fonctionnelle doit en principe être portée **dans les deux**
-  (le signaler si tu n'en modifies qu'un).
+- **Un seul code, plusieurs environnements** : il n'y a plus de dossier `recette/`
+  dupliqué. Le même code (`www/` + `cgi-bin/`) est déployé sur trois branches git
+  (`main`→prod, `recette`→recette, `test`→test) plus le Docker local.
+  L'environnement est **détecté automatiquement** (`cgi-bin/config/environnement.php`
+  via `CDF_ENV` ou le nom d'hôte) et pilote la couleur du thème (vert/bleu/rouge/violet)
+  et le bandeau. Ne pas ré-introduire de duplication de dossier.
 - **Soft-delete** : ne jamais `DELETE` une ligne métier ; utiliser `id_etat`
   (1=actif, 2=archivé, 3=supprimé) via `gestionSuppression()`.
-- **Ne pas committer les secrets** : `config_general.php` et le cron contiennent
-  des identifiants BDD. Voir la section sécurité du README ; proposer
-  l'externalisation plutôt que de les figer.
+- **Secrets BDD hors git** : `config_general.php` est désormais versionné et **sans
+  secret** ; les identifiants viennent des variables d'environnement `CDF_DB_*`
+  (local/Docker) ou du fichier hors-git `config_secrets.php` par serveur (OVH),
+  résolus dans `cgi-bin/config/identifiants_bdd.php`. Ne jamais figer d'identifiant
+  dans un fichier versionné.
 - **Style** : suivre le code existant (procédural, noms de fonctions
   `GestionXxx` en PascalCase, variables et SQL en français). Ne pas « moderniser »
   spontanément (framework, POO) sans demande explicite.

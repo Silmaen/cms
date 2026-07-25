@@ -25,18 +25,16 @@ RUN apt-get -o Acquire::Check-Valid-Until=false update \
     && rm -rf /var/lib/apt/lists/*
 
 # --- Apache ---
-# Racine web paramétrable par variable d'environnement (APACHE_DOCUMENT_ROOT),
-# pour servir soit www/ (prod) soit recette/www/ (recette) avec la même image.
+# Racine web paramétrable par variable d'environnement (APACHE_DOCUMENT_ROOT).
 RUN a2enmod rewrite
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/www
 RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
     && sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf
 
-# ServerName (supprime l'avertissement FQDN) + on ignore les .htaccess en local.
-# Le seul .htaccess du projet (recette/www) force le HTTPS : inutile et gênant
-# en développement local où l'on ne sert que du HTTP.
+# ServerName (supprime l'avertissement FQDN) + on ignore les .htaccess en local
+# (certains forcent le HTTPS, inutile et gênant en développement local sur HTTP).
 RUN echo 'ServerName localhost' >> /etc/apache2/apache2.conf \
-    && printf '<Directory /var/www/html/www>\n    AllowOverride None\n</Directory>\n<Directory /var/www/html/recette/www>\n    AllowOverride None\n</Directory>\n' \
+    && printf '<Directory /var/www/html/www>\n    AllowOverride None\n</Directory>\n' \
         > /etc/apache2/conf-available/zzz-local-dev.conf \
     && a2enconf zzz-local-dev
 

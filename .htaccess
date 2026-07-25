@@ -1,0 +1,29 @@
+# ------------------------------------------------------------------
+# Routage pour l'intégration Git d'OVH.
+#
+# OVH clone le dépôt dans le dossier racine du domaine : le docroot
+# pointe donc sur la RACINE du dépôt, alors que la vraie racine web de
+# l'application est le sous-dossier www/. On réécrit (en interne, sans
+# changer l'URL affichée) toutes les requêtes vers www/.
+#
+# PHP positionne son répertoire de travail sur le script exécuté
+# (www/xxx.php), donc les chemins relatifs de l'appli (../cgi-bin,
+# templates/…) continuent de fonctionner sans modification.
+#
+# Effet de bord utile : les dossiers hors www/ (cgi-bin/, docker/, .git/…)
+# ne sont pas servis directement — ils sont réécrits vers www/ où ils
+# n'existent pas (404), donc non exposés.
+#
+# En local (Docker), ce fichier n'est pas dans le docroot (www/) et
+# AllowOverride est désactivé : il est sans effet.
+# ------------------------------------------------------------------
+RewriteEngine On
+
+# Si la requête cible déjà www/, ne rien faire (évite toute boucle).
+RewriteRule ^www($|/) - [L]
+
+# Sinon, router vers le sous-dossier www/.
+RewriteRule ^(.*)$ www/$1 [L]
+
+# Page d'accueil servie par www/index.php.
+DirectoryIndex index.php

@@ -1,10 +1,28 @@
 /* CSS à ajouter au CSS bootstrap pour l'accorder aux styles de l'administrateur */
+
+/* ------------------------------------------------------------------ */
+/* Couleur principale du thème, pilotée par l'environnement.          */
+/* L'attribut data-env est posé sur <body> (voir header*.tpl) à       */
+/* partir de la variable Smarty $cdf_env (cf. cgi-bin/config).         */
+/*   prod    = vert   (production)                                    */
+/*   recette = bleu                                                   */
+/*   test    = rouge/orange                                           */
+/*   local   = violet (développement Docker)                          */
+/* ------------------------------------------------------------------ */
+:root                    { --cdf-primaire: #a2c231; } /* défaut : vert */
+body[data-env="prod"]    { --cdf-primaire: #a2c231; }
+body[data-env="recette"] { --cdf-primaire: #1f6fb5; }
+body[data-env="test"]    { --cdf-primaire: #e8531f; }
+body[data-env="local"]   { --cdf-primaire: #7d3fb8; }
+
+/* Les noms de classes historiques (« vert ») sont conservés pour ne pas
+   toucher aux ~120 usages dans les templates ; seule la couleur change. */
 .thead-vert, .bg-vert{
-  background-color: #a2c231;
+  background-color: var(--cdf-primaire);
 }
 
 .text-vert{
-  color: #a2c231;
+  color: var(--cdf-primaire);
 }
 
 .text-gris{
@@ -16,7 +34,7 @@
 }
 
 .btn-vert{
-  background-color: #a2c231;
+  background-color: var(--cdf-primaire);
   color: #fff;
 }
 
@@ -26,5 +44,27 @@
 }
 
 .border-vert {
-  border-color: #a2c231 !important;
+  border-color: var(--cdf-primaire) !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* Bandeau d'environnement (affiché hors production).                 */
+/* Pastille fixe, discrète, visible sur toutes les pages (y compris    */
+/* l'écran de connexion) pour ne jamais confondre les environnements. */
+/* ------------------------------------------------------------------ */
+.cdf-env-badge{
+  position: fixed;
+  bottom: 8px;
+  left: 8px;
+  z-index: 1080;
+  padding: 3px 12px;
+  border-radius: 12px;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: #fff;
+  background-color: var(--cdf-primaire);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, .35);
+  opacity: .92;
+  pointer-events: none;
 }

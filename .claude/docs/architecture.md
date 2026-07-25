@@ -62,16 +62,22 @@ Délimiteurs `<!--{ $var }-->`. Fragments : `header.tpl`, `header-cdn.tpl`,
 `www/impressions_*.php` (10 écrans) via TCPDF (`cgi-bin/tcpdf/`).
 `impressions_automatique_reservations_jour.php` est appelé par le cron.
 
-## Prod / recette
+## Environnements (prod / recette / test / local)
 
-Code dupliqué : `www/`+`cgi-bin/` (prod) et `recette/www/`+`recette/cgi-bin/`
-(recette). **Répercuter toute évolution fonctionnelle dans les deux** ou le
-signaler. Divergence connue : le `SELECT` du cron utilise `id_etat=2` en prod et
-`id_etat=1` en recette (le prod paraît buggé — cf. `conventions.md`).
+**Un seul code** (`www/` + `cgi-bin/`), déployé sur trois branches git
+(`main`→prod, `recette`→recette, `test`→test) plus le Docker local. Plus de
+dossier `recette/` dupliqué. L'environnement est détecté par
+`cgi-bin/config/environnement.php` (variable `CDF_ENV`, sinon nom d'hôte) et
+expose `CDF_ENV` / `CDF_ENV_LIBELLE` / `CDF_ENV_BADGE` aux templates : couleur du
+thème (`data-env` sur `<body>` → var CSS `--cdf-primaire`) et bandeau
+d'environnement. Vert=prod, bleu=recette, rouge/orange=test, violet=local.
 
 ## Secrets
 
-`config_general.php` et `reservations_maj_automatique.php` sont **ignorés par
-git** (`.gitignore`, noms nus → toute profondeur). Modèles versionnés : `*.dist`.
-Ne jamais committer de credentials réels ; ne jamais retirer ces entrées du
-`.gitignore`.
+`config_general.php` est désormais **versionné et sans secret**. Les identifiants
+BDD sont résolus par `cgi-bin/config/identifiants_bdd.php` :
+1. variables d'environnement `CDF_DB_*` (local/Docker) ;
+2. sinon `cgi-bin/config/config_secrets.php`, **ignoré par git** et déposé par
+   serveur sur OVH (modèle versionné `config_secrets.php.dist`).
+La tâche `reservations_maj_automatique.php` reste ignorée (modèle `.dist`). Ne
+jamais committer de credentials réels ni retirer ces entrées du `.gitignore`.

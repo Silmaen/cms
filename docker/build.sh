@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 #
-# Construit l'image web (cms-web:local) partagée par les services web-prod et
-# web-recette.
+# Construit l'image web (cms-web:local) utilisée par le service web.
 #
 # Pourquoi ce script plutôt que `docker compose build` ?
 # BuildKit (activé par défaut dans compose) échoue à résoudre le manifest de la

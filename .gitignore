@@ -1,6 +1,8 @@
-config_general.php
-reservations_maj_automatique.php
+# Secrets déposés manuellement par serveur (jamais versionnés)
+cgi-bin/config/config_secrets.php
 .env
+.ovh
 
 # Exports SQL locaux : contiennent des données personnelles (RGPD) — ne jamais versionner
 docker/initdb/**/*.sql
+docker/initdb/*.sql

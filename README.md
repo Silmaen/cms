@@ -20,7 +20,7 @@ adhérents, des adhésions annuelles, de l'inventaire du matériel, et des
 - [Développement avec Docker](#développement-avec-docker)
 - [Installation locale](#installation-locale)
 - [Configuration](#configuration)
-- [Environnements (prod / recette)](#environnements-prod--recette)
+- [Environnements (prod / recette / test / local)](#environnements-prod--recette--test--local)
 - [Tâche planifiée (cron)](#tâche-planifiée-cron)
 - [Sécurité — points d'attention](#sécurité--points-dattention)
 - [Documentation détaillée](#documentation-détaillée)
@@ -31,7 +31,7 @@ adhérents, des adhésions annuelles, de l'inventaire du matériel, et des
 
 - **Clients / adhérents** : fiche client, coordonnées, statut, clé unique.
 - **Adhésions** : adhésions annuelles avec montant, par client.
-- **Articles & inventaire** : catalogue d'articles, fiches d'inventaire
+- **Articles et inventaire** : catalogue d'articles, fiches d'inventaire
   (types et statuts) recensant les quantités de matériel.
 - **Réservations** : réservation d'articles par un client, avec date de départ
   et de retour, quantités, don éventuel, statut et cycle de vie.
@@ -70,7 +70,7 @@ flowchart LR
     C -->|requêtes SQL| DB[(MySQL)]
     C -->|assign + display| T["Template Smarty<br/>(www/templates/*.tpl)"]
     T -->|HTML| N
-    C -.->|impressions_*.php| PDF[TCPDF → PDF]
+    C -.->|impressions_*.php| PDF[TCPDF -> PDF]
     PDF -.-> N
 ```
 
@@ -112,13 +112,14 @@ cms/
 │   └── fichiers_importation_initiale/  # Scripts d'import ponctuels
 ├── cgi-bin/                 # Code hors docroot
 │   ├── config/
-│   │   ├── config_general.php    # Connexion BDD (PDO) + init Smarty
-│   │   └── fonctions_general.php # Fonctions transverses
+│   │   ├── config_general.php       # Init Smarty + connexion PDO (versionné, sans secret)
+│   │   ├── environnement.php        # Détection prod/recette/test/local (thème + badge)
+│   │   ├── identifiants_bdd.php     # Résolution des identifiants BDD (env vars ou secrets)
+│   │   ├── config_secrets.php.dist  # Modèle du fichier de secrets (hors git par serveur)
+│   │   └── fonctions_general.php    # Fonctions transverses
 │   ├── reservations_maj_automatique.php  # Tâche planifiée (cron)
 │   ├── smarty/ tcpdf/ kartik/ Charts/    # Bibliothèques PHP
-├── recette/                 # Copie complète de l'environnement de RECETTE
-│   ├── www/
-│   └── cgi-bin/
+├── docker/                  # Environnement de dév local (image PHP, initdb)
 ├── sources/                 # Archives .zip des bibliothèques tierces
 └── .ovhconfig               # Configuration hébergement OVH
 ```
@@ -126,23 +127,24 @@ cms/
 ## Développement avec Docker
 
 Un environnement Docker Compose reproduit l'hébergement OVH (PHP 7.2 + MySQL) et
-sert **les deux environnements en parallèle** (production et recette), chacun avec
-sa propre base de données, plus un **phpMyAdmin** unique pour les consulter. Le
-dossier courant est monté dans les conteneurs : le code est modifiable à chaud.
+sert **un site unique** (comme en production) sur sa base de données, plus un
+**phpMyAdmin** pour la consulter. Le dossier courant est monté dans le conteneur :
+le code est modifiable à chaud. L'environnement est détecté comme `local`
+(thème violet + badge « LOCAL ») ; la variable `CDF_ENV` de l'env `.env` permet de
+prévisualiser les thèmes `test` / `recette` / `prod`.
 
 ```bash
 ./docker/build.sh      # construit l'image web (contourne une limite de BuildKit)
-docker compose up -d   # démarre les 5 services
+docker compose up -d   # démarre les services
 ```
 
-| Service | Accès |
-|---------|-------|
-| Application **prod** | http://localhost:8080 (base `comitefetes`) |
-| Application **recette** | http://localhost:8081 (base `comitefetesrecette`) |
-| **phpMyAdmin** | http://localhost:8082 (serveurs *Production* / *Recette*, login `root` / `root`) |
+| Service        | Accès                                                       |
+|----------------|-------------------------------------------------------------|
+| Application    | http://localhost:8080 (base `comitefetes`)                  |
+| **phpMyAdmin** | http://localhost:8082 (serveur `db`, login `root` / `root`) |
 
-Pour recréer les bases, déposer un export SQL dans `docker/initdb/prod/` et
-`docker/initdb/recette/` (importé automatiquement au premier démarrage).
+Pour recréer la base, déposer un export SQL dans `docker/initdb/` (importé
+automatiquement au premier démarrage).
 
 > 📖 Détails, commandes utiles et dépannage : [`docker/README.md`](docker/README.md)
 > et [`docker/initdb/README.md`](docker/initdb/README.md).
@@ -153,8 +155,9 @@ Pour recréer les bases, déposer un export SQL dans `docker/initdb/prod/` et
 > serveur MySQL, un serveur web (Apache) dont la racine pointe sur `www/`.
 
 1. Créer une base MySQL locale (par défaut `comitefetes`).
-2. Renseigner la connexion dans `cgi-bin/config/config_general.php`
-   (voir [Configuration](#configuration)).
+2. Renseigner la connexion (voir [Configuration](#configuration)) : soit des
+   variables d'environnement `CDF_DB_*`, soit un fichier
+   `cgi-bin/config/config_secrets.php` (copié depuis `config_secrets.php.dist`).
 3. Servir le dossier `www/` et ouvrir `index.php`.
 
 > ⚠️ Le dépôt ne contient pas de dump SQL du schéma. Les structures de tables
@@ -164,25 +167,49 @@ Pour recréer les bases, déposer un export SQL dans `docker/initdb/prod/` et
 
 ## Configuration
 
-La connexion à la base et l'initialisation de Smarty se font dans
-`cgi-bin/config/config_general.php` via des constantes :
+`cgi-bin/config/config_general.php` (versionné, **sans secret**) initialise
+Smarty puis résout la connexion BDD via `identifiants_bdd.php`, selon deux
+sources possibles :
 
-```php
-define('utilisateur', "…");   // utilisateur MySQL
-define('mdp',         "…");   // mot de passe MySQL
-define('serveur',     "…");   // hôte MySQL
-define('bdd',         "…");   // nom de la base
-```
+1. **Variables d'environnement** `CDF_DB_HOST` / `CDF_DB_NAME` / `CDF_DB_USER` /
+   `CDF_DB_PASS` — utilisées en **local** (injectées par `docker-compose.yml`).
+2. **Fichier `cgi-bin/config/config_secrets.php`** (hors git) — utilisé sur
+   **OVH**. À créer depuis le modèle :
 
-## Environnements (prod / recette)
+   ```bash
+   cp cgi-bin/config/config_secrets.php.dist cgi-bin/config/config_secrets.php
+   ```
+   ```php
+   define('serveur',     "…");   // hôte MySQL (ex. bdd.mysql.db)
+   define('bdd',         "…");   // nom de la base
+   define('utilisateur', "…");   // utilisateur MySQL
+   define('mdp',         "…");   // mot de passe MySQL
+   ```
 
-Le dépôt embarque **deux copies** de l'application :
+Ce fichier n'étant pas suivi par git, il **survit au déploiement automatique**
+(le `checkout` ne l'écrase ni ne le supprime) et n'est **jamais versionné**.
 
-- `www/` + `cgi-bin/` : **production** (base `cdfgenaytbbdd` sur OVH).
-- `recette/www/` + `recette/cgi-bin/` : **recette** (base `cdfrecette` sur
-  l'instance cloud OVH).
+## Environnements (prod / recette / test / local)
 
-Les deux partagent le même code ; seule la configuration (base, hôte) diffère.
+Le **même code** (une seule copie de l'application dans `www/` + `cgi-bin/`) est
+déployé sur trois hébergements OVH via trois branches git, plus l'environnement
+Docker local. L'environnement est **détecté automatiquement** par
+`cgi-bin/config/environnement.php` (variable `CDF_ENV`, sinon nom d'hôte) :
+
+| Environnement | Branche git | Nom d'hôte              | Base             | Thème           | Bandeau  |
+|---------------|-------------|-------------------------|------------------|-----------------|----------|
+| **prod**      | `main`      | `www.cdf-genay.com`     | base OVH prod    | 🟢 vert         | —        |
+| **recette**   | `recette`   | `recette.cdf-genay.com` | base OVH recette | 🔵 bleu         | RECETTE  |
+| **test**      | `test`      | `test.cdf-genay.com`    | base OVH test    | 🟠 rouge/orange | TEST     |
+| **local**     | —           | `localhost`             | base Docker      | 🟣 violet       | LOCAL    |
+
+- La **couleur du thème** est portée par l'attribut `data-env` sur `<body>` et
+  la variable CSS `--cdf-primaire` (voir `www/css/styles.css`) : aucun template
+  métier n'a été modifié.
+- Chaque hébergement ne connaît que **sa propre base** (son `config_secrets.php`),
+  ce qui isole les données prod / recette / test.
+- Les identifiants ne sont **jamais dans git** ; seule la détection d'environnement
+  l'est. Le même dépôt se comporte donc correctement partout.
 
 ## Tâche planifiée (cron)
 
@@ -198,9 +225,10 @@ quotidiennement (cron OVH). Il :
 
 > 🔒 À traiter **avant toute publication** du dépôt (surtout s'il devient public).
 
-- **Identifiants de base en clair** dans `config_general.php` et
-  `reservations_maj_automatique.php` (prod + recette). À externaliser
-  (fichier de config ignoré par git + modèle `.dist`) et à **renouveler**.
+- **Identifiants de base** : désormais **hors git** — variables d'environnement
+  `CDF_DB_*` en local, fichier `config_secrets.php` (ignoré par git, modèle
+  `.dist`) sur OVH. Les identifiants ayant figuré en clair dans l'historique
+  de git doivent être **renouvelés**.
 - **Hachage des mots de passe** : SHA-256 avec sel statique codé en dur
   (`fonctions_general.php`). À migrer vers `password_hash()` / `password_verify()`.
 - **Requêtes SQL** : une partie utilise des requêtes préparées (PDO), mais
