@@ -7,7 +7,7 @@
 
 Application web « maison » de gestion pour le Comité des Fêtes de Genay :
 clients/adhérents, adhésions annuelles, articles, inventaire et **réservations
-de matériel**, avec édition PDF. PHP 7.2 procédural + Smarty + MySQL (PDO),
+de matériel**, avec édition PDF. PHP 7.4 procédural + Smarty + MySQL (PDO),
 hébergée sur mutualisé OVH.
 
 ## Repères rapides
@@ -24,7 +24,7 @@ hébergée sur mutualisé OVH.
 ## Règles de travail
 
 - **Docker/outillage** : ce projet n'a pas de conteneur ; c'est du PHP interprété.
-  Pas de build. Pour exécuter/tester, utiliser un PHP 7.2 + MySQL (voir README).
+  Pas de build. Pour exécuter/tester, utiliser un PHP 7.4 + MySQL (voir README).
 - **Pattern d'un écran** : `require config_general + fonctions_general` →
   `gestionIdentification($connexion)` (garde, sinon redirige vers `index.php`) →
   lecture `$_GET`/`$_POST` (`action`, `id_*`) → SQL PDO → `$smarty->assign(...)` →

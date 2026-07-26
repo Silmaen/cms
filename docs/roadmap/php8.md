@@ -22,7 +22,7 @@ Code procédural ancien → surtout :
 ## Démarche proposée
 
 1. Ajouter un **linter de compat** (ex. `phpcs` + `PHPCompatibility`) exécuté dans Docker.
-2. Bumper l'image Docker locale (actuellement `php:7.2`) vers 8.x pour tester.
+2. Bumper l'image Docker locale (actuellement `php:7.4`) vers 8.x pour tester.
 3. Basculer **`test`** en 8.x (changer `app.engine.version` dans son `.ovhconfig`, garder
    `container.image=stable64`) et parcourir les écrans, corriger les erreurs/warnings.
 4. Une fois vert, propager `test` → `recette` → `main`.

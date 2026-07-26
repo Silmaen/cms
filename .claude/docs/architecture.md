@@ -1,6 +1,6 @@
 # Architecture (référence agent)
 
-PHP 7.2 procédural, sans framework/routeur. 1 URL = 1 fichier `www/*.php`.
+PHP 7.4 procédural, sans framework/routeur. 1 URL = 1 fichier `www/*.php`.
 Doc humaine équivalente : `docs/architecture.md` (ne pas dupliquer, ce fichier
 est optimisé pour action rapide).
 

@@ -1,9 +1,9 @@
-# Image PHP 7.2 + Apache pour l'application Comité des Fêtes.
-# Reproduit l'environnement OVH (PHP 7.2, MySQL) en local.
-FROM php:7.2-apache
+# Image PHP 7.4 + Apache pour l'application Comité des Fêtes.
+# Reproduit l'environnement OVH (PHP 7.4, MySQL) en local.
+FROM php:7.4-apache
 
 # --- Dépôts Debian Buster (EOL) → archive.debian.org ---
-# Debian 10 "buster" (base de php:7.2) est en fin de vie : les miroirs standard
+# Debian 10 "buster" (base de php:7.4) est en fin de vie : les miroirs standard
 # renvoient 404. On bascule apt sur les archives et on ignore la date d'expiration.
 RUN sed -i \
         -e 's|deb.debian.org/debian|archive.debian.org/debian|g' \

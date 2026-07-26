@@ -4,7 +4,7 @@
 #
 # Pourquoi ce script plutôt que `docker compose build` ?
 # BuildKit (activé par défaut dans compose) échoue à résoudre le manifest de la
-# vieille image de base `php:7.2-apache` sur certains réseaux (timeout DNS sur
+# vieille image de base `php:7.4-apache` sur certains réseaux (timeout DNS sur
 # registry-1.docker.io), alors que le builder classique — qui passe par le daemon
 # Docker — fonctionne. On force donc DOCKER_BUILDKIT=0, et on aligne l'utilisateur
 # Apache sur l'utilisateur hôte (droits d'écriture pour Smarty).

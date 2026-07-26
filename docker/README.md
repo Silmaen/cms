@@ -1,6 +1,6 @@
 # Environnement de développement Docker
 
-Environnement local reproduisant l'hébergement OVH (PHP 7.2 + MySQL) : **un site
+Environnement local reproduisant l'hébergement OVH (PHP 7.4 + MySQL) : **un site
 unique** (comme en production), servi par un seul conteneur web sur sa base de
 données, plus un **phpMyAdmin** pour la consulter.
 
@@ -72,7 +72,7 @@ docker compose down -v       # arrêt + suppression de la base locale
 
 Deux particularités ont dû être contournées ; elles expliquent le workflow.
 
-1. **BuildKit ne résout pas l'image de base.** `php:7.2-apache` est une vieille
+1. **BuildKit ne résout pas l'image de base.** `php:7.4-apache` est une vieille
    image ; sur certains réseaux, BuildKit (activé par défaut dans `docker compose
    build`) échoue avec un *timeout DNS* sur `registry-1.docker.io`, alors que le
    daemon Docker, lui, sait la télécharger. `docker/build.sh` force donc le
