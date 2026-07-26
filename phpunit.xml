@@ -16,6 +16,14 @@
          convertWarningsToExceptions="false"
          convertDeprecationsToExceptions="false"
          cacheResult="false">
+    <!-- Périmètre de la couverture de code : notre logique applicative.
+         (Les contrôleurs www/*.php sont couverts par golden master, pas ligne-à-ligne.) -->
+    <coverage>
+        <include>
+            <directory suffix=".php">cgi-bin/config</directory>
+        </include>
+    </coverage>
+
     <testsuites>
         <testsuite name="unit">
             <directory>tests/unit</directory>

@@ -12,8 +12,14 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
+# Version de PHP : source de vérité UNIQUE = .ovhconfig (app.engine.version).
+PHP_VERSION="$(grep -E '^app.engine.version=' .ovhconfig | head -1 | cut -d= -f2 | tr -d '[:space:]')"
+PHP_VERSION="${PHP_VERSION:-7.4}"
+echo "PHP $PHP_VERSION (depuis .ovhconfig)"
+
 DOCKER_BUILDKIT=0 docker build \
     -t cms-web:local \
+    --build-arg PHP_VERSION="$PHP_VERSION" \
     --build-arg UID="$(id -u)" \
     --build-arg GID="$(id -g)" \
     ./docker/php

@@ -1,43 +1,63 @@
-# Exécution automatique de la suite de tests (PHPUnit) à chaque push et sur les PR.
+# Exécution automatique de la suite de tests (PHPUnit) sur chaque Pull Request.
+# (On ne déclenche pas sur push : tout passe par des PR pour avancer vers la prod.)
 #
-# Un service MySQL est démarré à côté du job : les tests BDD tournent contre lui.
-# On teste sur PHP 7.4 (comme la production OVH).
+# Les versions ne sont PAS codées ici : elles proviennent des sources de vérité
+# uniques du dépôt —
+#   - PHP     : .ovhconfig (app.engine.version)
+#   - MySQL   : .env.sample (MYSQL_VERSION)
+#   - PHPUnit : .env.sample (PHPUNIT_VERSION)
+# MySQL est démarré via `docker run` (et non un service:) pour rester sur UN seul
+# job → un seul check dans la PR.
 
 name: Tests
 
 on:
-  push:
   pull_request:
 
 jobs:
   phpunit:
-    name: PHPUnit (PHP 7.4)
+    name: PHPUnit
     runs-on: ubuntu-latest
-
-    services:
-      mysql:
-        image: mysql:5.7
-        env:
-          MYSQL_ROOT_PASSWORD: root
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping --silent"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=15
 
     steps:
       - name: Récupérer le code
         uses: actions/checkout@v4
 
-      - name: Installer PHP 7.4 + PHPUnit
+      - name: Lire les versions (sources de vérité)
+        id: versions
+        run: |
+          php=$(grep -E '^app.engine.version=' .ovhconfig | head -1 | cut -d= -f2 | tr -d '[:space:]')
+          mysql=$(grep -hE '^MYSQL_VERSION='   .env.defaults | head -1 | cut -d= -f2 | tr -d '[:space:]')
+          phpunit=$(grep -hE '^PHPUNIT_VERSION=' .env.defaults | head -1 | cut -d= -f2 | tr -d '[:space:]')
+          echo "php=$php"         >> "$GITHUB_OUTPUT"
+          echo "mysql=$mysql"     >> "$GITHUB_OUTPUT"
+          echo "phpunit=$phpunit" >> "$GITHUB_OUTPUT"
+          echo "PHP=$php · MySQL=$mysql · PHPUnit=$phpunit"
+
+      - name: Démarrer MySQL
+        run: |
+          docker run -d --name mysql \
+            -e MYSQL_ROOT_PASSWORD=root \
+            -p 3306:3306 \
+            "mysql:${{ steps.versions.outputs.mysql }}"
+          echo "Attente de MySQL..."
+          for i in $(seq 1 40); do
+            if docker exec mysql mysqladmin ping --silent >/dev/null 2>&1; then
+              echo "MySQL prêt."; exit 0
+            fi
+            sleep 3
+          done
+          echo "MySQL n'a pas démarré à temps"; docker logs mysql; exit 1
+
+      - name: Installer PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: ${{ steps.versions.outputs.php }}
           extensions: pdo_mysql, gd, mbstring
-          tools: phpunit:9.6
-          coverage: none
+          coverage: pcov
+
+      - name: Télécharger PHPUnit
+        run: curl -fsSL "https://phar.phpunit.de/phpunit-${{ steps.versions.outputs.phpunit }}.phar" -o phpunit.phar
 
       - name: Lancer la suite de tests
         env:
@@ -46,4 +66,25 @@ jobs:
           CDF_TEST_DB_USER: root
           CDF_TEST_DB_PASS: root
           CDF_TEST_DB_NAME: comitefetes_test
-        run: phpunit --configuration phpunit.xml
+        run: php phpunit.phar --configuration phpunit.xml --coverage-text=coverage.txt --coverage-html coverage-html
+
+      - name: Afficher la couverture dans le récap du run (onglet Summary)
+        if: always()
+        run: |
+          if [ -f coverage.txt ]; then
+            {
+              echo "## Couverture de code"
+              echo '```'
+              cat coverage.txt
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+            cat coverage.txt   # aussi dans le log du job
+          fi
+
+      - name: Publier le rapport de couverture (HTML téléchargeable)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-html
+          path: coverage-html
+          if-no-files-found: ignore

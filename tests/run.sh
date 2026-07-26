@@ -16,11 +16,21 @@ cd "$(dirname "$0")/.."
 # (snapshots, phar, templates compilés) restent la propriété de l'utilisateur.
 USER_SPEC="$(id -u):$(id -g)"
 
+# Compose lit .env.defaults (committé) puis .env (surcharges machine) — nécessaire
+# pour que les variables (ex. MYSQL_VERSION) soient résolues, même par `exec`.
+ENV_FILES=".env.defaults"
+[ -f .env ] && ENV_FILES=".env.defaults,.env"
+export COMPOSE_ENV_FILES="$ENV_FILES"
+
+# Version de PHPUnit : source = .env.defaults (surchargée par .env si présent).
+PHPUNIT_VERSION="$(grep -hE '^PHPUNIT_VERSION=' .env .env.defaults 2>/dev/null | head -1 | cut -d= -f2 | tr -d '[:space:]')"
+PHPUNIT_VERSION="${PHPUNIT_VERSION:-9}"
+
 mkdir -p tests/.bin
 if [ ! -f tests/.bin/phpunit.phar ]; then
-    echo "Téléchargement de PHPUnit 9 (phar)..."
+    echo "Téléchargement de PHPUnit ${PHPUNIT_VERSION} (phar)..."
     docker compose exec -T -u "$USER_SPEC" web php -r \
-        'copy("https://phar.phpunit.de/phpunit-9.phar", "/var/www/html/tests/.bin/phpunit.phar") or exit(1);'
+        "copy('https://phar.phpunit.de/phpunit-${PHPUNIT_VERSION}.phar', '/var/www/html/tests/.bin/phpunit.phar') or exit(1);"
 fi
 
 exec docker compose exec -T -u "$USER_SPEC" web \

@@ -8,16 +8,33 @@ qu'il devrait idéalement faire (les bizarreries sont figées telles quelles).
 
 ## Lancer les tests
 
-Le conteneur doit tourner (`docker compose up -d`). Puis :
+La stack doit tourner (`./dc.sh up`). Puis :
 
 ```bash
 ./tests/run.sh                 # toute la suite
 ./tests/run.sh --filter Date   # filtrer par nom de test
 ```
 
-PHPUnit 9.6 (dernière version compatible **PHP 7.4**) est utilisé en **PHAR**,
-téléchargé au premier lancement dans `tests/.bin/` (ignoré par git). **Pas de Composer.**
-Les tests s'exécutent **dans le conteneur** (même PHP que la prod).
+PHPUnit (version `PHPUNIT_VERSION` de `.env.defaults`, compatible **PHP 7.4**) est utilisé
+en **PHAR**, téléchargé au premier lancement dans `tests/.bin/` (ignoré par git). **Pas de
+Composer.** Les tests s'exécutent **dans le conteneur** (même PHP que la prod).
+
+## Couverture de code
+
+Le pilote **PCOV** est inclus dans l'image. Le périmètre mesuré (`cgi-bin/config`) est
+défini par `<coverage>` dans `phpunit.xml`.
+
+```bash
+./tests/run.sh --coverage-text                 # résumé dans le terminal
+./tests/run.sh --coverage-html tests/coverage  # rapport navigable → tests/coverage/index.html
+```
+
+En CI, le résumé s'affiche dans le log et le rapport **HTML** est publié en **artefact
+téléchargeable** de chaque exécution.
+
+> Le pourcentage reflète surtout `fonctions_general.php` (bien couvert). Les fichiers
+> d'amorçage (`config_general.php`, `environnement.php`, `identifiants_bdd.php`) ne sont
+> pas exécutés par PHPUnit → ils tirent le total vers le bas ; c'est attendu.
 
 ## Structure
 
@@ -48,7 +65,8 @@ un snapshot après un changement voulu : supprimer le fichier concerné et relan
   `GestionPagination`, `GestionMenusDroits`, `DupliquerSessionUtilisateur`, `GestionTri`.
 - ✅ **Vues (golden master)** : page de connexion (`index.tpl`) et accueil connecté
   (`accueil.tpl` → navbar du header).
-- ✅ **CI** : `.github/workflows/tests.yml` (service MySQL) à chaque push / PR.
+- ✅ **CI** : `.github/workflows/tests.yml` — sur chaque **Pull Request** (MySQL démarré
+  via `docker run`, versions lues dans `.ovhconfig` / `.env.defaults`).
 
 ## À venir
 

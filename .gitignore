@@ -10,3 +10,8 @@ docker/initdb/*.sql
 # Outillage de test (binaire PHPUnit téléchargé) et cache
 tests/.bin/
 .phpunit.result.cache
+
+# Rapports de couverture de code (générés)
+tests/coverage/
+/coverage.txt
+/coverage-html/

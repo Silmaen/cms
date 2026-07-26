@@ -1,6 +1,8 @@
-# Image PHP 7.4 + Apache pour l'application Comité des Fêtes.
-# Reproduit l'environnement OVH (PHP 7.4 sur container « stable64 », MySQL) en local.
-FROM php:7.4-apache
+# Image PHP + Apache pour l'application Comité des Fêtes.
+# La version de PHP provient de .ovhconfig (source unique) : docker/build.sh la lit et
+# la passe en argument de build PHP_VERSION. Le défaut ci-dessous n'est qu'un filet.
+ARG PHP_VERSION=7.4
+FROM php:${PHP_VERSION}-apache
 
 # --- Extensions PHP ---
 # Installées via docker-php-extension-installer (mlocati) : il gère les dépendances
@@ -8,9 +10,10 @@ FROM php:7.4-apache
 # les bricolages apt/gd manuels — notamment la syntaxe de gd qui a changé en 7.4.
 #   pdo_mysql : connexion à la base (PDO).
 #   gd + mbstring : requis par TCPDF pour la génération des PDF.
+#   pcov : pilote de couverture de code pour PHPUnit (léger, dédié couverture).
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
 RUN chmod +x /usr/local/bin/install-php-extensions \
-    && install-php-extensions pdo_mysql gd mbstring
+    && install-php-extensions pdo_mysql gd mbstring pcov
 
 # --- Apache ---
 # Racine web paramétrable par variable d'environnement (APACHE_DOCUMENT_ROOT).
