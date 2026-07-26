@@ -10,6 +10,7 @@
 
 - [ ] 🔴 **Hachage des mots de passe** — remplacer le SHA-256 + sel statique par `password_hash()` / `password_verify()`. → [détails](roadmap/hashage-mots-de-passe.md)
 - [ ] 🟠 **Requêtes SQL / injection** — auditer et garantir des requêtes 100 % préparées (et sécuriser les identifiants dynamiques). → [détails](roadmap/securite-sql.md)
+- [X] testing pr
 
 ## Technique
 
