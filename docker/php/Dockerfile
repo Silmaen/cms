@@ -1,28 +1,16 @@
 # Image PHP 7.4 + Apache pour l'application Comité des Fêtes.
-# Reproduit l'environnement OVH (PHP 7.4, MySQL) en local.
+# Reproduit l'environnement OVH (PHP 7.4 sur container « stable64 », MySQL) en local.
 FROM php:7.4-apache
 
-# --- Dépôts Debian Buster (EOL) → archive.debian.org ---
-# Debian 10 "buster" (base de php:7.4) est en fin de vie : les miroirs standard
-# renvoient 404. On bascule apt sur les archives et on ignore la date d'expiration.
-RUN sed -i \
-        -e 's|deb.debian.org/debian|archive.debian.org/debian|g' \
-        -e 's|security.debian.org/debian-security|archive.debian.org/debian-security|g' \
-        -e '/buster-updates/d' \
-        /etc/apt/sources.list
-
 # --- Extensions PHP ---
-# pdo_mysql : connexion à la base (l'appli utilise PDO).
-# gd + mbstring : requis par TCPDF pour la génération des PDF.
-RUN apt-get -o Acquire::Check-Valid-Until=false update \
-    && apt-get install -y --no-install-recommends \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
-        libpng-dev \
-    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
-    && docker-php-ext-install -j"$(nproc)" pdo_mysql gd mbstring \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+# Installées via docker-php-extension-installer (mlocati) : il gère les dépendances
+# système et les dépôts Debian (y compris distributions en fin de vie), ce qui évite
+# les bricolages apt/gd manuels — notamment la syntaxe de gd qui a changé en 7.4.
+#   pdo_mysql : connexion à la base (PDO).
+#   gd + mbstring : requis par TCPDF pour la génération des PDF.
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions \
+    && install-php-extensions pdo_mysql gd mbstring
 
 # --- Apache ---
 # Racine web paramétrable par variable d'environnement (APACHE_DOCUMENT_ROOT).

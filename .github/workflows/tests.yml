@@ -1,0 +1,49 @@
+# Exécution automatique de la suite de tests (PHPUnit) à chaque push et sur les PR.
+#
+# Un service MySQL est démarré à côté du job : les tests BDD tournent contre lui.
+# On teste sur PHP 7.4 (comme la production OVH).
+
+name: Tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  phpunit:
+    name: PHPUnit (PHP 7.4)
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v4
+
+      - name: Installer PHP 7.4 + PHPUnit
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: pdo_mysql, gd, mbstring
+          tools: phpunit:9.6
+          coverage: none
+
+      - name: Lancer la suite de tests
+        env:
+          CDF_TEST_DB_HOST: 127.0.0.1
+          CDF_TEST_DB_PORT: 3306
+          CDF_TEST_DB_USER: root
+          CDF_TEST_DB_PASS: root
+          CDF_TEST_DB_NAME: comitefetes_test
+        run: phpunit --configuration phpunit.xml

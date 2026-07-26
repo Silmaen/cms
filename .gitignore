@@ -6,3 +6,7 @@ cgi-bin/config/config_secrets.php
 # Exports SQL locaux : contiennent des données personnelles (RGPD) — ne jamais versionner
 docker/initdb/**/*.sql
 docker/initdb/*.sql
+
+# Outillage de test (binaire PHPUnit téléchargé) et cache
+tests/.bin/
+.phpunit.result.cache
