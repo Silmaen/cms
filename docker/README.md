@@ -23,18 +23,18 @@ docker compose up -d       # démarre les services
 Aux démarrages suivants, tant que le `Dockerfile` n'a pas changé, `docker compose
 up -d` suffit (pas besoin de rebuild).
 
-| Service | URL / accès | Détails |
-|---------|-------------|---------|
-| Application | http://localhost:8080 | docroot `www/`, base `comitefetes` |
-| **phpMyAdmin** | http://localhost:8082 | serveur `db` |
-| MySQL (accès direct) | `localhost:3307` | |
+| Service              | URL / accès           | Détails                            |
+|----------------------|-----------------------|------------------------------------|
+| Application          | http://localhost:8080 | docroot `www/`, base `comitefetes` |
+| **phpMyAdmin**       | http://localhost:8082 | serveur `db`                       |
+| MySQL (accès direct) | `localhost:3307`      |                                    |
 
 ### Identifiants base de données
 
-| Rôle | Utilisateur | Mot de passe |
-|------|-------------|--------------|
-| Application | `cdf` | `cdf` |
-| Administration (phpMyAdmin) | `root` | `root` |
+| Rôle                        | Utilisateur  | Mot de passe  |
+|-----------------------------|--------------|---------------|
+| Application                 | `cdf`        | `cdf`         |
+| Administration (phpMyAdmin) | `root`       | `root`        |
 
 > Ces identifiants ne servent qu'en local (conteneurs). Ils sont sans rapport
 > avec les identifiants OVH.
@@ -55,7 +55,7 @@ up -d` suffit (pas besoin de rebuild).
 Voir [`initdb/README.md`](initdb/README.md) pour importer la structure et les
 données (dépôt d'un export SQL dans `docker/initdb/`).
 
-Tant que la base est vide, l'application se connecte mais les pages affichent
+Tant que la base est vide, l'application se connecte, mais les pages affichent
 des erreurs d'accès aux tables : c'est attendu jusqu'à l'import du schéma.
 
 ## Commandes utiles

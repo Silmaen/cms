@@ -2,7 +2,7 @@
 
 Ce document rassemble les règles à suivre pour contribuer au projet et rester
 cohérent avec l'existant. L'application est **procédurale, en français, et sans
-framework** : mieux vaut suivre le style en place que chercher à le moderniser
+framework** : Il vaut mieux suivre le style en place que chercher à le moderniser
 sans raison.
 
 ## La langue
@@ -12,14 +12,14 @@ de la base, les commentaires, et bien sûr les messages affichés à l'utilisate
 
 ## Le nommage
 
-| Élément | Règle | Exemple |
-|---------|-------|---------|
-| Fonctions communes | Préfixe `Gestion`, en un seul mot | `GestionIdentification`, `GestionTri` |
-| Variables | Mots séparés par des tirets bas | `$id_client_selectionne` |
-| Fichiers d'écran | `<domaine>_<vue>.php` | `clients_formulaire.php` |
-| Templates | Même nom que l'écran, en `.tpl` | `clients_formulaire.tpl` |
-| Scripts d'essai / ponctuels | Préfixe `_`, ou `test-`/`example_` | `_reservations_import.php` |
-| Identifiants en base | `id_<élément>` | `id_client`, `id_reservation` |
+| Élément                     | Règle                              | Exemple                               |
+|-----------------------------|------------------------------------|---------------------------------------|
+| Fonctions communes          | Préfixe `Gestion`, en un seul mot  | `GestionIdentification`, `GestionTri` |
+| Variables                   | Mots séparés par des tirets bas    | `$id_client_selectionne`              |
+| Fichiers d'écran            | `<domaine>_<vue>.php`              | `clients_formulaire.php`              |
+| Templates                   | Même nom que l'écran, en `.tpl`    | `clients_formulaire.tpl`              |
+| Scripts d'essai / ponctuels | Préfixe `_`, ou `test-`/`example_` | `_reservations_import.php`            |
+| Identifiants en base        | `id_<élément>`                     | `id_client`, `id_reservation`         |
 
 > À noter : les fonctions sont **définies** avec une majuscule (`GestionMenu`)
 > mais souvent **appelées** avec une minuscule (`gestionMenu`). PHP ne fait pas la

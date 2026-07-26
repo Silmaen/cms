@@ -1,0 +1,21 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Le code du projet (PHP, templates, CSS, JS) est indenté aux tabulations.
+[*.{php,tpl,css,js}]
+indent_style = tab
+
+[*.{yml,yaml,json}]
+indent_style = space
+indent_size = 2
+
+# En Markdown, deux espaces en fin de ligne = retour à la ligne : ne pas les couper.
+[*.md]
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = false

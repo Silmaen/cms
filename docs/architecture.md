@@ -89,14 +89,14 @@ faire quoi que ce soit — sinon elle le renvoie vers l'écran de connexion.
 Le fichier `fonctions_general.php` regroupe les fonctions utilisées par presque
 toutes les pages :
 
-| Fonction | À quoi elle sert |
-|----------|------------------|
-| Identification | Vérifie l'e-mail et le mot de passe, ouvre la session de l'utilisateur. |
-| Menu & droits | Construit le menu et détermine ce que l'utilisateur a le droit de voir. |
-| Dates | Convertit les dates entre le format base (`AAAA-MM-JJ`) et le format d'affichage (`JJ-MM-AAAA`). |
-| Pagination | Calcule le nombre de pages d'une liste. |
-| Suppression | Archive ou « supprime » un élément sans l'effacer réellement (voir ci-dessous). |
-| Tri | Mémorise la colonne de tri et la pagination choisies par chaque utilisateur. |
+| Fonction       | À quoi elle sert                                                                                 |
+|----------------|--------------------------------------------------------------------------------------------------|
+| Identification | Vérifie l'e-mail et le mot de passe, ouvre la session de l'utilisateur.                          |
+| Menu & droits  | Construit le menu et détermine ce que l'utilisateur a le droit de voir.                          |
+| Dates          | Convertit les dates entre le format base (`AAAA-MM-JJ`) et le format d'affichage (`JJ-MM-AAAA`). |
+| Pagination     | Calcule le nombre de pages d'une liste.                                                          |
+| Suppression    | Archive ou « supprime » un élément sans l'effacer réellement (voir ci-dessous).                  |
+| Tri            | Mémorise la colonne de tri et la pagination choisies par chaque utilisateur.                     |
 
 ## Connexion et droits d'accès
 
@@ -104,8 +104,7 @@ L'authentification est « maison » : l'utilisateur saisit son e-mail et son mot
 passe sur la page de connexion, l'application vérifie ces informations en base et,
 si tout est correct, ouvre une **session** contenant son identité et ses droits.
 
-Les utilisateurs sont organisés en **groupes**, et chaque groupe possède des
-droits différents :
+Les utilisateurs sont organisés en **groupes**, et chaque groupe possède différents droits :
 
 - **Super-administrateur** : voit tout (éléments actifs, archivés, supprimés).
 - **Groupe intermédiaire** : voit les éléments actifs et archivés.
@@ -120,7 +119,7 @@ L'application n'efface pas les données : elle utilise un système d'**états**.
 Chaque élément (client, réservation, article…) porte un état :
 
 - **Actif** — visible et utilisable ;
-- **Archivé** — mis de côté mais conservé ;
+- **Archivé** — mis de côté, mais conservé ;
 - **Supprimé** — masqué, mais toujours présent en base.
 
 « Supprimer » un client revient donc à le passer à l'état *supprimé* : on peut

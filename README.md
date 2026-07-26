@@ -225,15 +225,16 @@ quotidiennement (cron OVH). Il :
 
 > 🔒 À traiter **avant toute publication** du dépôt (surtout s'il devient public).
 
-- **Identifiants de base** : désormais **hors git** — variables d'environnement
-  `CDF_DB_*` en local, fichier `config_secrets.php` (ignoré par git, modèle
-  `.dist`) sur OVH. Les identifiants ayant figuré en clair dans l'historique
-  de git doivent être **renouvelés**.
+- **Identifiants de base** : **hors git** — variables d'environnement `CDF_DB_*` en
+  local, fichier `config_secrets.php` (ignoré par git, modèle `.dist`) sur OVH.
+  **Aucun mot de passe n'a été versionné** (vérifié dans l'historique) ; seuls des noms
+  de base/hôtes, non sensibles, figurent dans la doc.
 - **Hachage des mots de passe** : SHA-256 avec sel statique codé en dur
-  (`fonctions_general.php`). À migrer vers `password_hash()` / `password_verify()`.
-- **Requêtes SQL** : une partie utilise des requêtes préparées (PDO), mais
-  plusieurs concaténations de variables de session/entrées existent — à auditer
-  contre l'injection SQL.
+  (`fonctions_general.php`). À migrer vers `password_hash()` / `password_verify()` —
+  voir la [roadmap](docs/roadmap/hashage-mots-de-passe.md).
+- **Requêtes SQL** : **majoritairement préparées** (PDO) ; aucune concaténation directe
+  de `$_GET`/`$_POST` détectée. Audit de confirmation prévu (identifiants dynamiques du
+  tri) — voir la [roadmap](docs/roadmap/securite-sql.md).
 
 ## Documentation détaillée
 
@@ -243,3 +244,16 @@ La documentation complète se trouve dans le dossier [`docs/`](docs/README.md) :
 - [`base-de-donnees.md`](docs/base-de-donnees.md) — les tables, leurs relations et leurs colonnes.
 - [`domaine-metier.md`](docs/domaine-metier.md) — le vocabulaire et les processus métier.
 - [`conventions.md`](docs/conventions.md) — les conventions de code du projet.
+- [`environnements-et-deploiement.md`](docs/environnements-et-deploiement.md) — les 4 environnements (prod / recette / test / local), la détection du thème, les identifiants BDD, le déploiement Git OVH, les containers `.ovhconfig` et le dépannage.
+- [`roadmap.md`](docs/roadmap.md) — les chantiers à venir (détails dans `docs/roadmap/`).
+
+## Auteurs et crédits
+
+Cette base de code a été **reprise** pour être maintenue et modernisée ; l'essentiel du
+crédit revient à ses auteurs d'origine :
+
+- **Christian Capasso** — créateur de l'application et développeur principal.
+- **André Janodi** — conception et tests.
+
+Reprise, maintenance et évolutions actuelles : **Silmaen**. Détails dans
+[`AUTHORS.md`](AUTHORS.md).

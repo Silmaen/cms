@@ -45,6 +45,11 @@ hébergée sur mutualisé OVH.
 - **Style** : suivre le code existant (procédural, noms de fonctions
   `GestionXxx` en PascalCase, variables et SQL en français). Ne pas « moderniser »
   spontanément (framework, POO) sans demande explicite.
+- **Roadmap** : les chantiers à venir sont listés dans `docs/roadmap.md`, qui doit
+  rester **concis** (une ligne par chantier), **groupé par thème**, chaque chantier
+  portant un **badge de priorité** (🔴 P1 → ⚪ P4). Un chantier qui demande des détails a
+  un document dédié dans `docs/roadmap/`, lié depuis sa ligne. Respecter cette convention
+  pour tout ajout à la roadmap.
 
 ## Documentation détaillée
 

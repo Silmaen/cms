@@ -1,0 +1,58 @@
+# Contrôle du flux de branches sur les Pull Requests.
+#
+# Vérifie que la paire (branche source -> branche cible) respecte le flux :
+#   main    <- recette
+#   recette <- test
+#   test    <- feature/* ou bugfix/*
+# Toute autre combinaison fait échouer le contrôle.
+#
+# NOTE : pour que ce contrôle BLOQUE réellement la fusion, il doit être déclaré
+# comme « required status check » dans un ruleset (gratuit sur dépôt public).
+# Sinon il signale seulement l'échec sur la PR.
+#
+# Pour les PR vers main/recette/test, GitHub exécute la version de ce fichier
+# présente sur la branche CIBLE : il doit donc exister sur main, recette et test.
+
+name: Contrôle du flux de branches
+
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+
+jobs:
+  verifier-flux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Vérifier la paire source -> cible
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD: ${{ github.head_ref }}
+        run: |
+          echo "Pull Request : $HEAD -> $BASE"
+          case "$BASE" in
+            main)
+              if [ "$HEAD" != "recette" ]; then
+                echo "::error::La branche 'main' n'accepte que des PR depuis 'recette' (reçu : '$HEAD')."
+                exit 1
+              fi
+              ;;
+            recette)
+              if [ "$HEAD" != "test" ]; then
+                echo "::error::La branche 'recette' n'accepte que des PR depuis 'test' (reçu : '$HEAD')."
+                exit 1
+              fi
+              ;;
+            test)
+              case "$HEAD" in
+                feature/*|bugfix/*) : ;;
+                *)
+                  echo "::error::La branche 'test' n'accepte que des PR depuis 'feature/*' ou 'bugfix/*' (reçu : '$HEAD')."
+                  exit 1
+                  ;;
+              esac
+              ;;
+            *)
+              echo "PR vers '$BASE' : hors du périmètre de contrôle, ignorée."
+              ;;
+          esac
+          echo "Flux conforme."
