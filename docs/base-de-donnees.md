@@ -3,10 +3,6 @@
 Ce document décrit les tables de l'application et la façon dont elles
 s'articulent.
 
-> ℹ️ Description établie à partir du **snapshot réel** de la base
-> (`docker/initdb/cdfgenaytbbdd_mysql_db.sql`). Les types de colonnes indiqués
-> sont ceux du schéma.
-
 ## Caractéristiques techniques
 
 - **Moteur : MyISAM** pour toutes les tables → **pas de clés étrangères**, **pas de

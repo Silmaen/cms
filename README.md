@@ -160,10 +160,6 @@ automatiquement au premier démarrage).
    `cgi-bin/config/config_secrets.php` (copié depuis `config_secrets.php.dist`).
 3. Servir le dossier `www/` et ouvrir `index.php`.
 
-> ⚠️ Le dépôt ne contient pas de dump SQL du schéma. Les structures de tables
-> doivent être reconstituées à partir des requêtes (voir
-> [`docs/base-de-donnees.md`](docs/base-de-donnees.md)) ou
-> importées depuis une base existante.
 
 ## Configuration
 
