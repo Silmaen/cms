@@ -1,0 +1,44 @@
+# Vérification du style du code PHP (php-cs-fixer) sur chaque Pull Request.
+# Ne MODIFIE rien : `--dry-run` échoue si un fichier n'est pas au format attendu
+# (indentation aux tabulations, pas d'espaces en fin de ligne, etc.).
+# Pour corriger en local : ./cs.sh
+#
+# Versions (sources de vérité uniques du dépôt) :
+#   - PHP           : .ovhconfig (app.engine.version)
+#   - php-cs-fixer  : .env.defaults (PHP_CS_FIXER_VERSION)
+
+name: Style
+
+on:
+  pull_request:
+
+jobs:
+  php-cs-fixer:
+    name: php-cs-fixer
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Récupérer le code
+        uses: actions/checkout@v5
+
+      - name: Lire les versions (sources de vérité)
+        id: versions
+        run: |
+          php=$(grep -E '^app.engine.version=' .ovhconfig | head -1 | cut -d= -f2 | tr -d '[:space:]')
+          fixer=$(grep -hE '^PHP_CS_FIXER_VERSION=' .env.defaults | head -1 | cut -d= -f2 | tr -d '[:space:]')
+          echo "php=$php"     >> "$GITHUB_OUTPUT"
+          echo "fixer=$fixer" >> "$GITHUB_OUTPUT"
+          echo "PHP=$php · php-cs-fixer=$fixer"
+
+      - name: Installer PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ steps.versions.outputs.php }}
+          extensions: mbstring, tokenizer
+          coverage: none
+
+      - name: Télécharger php-cs-fixer
+        run: curl -fsSL "https://github.com/PHP-CS-Fixer/PHP-CS-Fixer/releases/download/v${{ steps.versions.outputs.fixer }}/php-cs-fixer.phar" -o php-cs-fixer.phar
+
+      - name: Vérifier le style (sans modifier)
+        run: php php-cs-fixer.phar fix --dry-run --diff --config .php-cs-fixer.dist.php

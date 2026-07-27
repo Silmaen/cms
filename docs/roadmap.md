@@ -11,6 +11,10 @@
 - [ ] 🔴 **Hachage des mots de passe** — remplacer le SHA-256 + sel statique par `password_hash()` / `password_verify()`. → [détails](roadmap/hashage-mots-de-passe.md)
 - [ ] 🟠 **Requêtes SQL / injection** — auditer et garantir des requêtes 100 % préparées (et sécuriser les identifiants dynamiques). → [détails](roadmap/securite-sql.md)
 
+## Correctifs
+
+- [ ] 🟠 **Bugs connus** — bugs repérés pendant le refactoring, laissés tels quels pour préserver le comportement ; à corriger un par un avec test de non-régression. → [liste](roadmap/bugs-connus.md)
+
 ## Technique
 
 - [x] 🔴 **Tests unitaires + exécution automatique (CI)** — socle en place (fonctions pures/BDD + golden master des vues + CI) ; à étendre au fil de l'eau. → [détails](roadmap/tests-et-ci.md)
