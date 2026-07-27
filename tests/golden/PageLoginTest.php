@@ -6,15 +6,15 @@
  */
 final class PageLoginTest extends SmartyRenderTestCase
 {
-    public function testRenduPageLogin(): void
-    {
-        $html = $this->rendre('index.tpl', [
-            'message_identification' => '',
-            'cdf_env'         => 'local',
-            'cdf_env_libelle' => 'LOCAL',
-            'cdf_env_badge'   => true,
-        ]);
+	public function testRenduPageLogin(): void
+	{
+		$html = $this->rendre('index.tpl', [
+			'message_identification' => '',
+			'cdf_env'         => 'local',
+			'cdf_env_libelle' => 'LOCAL',
+			'cdf_env_badge'   => true,
+		]);
 
-        $this->assertRenduFige('login', $html);
-    }
+		$this->assertRenduFige('login', $html);
+	}
 }

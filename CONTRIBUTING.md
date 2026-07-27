@@ -39,6 +39,21 @@ feature/*  ou  bugfix/*   →  test  →  recette  →  main
 `GestionXxx` en PascalCase, variables et SQL en français, requêtes **préparées**,
 soft-delete via `id_etat` (jamais de `DELETE`), et **aucun secret dans Git**.
 
+### Mise en forme (php-cs-fixer)
+
+L'indentation est aux **tabulations** (cf. `.editorconfig`). Un formateur normalise
+l'indentation et les espaces sans toucher au reste (accolades, guillemets, contenu
+des chaînes) :
+
+```bash
+./cs.sh              # corrige la mise en forme
+./cs.sh --dry-run    # vérifie sans modifier (ce que fait la CI)
+```
+
+Règles : [`.php-cs-fixer.dist.php`](.php-cs-fixer.dist.php). La CI **Style** rejette
+toute PR dont le code n'est pas au format (lance `./cs.sh` avant de pousser).
+> PyCharm ne formate pas le PHP (c'est une fonctionnalité de PhpStorm) : utiliser `./cs.sh`.
+
 ## Où en est le projet
 
 Les chantiers à venir (par priorité) sont dans [`docs/roadmap.md`](docs/roadmap.md).

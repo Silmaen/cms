@@ -26,9 +26,11 @@
         <include>
             <directory suffix=".php">www</directory>
             <directory suffix=".php">cgi-bin/config</directory>
+            <directory suffix=".php">metier</directory>
         </include>
         <exclude>
             <file>cgi-bin/config/config_secrets.php</file>
+            <directory>www/assets/vendor</directory>
         </exclude>
     </coverage>
 

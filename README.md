@@ -106,8 +106,8 @@ cms/
 │   ├── templates/           # Vues Smarty (.tpl)
 │   ├── templates_c/         # Cache de compilation Smarty (généré)
 │   ├── cache/ configs/      # Cache et configs Smarty
-│   ├── css/ js/ images/     # Ressources statiques
-│   ├── bootstrap/ fontawesome/ gijgo/ kartik/  # Bibliothèques front
+│   ├── css/ js/ images/     # Ressources statiques (js/ = scripts du projet)
+│   ├── assets/vendor/       # Bibliothèques front tierces (bootstrap, fontawesome, gijgo, kartik, jquery…)
 │   ├── fichiers/            # Pièces jointes téléversées
 │   └── fichiers_importation_initiale/  # Scripts d'import ponctuels
 ├── cgi-bin/                 # Code hors docroot
@@ -117,6 +117,7 @@ cms/
 │   │   ├── identifiants_bdd.php     # Résolution des identifiants BDD (env vars ou secrets)
 │   │   ├── config_secrets.php.dist  # Modèle du fichier de secrets (hors git par serveur)
 │   │   └── fonctions_general.php    # Fonctions transverses
+│   ├── metier/              # Logique métier extraite des contrôleurs (un fichier par domaine)
 │   ├── reservations_maj_automatique.php  # Tâche planifiée (cron)
 │   ├── smarty/ tcpdf/ kartik/ Charts/    # Bibliothèques PHP
 ├── docker/                  # Environnement de dév local (image PHP, initdb)
