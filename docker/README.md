@@ -9,19 +9,41 @@ variable **`CDF_ENV`** (voir `.env`). Par défaut `local` → thème violet + ba
 « LOCAL ». On peut la passer à `test` / `recette` / `prod` pour prévisualiser un
 thème sans changer de code ni de base.
 
+## Configuration (fichiers d'environnement)
+
+La configuration est répartie en deux fichiers, empilés par Compose :
+
+- **`.env.defaults`** — *committé*, **source de vérité unique** des valeurs partagées :
+  `CDF_ENV`, ports, `MYSQL_VERSION`, `PHPUNIT_VERSION`. *(La version de PHP, elle, vit
+  dans `.ovhconfig`.)*
+- **`.env`** — *gitignoré*, surcharges propres à ta machine (`UID`/`GID`, un port perso…).
+  Il **écrase** `.env.defaults`. Au premier clone, pars du modèle committé :
+  `cp .env.sample .env` (puis ajuste `UID`/`GID` avec `id -u` / `id -g`).
+
+Compose ne lit que `.env` par défaut. Pour empiler les deux fichiers (le second
+l'emportant), on passe par le wrapper **`./dc.sh`** (à la racine, à côté de
+`docker-compose.yml`) : il positionne `COMPOSE_ENV_FILES=.env.defaults,.env` avant
+chaque commande. `dc.sh` et `tests/run.sh` s'en chargent ; si tu appelles
+`docker compose` **directement**, exporte `COMPOSE_ENV_FILES` toi-même (sinon
+`MYSQL_VERSION` & co. manqueront).
+
 ## Démarrage
 
-L'image web se construit avec un **script dédié** (et non `docker compose build`) —
-voir [Pourquoi un script de build](#pourquoi-un-script-de-build) plus bas.
+Le wrapper **`./dc.sh`** orchestre tout : il construit l'image au besoin (via le
+script dédié — voir [Pourquoi un script de build](#pourquoi-un-script-de-build)) et
+pose `COMPOSE_ENV_FILES`.
 
 ```bash
 # depuis la racine du dépôt
-./docker/build.sh          # construit l'image cms-web:local
-docker compose up -d       # démarre les services
+cp .env.sample .env    # au premier clone seulement (puis ajuster UID/GID)
+./dc.sh up             # construit l'image si besoin, puis démarre la stack
+./dc.sh down           # arrête (garde les données)
+./dc.sh down --clean   # arrête + nettoie les artefacts régénérables (Smarty, phar)
 ```
 
-Aux démarrages suivants, tant que le `Dockerfile` n'a pas changé, `docker compose
-up -d` suffit (pas besoin de rebuild).
+`./dc.sh up` refait automatiquement un `down` propre si la stack tourne déjà. Pour
+forcer la reconstruction de l'image après modification du `Dockerfile` :
+`./docker/build.sh`.
 
 | Service              | URL / accès           | Détails                            |
 |----------------------|-----------------------|------------------------------------|
@@ -61,12 +83,16 @@ des erreurs d'accès aux tables : c'est attendu jusqu'à l'import du schéma.
 ## Commandes utiles
 
 ```bash
-docker compose ps            # état des services
-docker compose logs -f web   # logs Apache/PHP
-docker compose down          # arrêt (conserve les données)
-docker compose down -v       # arrêt + suppression de la base locale
+./dc.sh up                   # démarre (down auto si déjà lancée + build si besoin)
+./dc.sh down                 # arrête (conserve les données)
+./dc.sh down --clean         # arrête + nettoie les artefacts régénérables
+./dc.sh ps                   # passe-plat → docker compose ps
+./dc.sh logs -f web          # passe-plat → logs Apache/PHP
 ./docker/build.sh            # reconstruit l'image après modif du Dockerfile
 ```
+
+> Les commandes `docker compose` directes fonctionnent aussi, mais **seulement** si
+> `COMPOSE_ENV_FILES=.env.defaults,.env` est exporté ; le wrapper `./dc.sh` évite d'y penser.
 
 ## Pourquoi un script de build
 

@@ -8,11 +8,11 @@ l'essentiel. Toute la communication, le code et la documentation sont **en fran�
 L'application tourne en Docker (PHP 7.4 + MySQL) :
 
 ```bash
-./docker/build.sh
-docker compose up -d      # site sur http://localhost:8080
+cp .env.sample .env    # au premier clone (puis ajuster UID/GID)
+./dc.sh up             # construit l'image si besoin, pose l'env, démarre la stack
 ```
 
-Détails : [`docker/README.md`](docker/README.md).
+Le site est alors sur http://localhost:8080. Détails : [`docker/README.md`](docker/README.md).
 
 ## Flux de branches
 
