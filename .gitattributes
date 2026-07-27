@@ -3,15 +3,8 @@
 
 # --- Bibliothèques tierces : exclues des statistiques de langage GitHub ---
 # Sans cela, GitHub (Linguist) affiche le dépôt comme du JS/CSS au lieu de PHP.
-cgi-bin/tcpdf/**       linguist-vendored
-cgi-bin/tcpdf.init/**  linguist-vendored
-cgi-bin/smarty/**      linguist-vendored
-cgi-bin/Charts/**      linguist-vendored
-cgi-bin/kartik/**      linguist-vendored
-www/bootstrap/**       linguist-vendored
-www/fontawesome/**     linguist-vendored
-www/gijgo/**           linguist-vendored
-www/kartik/**          linguist-vendored
+vendor/**      linguist-vendored
+www/assets/vendor/**   linguist-vendored
 
 # Fichiers minifiés : marqués comme générés.
 *.min.js   linguist-generated

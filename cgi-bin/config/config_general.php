@@ -3,7 +3,7 @@ session_start();
 ///////////////////////////////////////////
 // Configuration et initilisation Smarty //
 ///////////////////////////////////////////
-require_once('../cgi-bin/smarty/Smarty.class.php');
+require_once('../vendor/smarty/Smarty.class.php');
 $smarty = new Smarty();
 $smarty->template_dir = 'templates';
 $smarty->compile_dir = 'templates_c';

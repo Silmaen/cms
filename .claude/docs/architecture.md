@@ -59,7 +59,7 @@ Délimiteurs `<!--{ $var }-->`. Fragments : `header.tpl`, `header-cdn.tpl`,
 
 ## PDF
 
-`www/impressions_*.php` (10 écrans) via TCPDF (`cgi-bin/tcpdf/`).
+`www/impressions_*.php` (10 écrans) via TCPDF (`vendor/tcpdf/`).
 `impressions_automatique_reservations_jour.php` est appelé par le cron.
 
 ## Environnements (prod / recette / test / local)
