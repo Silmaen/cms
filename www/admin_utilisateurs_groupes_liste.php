@@ -1,16 +1,17 @@
 <?php
 require_once('../cgi-bin/config/config_general.php');
 require_once('../cgi-bin/config/fonctions_general.php');
+require_once('../metier/commun.php');
+require_once('../metier/utilisateurs.php');
 
-// GESTION DE L'IDENTIFICATION 
+// GESTION DE L'IDENTIFICATION
 if (!gestionIdentification($connexion))
 {
 	header("Location:index.php");
 	exit();
 }
 
-
-// GESTION DU MENU 
+// GESTION DU MENU
 if(isset($_GET["id_admin_menu"]))
 {
 	$_SESSION["id_admin_menu_selectionne"] = $_GET["id_admin_menu"];
@@ -29,7 +30,7 @@ $sql_exec=$sql_page->execute([":id_admin_menu"=>$_SESSION["id_admin_menu_selecti
 if(!$sql_exec) echo "Session - Pb d'accès aux tables admin_menu et admin_utilisateurs_session";
 else
 {
-	foreach ($sql_page->fetchAll() as $row) 
+	foreach ($sql_page->fetchAll() as $row)
 	{
 		if($row["ordre"]==1){$_SESSION['colonne_1'] = $row["colonne"];}
 		if($row["ordre"]==2){$_SESSION['colonne_2'] = $row["colonne"];}
@@ -45,7 +46,6 @@ else
 	}
 }
 $smarty->assign('liste_page',$liste_page);
-
 
 // GESTION DU TRI DU TABLEAU
 if((!isset($_GET['colonne']) || $_GET['colonne']=='') && (!isset($_GET['sens_tri']) || $_GET['sens_tri']=='') && (!isset($_POST['items_par_page']) || $_POST['items_par_page']==''))
@@ -67,45 +67,17 @@ else
 	}
 }
 
-
-
 // GESTION DE LA PAGINATION
 GestionPagination($connexion, $_SESSION['id_table'], $_SESSION['nom_table']);
 
-
-// Message par défaut 
+// Message par défaut
 $message_formulaire ="";
 
-
-// CALCULS POUR L'AFFICHAGE DES BONNES DONNEES DANS LE TABLEAU 
-if(isset($_GET['page'])) // Si la variable $_GET['page'] existe...
-{
-     $page_actuelle=intval($_GET['page']);
-     if($page_actuelle>$_SESSION['nombre_de_pages']) // Si la valeur de $page_actuelle (le numéro de la page) est plus grande que $nombre_de_pages...
-     {
-          $page_actuelle=$_SESSION['nombre_de_pages'];
-     }
-}
-else
-{
-     $page_actuelle=1; // La page actuelle est la n°1    
-}
-$premiereEntree=($page_actuelle-1)*$_SESSION['items_par_page'];/* GESTION DE LA PAGINATION */
-if(isset($_GET['page'])) // Si la variable $_GET['page'] existe...
-{
-     
-     if($page_actuelle>$_SESSION['nombre_de_pages']) // Si la valeur de $page_actuelle (le numéro de la page) est plus grande que $nombre_de_pages...
-     {
-          $page_actuelle=$_SESSION['nombre_de_pages'];
-     }
-}
-else
-{
-     $page_actuelle=1; // La page actuelle est la n°1    
-}
-$premiereEntree=($page_actuelle-1)*$_SESSION['items_par_page'];
+// CALCULS POUR L'AFFICHAGE (pagination) — extrait dans PaginationOffset()
+$pagination = PaginationOffset(isset($_GET['page']) ? $_GET['page'] : null, $_SESSION['nombre_de_pages'], $_SESSION['items_par_page']);
+$page_actuelle = $pagination['page'];
+$premiereEntree = $pagination['offset'];
 $smarty->assign('page_actuelle',$page_actuelle);
-
 
 // GESTION DE LA SUPPRESSION
 if(isset($_GET["action"]) AND ($_GET["action"]=="supprimer" OR $_GET["action"]=="archiver" OR $_GET["action"]=="activer" ) AND $_SESSION["droit"]==1)
@@ -113,20 +85,8 @@ if(isset($_GET["action"]) AND ($_GET["action"]=="supprimer" OR $_GET["action"]==
 	GestionSuppression($connexion, $_SESSION['id_table'], $_SESSION['nom_table'], $_GET["id_utilisateur_groupe"], "admin_menus_groupes");
 }
 
-
 // GESTION DU TABLEAU LISTE
-$liste_items = array();
-$sql_items="SELECT t1.id_utilisateur_groupe, t1.libelle_utilisateur_groupe FROM admin_utilisateurs_groupes AS t1 ORDER BY ".$_SESSION["colonne"]." ".$_SESSION["sens_tri"]." LIMIT ".$premiereEntree.", ".$_SESSION["items_par_page"];
-
-if(!$connexion->query($sql_items)) echo "LISTE : Pb d'accès à la table ITEMS";
-else
-{
-	foreach ($connexion->query($sql_items) as $row_items) 
-	{
-		array_push($liste_items,$row_items);
-	}
-}
-
+$liste_items = UtilisateursGroupesLister($connexion, $_SESSION["colonne"], $_SESSION["sens_tri"], $premiereEntree, $_SESSION["items_par_page"]);
 $smarty->assign('liste_items',$liste_items);
 
 $smarty->assign('message_formulaire',$message_formulaire);

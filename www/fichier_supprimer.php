@@ -17,8 +17,8 @@ if(!$connexion->query($sql))
 }
 elseif ($_SESSION["droit"]==1)
 {
-	foreach ($connexion->query($sql) as $row) 
-	{	
+	foreach ($connexion->query($sql) as $row)
+	{
 		$fichier = "fichiers/".$row["nom_fichier"].".".$row["extension"];
 		if (!unlink($fichier))
 		{
@@ -31,7 +31,7 @@ elseif ($_SESSION["droit"]==1)
 			if(!$sql_suppression) echo "Supprimer : Pb d'accès à la table evenements";
 			else
 			{
-				$message="Suppression enregistrée";		
+				$message="Suppression enregistrée";
 			}
 		}
 	}

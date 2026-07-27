@@ -19,7 +19,8 @@ hébergée sur mutualisé OVH.
 | Connexion BDD + init Smarty | `cgi-bin/config/config_general.php` |
 | Fonctions transverses (auth, menu, tri…) | `cgi-bin/config/fonctions_general.php` |
 | Tâche planifiée | `cgi-bin/reservations_maj_automatique.php` |
-| Environnement de recette (copie complète) | `recette/` |
+| Logique métier (une couche par domaine) | `metier/*.php` |
+| Bibliothèques tierces (Smarty, TCPDF) | `vendor/` |
 
 ## Règles de travail
 
@@ -30,7 +31,7 @@ hébergée sur mutualisé OVH.
   lecture `$_GET`/`$_POST` (`action`, `id_*`) → SQL PDO → `$smarty->assign(...)` →
   `$smarty->display('xxx.tpl')`. **Respecter ce squelette** pour tout nouvel écran.
 - **Un seul code, plusieurs environnements** : il n'y a plus de dossier `recette/`
-  dupliqué. Le même code (`www/` + `cgi-bin/`) est déployé sur trois branches git
+  dupliqué. Le même code (`www/` + `cgi-bin/` + `metier/` + `vendor/`) est déployé sur trois branches git
   (`main`→prod, `recette`→recette, `test`→test) plus le Docker local.
   L'environnement est **détecté automatiquement** (`cgi-bin/config/environnement.php`
   via `CDF_ENV` ou le nom d'hôte) et pilote la couleur du thème (vert/bleu/rouge/violet)
