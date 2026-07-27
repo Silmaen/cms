@@ -12,8 +12,9 @@ c'est exécuter le fichier du même nom.
 
 Chaque fichier joue le rôle de **contrôleur** : il reçoit la requête, discute
 avec la base de données, puis confie l'affichage à un **template** (une vue
-Smarty). Les briques communes — connexion à la base, fonctions partagées — sont
-rangées à part, dans `cgi-bin/`, hors de la racine web.
+Smarty). Tout le reste est rangé **hors de `www/`** (donc non servi directement,
+cf. plus bas) : `cgi-bin/config/` (connexion BDD + fonctions communes + le cron),
+`metier/` (logique par domaine) et `vendor/` (bibliothèques tierces).
 
 ```mermaid
 flowchart TB
@@ -24,16 +25,18 @@ flowchart TB
         CTRL["Contrôleurs<br/>*.php"]
         TPL["Vues Smarty<br/>*.tpl"]
     end
-    subgraph "cgi-bin/ — hors racine web"
-        CFG["config_general.php<br/>connexion + Smarty"]
-        FCT["fonctions_general.php<br/>fonctions communes"]
-        LIBS["Bibliothèques<br/>Smarty, TCPDF…"]
+    subgraph "Hors www/ — non servi (réécrit vers www/ par le .htaccess racine)"
+        CFG["cgi-bin/config/config_general.php<br/>connexion + Smarty"]
+        FCT["cgi-bin/config/fonctions_general.php<br/>fonctions communes"]
+        MET["metier/*.php<br/>logique par domaine"]
+        LIBS["vendor/<br/>Smarty, TCPDF"]
     end
     DB[(MySQL)]
 
     UI -->|requête HTTP| CTRL
     CTRL --> CFG
     CTRL --> FCT
+    CTRL --> MET
     CFG --> DB
     CTRL --> DB
     CTRL --> TPL
@@ -98,6 +101,40 @@ toutes les pages :
 | Suppression    | Archive ou « supprime » un élément sans l'effacer réellement (voir ci-dessous).                  |
 | Tri            | Mémorise la colonne de tri et la pagination choisies par chaque utilisateur.                     |
 
+## La couche métier (`metier/`)
+
+Historiquement, chaque contrôleur mélangeait tout — requêtes SQL, règles métier et
+préparation de l'affichage — en vrac dans le fichier. On **extrait progressivement**
+cette logique vers une couche dédiée, **`metier/`**, avec **un fichier par
+domaine** (`articles.php`, `inventaires.php`, `clients.php`, `utilisateurs.php`…)
+plus un `commun.php` pour les helpers transverses (ex. `PaginationOffset`).
+
+Objectifs : du code **mieux rangé** (logique réutilisable, isolée de l'affichage) et
+**testable** — chaque fonction extraite est couverte par un test (voir `tests/`).
+
+Conventions :
+
+- fonctions en français, PascalCase, avec `$connexion` en premier argument
+  (ex. `ArticlesLister($connexion, …)`), dans la continuité des `Gestion*` existantes ;
+- lors de l'extraction, **comportement identique** à l'origine (le SQL est recopié tel
+  quel) ; les améliorations (sécurité, etc.) font l'objet d'étapes distinctes.
+
+Cette couche se remplit **écran par écran**. Tous les contrôleurs de **liste**
+(`articles_liste.php`, `clients_liste.php`, `inventaires_liste.php`,
+`admin_utilisateurs_liste.php`, `admin_utilisateurs_groupes_liste.php`) sont
+décortiqués (pagination + requête de liste → fonctions métier). Les **six** contrôleurs de **formulaire** sont décortiqués (lecture d'un
+enregistrement, listes annexes, INSERT/UPDATE extraits en fonctions métier ;
+`domaine.php` par domaine). Les boucles d'affichage très intriquées (calcul des
+adhésions/dons des clients, du stock des réservations, des listes d'articles
+d'inventaire) sont **laissées inline** : les extraire changerait le risque sans
+gain structurel clair. Les écrans d'impression (PDF) viendront ensuite.
+
+> Note : quand une requête d'origine est boguée, elle est **laissée telle quelle**
+> — corriger relèverait d'un changement de comportement, traité séparément. Cas
+> connus conservés à l'identique : le SQL du « copier-valider » de
+> `admin_utilisateurs_formulaire.php` (virgule vide) et la lecture du cas
+> « modifier-rc » de `reservations_formulaire.php` (alias `t6` sans jointure).
+
 ## Connexion et droits d'accès
 
 L'authentification est « maison » : l'utilisateur saisit son e-mail et son mot de
@@ -144,13 +181,10 @@ bordereaux de retour, listes d'adhésions… Certains sont même produits
 automatiquement et envoyés par e-mail (voir la tâche planifiée dans le
 [README principal](../README.md)).
 
-## Deux environnements dans un seul dépôt
+## Un seul code, plusieurs environnements
 
-Le dépôt contient **deux copies** de l'application :
+Il n'y a **qu'une seule copie** de l'application (`www/` + `cgi-bin/` + `metier/` + `vendor/`). L'environnement
+— production, recette, test ou local — est **détecté automatiquement** à l'exécution,
+ce qui pilote la base de données utilisée et le thème de l'interface (couleur + bandeau).
 
-- une pour la **production** (`www/` et `cgi-bin/`) ;
-- une pour la **recette** — l'environnement de test (`recette/`).
-
-Les deux partagent le même code ; seule la configuration de connexion à la base
-change. Une correction de bug doit donc, en général, être appliquée **des deux
-côtés**.
+Détails : [`environnements-et-deploiement.md`](environnements-et-deploiement.md).

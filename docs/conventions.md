@@ -30,15 +30,20 @@ de la base, les commentaires, et bien sûr les messages affichés à l'utilisate
 Toutes les pages suivent la même structure. Pour créer un nouvel écran, partez de
 ce modèle :
 
+> **Mise en forme** : indentation aux **tabulations** (cf. `.editorconfig`) et
+> **accolades à la ligne** (style Allman : le `{` sous le `if`/`function`, pas au
+> bout de la ligne). C'est le style de tout le code existant — s'y tenir.
+
 ```php
 <?php
 require_once('../cgi-bin/config/config_general.php');
 require_once('../cgi-bin/config/fonctions_general.php');
 
 /* 1. On vérifie que l'utilisateur est connecté */
-if (!gestionIdentification($connexion)) {
-    header("Location:index.php");
-    exit();
+if (!gestionIdentification($connexion))
+{
+	header("Location:index.php");
+	exit();
 }
 
 /* 2. On prépare le menu et le fil d'Ariane */
@@ -47,8 +52,16 @@ $smarty->assign('titre_menu', "Gestion d'un client");
 $smarty->assign('liste_items_menu', gestionMenu($connexion));
 
 /* 3. On lit l'action demandée et l'identifiant (dans l'URL, puis le formulaire) */
-if (isset($_GET["action"]))       { $action_selectionne = $_GET["action"];  }
-elseif (isset($_POST["action"]))  { $action_selectionne = $_POST["action"]; }
+if (isset($_GET["action"]))
+{
+	$action_selectionne = $_GET["action"];
+	$id_client_selectionne = isset($_GET["id_client"]) ? $_GET["id_client"] : 0;
+}
+elseif (isset($_POST["action"]))
+{
+	$action_selectionne = $_POST["action"];
+	$id_client_selectionne = $_POST["id_client"];
+}
 
 /* 4. On traite l'action (ajouter, modifier, supprimer…) en base */
 
