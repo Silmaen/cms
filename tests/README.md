@@ -21,8 +21,9 @@ Composer.** Les tests s'exécutent **dans le conteneur** (même PHP que la prod)
 
 ## Couverture de code
 
-Le pilote **PCOV** est inclus dans l'image. Le périmètre mesuré (`cgi-bin/config`) est
-défini par `<coverage>` dans `phpunit.xml`.
+Le pilote **PCOV** est inclus dans l'image. Le périmètre (voir `<coverage>` dans
+`phpunit.xml`) couvre **tout notre code PHP** : contrôleurs `www/*.php` **et** logique
+`cgi-bin/config` (libs tierces et secret local exclus).
 
 ```bash
 ./tests/run.sh --coverage-text                 # résumé dans le terminal
@@ -32,9 +33,13 @@ défini par `<coverage>` dans `phpunit.xml`.
 En CI, le résumé s'affiche dans le log et le rapport **HTML** est publié en **artefact
 téléchargeable** de chaque exécution.
 
-> Le pourcentage reflète surtout `fonctions_general.php` (bien couvert). Les fichiers
-> d'amorçage (`config_general.php`, `environnement.php`, `identifiants_bdd.php`) ne sont
-> pas exécutés par PHPUnit → ils tirent le total vers le bas ; c'est attendu.
+> **Comment lire le chiffre.** Le total est **bas (~3 %)** car les **contrôleurs
+> `www/*.php`** (le gros du volume) ne sont pas testés ligne-à-ligne — ils sont
+> procéduraux et couplés à `exit()`/Smarty/SQL. L'intérêt du rapport est surtout la
+> **carte par fichier** (ce qui n'a aucun test). En revanche la **logique réutilisable**
+> (`fonctions_general.php`, `environnement.php`) est quasi complète. Le total montera
+> quand on extraira la logique des contrôleurs en fonctions testables (cf.
+> [modernisation PHP 8](../docs/roadmap/php8.md)) et qu'on étendra le golden master.
 
 ## Structure
 

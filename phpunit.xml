@@ -16,12 +16,20 @@
          convertWarningsToExceptions="false"
          convertDeprecationsToExceptions="false"
          cacheResult="false">
-    <!-- Périmètre de la couverture de code : notre logique applicative.
-         (Les contrôleurs www/*.php sont couverts par golden master, pas ligne-à-ligne.) -->
+    <!-- Périmètre de la couverture : TOUT notre code PHP — contrôleurs `www/*.php`
+         ET logique `cgi-bin/config`. Les bibliothèques tierces (smarty, tcpdf…) n'ont
+         pas de .php sous www/ et sont hors périmètre ; on exclut le secret local.
+         NB : les contrôleurs ne sont pas testés ligne-à-ligne (golden master = rendu),
+         ils apparaissent donc en grande partie non couverts — c'est le reflet honnête
+         de la surface restant à tester (cf. roadmap). -->
     <coverage>
         <include>
+            <directory suffix=".php">www</directory>
             <directory suffix=".php">cgi-bin/config</directory>
         </include>
+        <exclude>
+            <file>cgi-bin/config/config_secrets.php</file>
+        </exclude>
     </coverage>
 
     <testsuites>
