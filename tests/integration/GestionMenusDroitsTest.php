@@ -6,17 +6,17 @@
  */
 final class GestionMenusDroitsTest extends DatabaseTestCase
 {
-    public function testRenseigneLeDroitDansLaSession(): void
-    {
-        $this->pdo->exec(
-            "INSERT INTO admin_menus_groupes (id_admin_menu, id_utilisateur_groupe, droit)
+	public function testRenseigneLeDroitDansLaSession(): void
+	{
+		$this->pdo->exec(
+			"INSERT INTO admin_menus_groupes (id_admin_menu, id_utilisateur_groupe, droit)
              VALUES (10, 1, 2)"
-        );
-        $_SESSION['id_utilisateur_groupe'] = 1;
-        $_SESSION['id_admin_menu_selectionne'] = 10;
+		);
+		$_SESSION['id_utilisateur_groupe'] = 1;
+		$_SESSION['id_admin_menu_selectionne'] = 10;
 
-        GestionMenusDroits($this->pdo);
+		GestionMenusDroits($this->pdo);
 
-        $this->assertEquals(2, $_SESSION['droit']);
-    }
+		$this->assertEquals(2, $_SESSION['droit']);
+	}
 }

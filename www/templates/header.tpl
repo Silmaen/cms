@@ -3,39 +3,39 @@
 <html lang="fr">
 <head>
 	<title>Comité des Fêtes de Genay</title>
-	<link rel="icon" type="image/svg+xml" href="images/logo_cms.svg" />
+	<link rel="icon" type="image/svg+xml" href="assets/images/logo_cms.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="fontawesome/css/all520.css" />
-	<link rel="stylesheet" href="css/styles.css" />
+	<link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="assets/vendor/fontawesome/css/all520.css" />
+	<link rel="stylesheet" href="assets/css/styles.css" />
 
-	<link href="fontawesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
-	<link href="kartik/themes/explorer-fa/theme.css" media="all" rel="stylesheet" type="text/css" />
-	<link href="kartik/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />	
-	<link href="kartik/css/fileinput-rtl.min.css" media="all" rel="stylesheet" type="text/css" />
-	
-	<script src="js/jquery.min.js"  type="text/javascript"></script>
-	<script src="js/popper.min.js"></script>
-	<script src="bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<link href="assets/vendor/fontawesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="assets/vendor/kartik/themes/explorer-fa/theme.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="assets/vendor/kartik/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+	<link href="assets/vendor/kartik/css/fileinput-rtl.min.css" media="all" rel="stylesheet" type="text/css" />
 
-    <script src="kartik/js/plugins/sortable.min.js" type="text/javascript"></script>
-    <script src="kartik/js/plugins/purify.min.js" type="text/javascript"></script>
-    <script src="kartik/js/plugins/piexif.min.js" type="text/javascript"></script>
-	<script src="kartik/js/fileinput.min.js" type="text/javascript"></script>
-	<script src="kartik/js/locales/fr.js" type="text/javascript"></script>
-    <script src="kartik/themes/explorer-fa/theme.js" type="text/javascript"></script>
-    <script src="kartik/themes/fas/theme.js" type="text/javascript"></script>
-	
-	<script src="js/scripts.js" type="text/javascript"></script>
+	<script src="assets/vendor/js/jquery.min.js"  type="text/javascript"></script>
+	<script src="assets/vendor/js/popper.min.js"></script>
+	<script src="assets/vendor/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 
-	<link href="js/jqueryconfirm/css/jquery-confirm.css" rel="stylesheet" type="text/css" />
-	<script src="js/jqueryconfirm/js/jquery-confirm.js"></script>
-	
-    <script src="gijgo/js/gijgo.min.js" type="text/javascript"></script>
-    <link href="gijgo/css/gijgo-clc.css" rel="stylesheet" type="text/css" />
- 
-    <script src="gijgo/js/messages/messages.fr-fr.js" type="text/javascript"></script>
- 
+    <script src="assets/vendor/kartik/js/plugins/sortable.min.js" type="text/javascript"></script>
+    <script src="assets/vendor/kartik/js/plugins/purify.min.js" type="text/javascript"></script>
+    <script src="assets/vendor/kartik/js/plugins/piexif.min.js" type="text/javascript"></script>
+	<script src="assets/vendor/kartik/js/fileinput.min.js" type="text/javascript"></script>
+	<script src="assets/vendor/kartik/js/locales/fr.js" type="text/javascript"></script>
+    <script src="assets/vendor/kartik/themes/explorer-fa/theme.js" type="text/javascript"></script>
+    <script src="assets/vendor/kartik/themes/fas/theme.js" type="text/javascript"></script>
+
+	<script src="assets/js/scripts.js" type="text/javascript"></script>
+
+	<link href="assets/vendor/js/jqueryconfirm/css/jquery-confirm.css" rel="stylesheet" type="text/css" />
+	<script src="assets/vendor/js/jqueryconfirm/js/jquery-confirm.js"></script>
+
+    <script src="assets/vendor/gijgo/js/gijgo.min.js" type="text/javascript"></script>
+    <link href="assets/vendor/gijgo/css/gijgo-clc.css" rel="stylesheet" type="text/css" />
+
+    <script src="assets/vendor/gijgo/js/messages/messages.fr-fr.js" type="text/javascript"></script>
+
 </head>
 <body data-env="<!--{$cdf_env}-->">
 
@@ -44,13 +44,13 @@
 	<!--{if isset($smarty.session.id_admin_menu_selectionne)}-->
 
 	<nav class="navbar navbar-expand-md navbar-dark bg-vert">
-		
+
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar7">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="navbar-collapse collapse " id="navbar7">
 			<div class="col-1">
-				<a href="accueil.php" class="navbar-brand">				
+				<a href="accueil.php" class="navbar-brand">
 					<svg width="100%" height="100%" version="1.1" viewBox="0 0 30.333 7.8233">
 						<g transform="translate(-14.147 -21.504)">
 							<g fill="#343a40" stroke-width=".26458" aria-label="cms">
@@ -59,41 +59,41 @@
 								<path d="m41.876 29.221h-5.7997v-1.3229h5.7997q0.65617 0 1.0478-0.32808 0.35983-0.30692 0.35983-0.73025 0-0.42333-0.34925-0.70908-0.39158-0.3175-1.0583-0.3175h-3.5983q-1.1218 0-1.778-0.65617-0.59267-0.59267-0.59267-1.4499 0-0.84667 0.59267-1.4393 0.65617-0.65617 1.778-0.65617h5.7468v1.3229h-5.7468q-0.42333 0-0.66675 0.23283-0.24342 0.23283-0.24342 0.55033t0.22225 0.52917q0.254 0.24342 0.68792 0.24342h3.5983q1.2171 0 1.9473 0.74083 0.65617 0.67733 0.65617 1.6404t-0.64558 1.6192q-0.71967 0.73025-1.9579 0.73025z" />
 							</g>
 						</g>
-					</svg>					
+					</svg>
 				</a>
 			</div>
 			<div class="col-9">
 				<ul class="navbar-nav ml-auto ">
-				<!--{section name=liste_items_menu loop=$liste_items_menu}--> 
-				
+				<!--{section name=liste_items_menu loop=$liste_items_menu}-->
+
 					<!--{if $liste_items_menu[liste_items_menu].id_admin_menu<90}-->
 						<li class="nav-item mr-3">
 							<a class="<!--{if $smarty.session.id_admin_menu_selectionne==<!--{$liste_items_menu[liste_items_menu].id_admin_menu}-->}-->nav-link font-weight-bold active<!--{else}-->nav-link text-dark font-weight-bold<!--{/if}-->" href="<!--{$liste_items_menu[liste_items_menu].url}-->?id_admin_menu=<!--{$liste_items_menu[liste_items_menu].id_admin_menu}-->"><!--{$liste_items_menu[liste_items_menu].titre_fr}--></a>
 						</li>
-					<!--{/if}-->	
+					<!--{/if}-->
 				<!--{/section}-->
-				</ul>		
+				</ul>
 			</div>
 			<div class="col-2">
 				<ul class="navbar-nav justify-content-end">
 					<li class="nav-item">
-						<a class="nav-link text-dark font-weight-bold" href="aide/aide.pdf" target="_blank"title="Aide" alt="Aide"><i class="fas fa-question fa-lg"></i></a>
-					</li> 
+						<a class="nav-link text-dark font-weight-bold" href="assets/aide/aide.pdf" target="_blank"title="Aide" alt="Aide"><i class="fas fa-question fa-lg"></i></a>
+					</li>
 					<!--{if $smarty.session.id_utilisateur_groupe==1}-->
 					<li class="nav-item">
 						<a class="nav-link text-dark font-weight-bold" href="admin_utilisateurs_liste.php?id_admin_menu=90" title="Utilisateurs" alt="Utilisateurs"><i class="fas fa-user fa-lg"></i></a>
-					</li> 
+					</li>
 					<!--
-					
+
 					<li class="nav-item">
 						<a class="nav-link text-dark font-weight-bold" href="admin_utilisateurs_groupes_liste.php?id_admin_menu=91" title="Groupes d'utilisateurs" alt="Groupes d'utilisateurs"><i class="fas fa-users fa-lg"></i></a>
-					</li> 
-					
+					</li>
+
 					-->
 					<!--{/if}-->
 					<li class="nav-item">
 						<a class="nav-link text-dark font-weight-bold" href="index.php?action=deconnecter" title="Déconnecter <!--{$smarty.session.prenom_utilisateur}--> <!--{$smarty.session.nom_utilisateur}-->" alt="Déconnecter <!--{$smarty.session.prenom_utilisateur}--> <!--{$smarty.session.nom_utilisateur}-->"><i class="fas fa-power-off fa-lg"></i></a>
-					</li> 
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -101,7 +101,7 @@
 
 
 
-	<nav>	
+	<nav>
 		<div class="row ml-1 mr-2 mt-2">
 			<div class="col-4">
 				<!--{if $smarty.session.breadcrumb=="Accueil"}-->
@@ -110,19 +110,19 @@
 					<a class="breadcrumb-item text-dark" href="<!--{$smarty.session.nom_table}-->_liste.php?id_admin_menu=<!--{$smarty.session.id_admin_menu_selectionne}-->">//&nbsp; <!--{$smarty.session.breadcrumb}--></a>
 				<!--{/if}-->
 			</div>
-			
+
 			<div class="col-4 text-center">
 				<h1 class="d-inline text-gris  align-top"><!--{$smarty.session.titre_page_fr}--></h1>
-			</div>	
-			
-			
+			</div>
+
+
 			<div class="col-4 text-right">
 				<h6 class="d-inline ml-3 font-weight-bold text-left text-danger"><!--{$message_formulaire}--></h6>
-			</div>	
+			</div>
 		</div>
-		<div class="container-fluid">		
+		<div class="container-fluid">
 			<hr class="style-5 bg-vert">
 		</div>
 	</nav>
-	
+
 	<!--{/if}-->

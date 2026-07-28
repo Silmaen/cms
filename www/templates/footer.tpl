@@ -5,13 +5,13 @@
                 290, rue Ferdinand Perrier / BP 169<br />
                 69800 Saint Priest<br />
                 Tél : +33 (0)4 72 79 56 10 / Fax : +33 (0)4 72 79 56 19<br />
-                Email : sales@agrippa-sa.com            
+                Email : sales@agrippa-sa.com
             </div>
             <div id="menu-bas-col-a">
                 <a class="menu-bas-lien" href="a-propos.php">A PROPOS</a><br />
-                <a class="menu-bas-lien" href="equipe.php">EQUIPE</a><br /> 
+                <a class="menu-bas-lien" href="equipe.php">EQUIPE</a><br />
                 <a class="menu-bas-lien" href="partenaires.php">PARTENAIRES</a><br />
-            </div>              
+            </div>
             <div id="menu-bas-col-b">
                 <a class="menu-bas-lien" href="produits.php">PRODUITS</a><br />
                 <a class="menu-bas-lien" href="occasion.php">OCCASIONS</a><br />
@@ -27,11 +27,11 @@
             </div>
         </footer>
     </div>
-    
-<!--{if $menu=="accueil"}-->        
+
+<!--{if $menu=="accueil"}-->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-    <script src="js/jquery.infinitecarousel.js"></script>
-    <script src="js/index.js"></script>
+    <script src="assets/js/jquery.infinitecarousel.js"></script>
+    <script src="assets/js/index.js"></script>
     <script>
     $(function(){
         $('#banniere-image').infiniteCarousel({
@@ -40,8 +40,8 @@
     });
     </script>
 <!--{/if}-->
-<!--{if $menu=="devis" or $menu=="contact"}-->        
-    <script src="js/devis-contact.js"></script>
+<!--{if $menu=="devis" or $menu=="contact"}-->
+    <script src="assets/js/devis-contact.js"></script>
 <!--{/if}-->
 
 <script>
@@ -52,11 +52,11 @@
     <![endif]-->
 
 
-  
 
-// Ce script vise à décaller le chargement des fichiers Javascript non nécessaires dès le début du chargement de la page    
+
+// Ce script vise à décaller le chargement des fichiers Javascript non nécessaires dès le début du chargement de la page
  // Add a script element as a child of the body
- 
+
 /* function downloadJSAtOnload() {
  var element = document.createElement("script");
  element.src = "deferredfunctions.js";
@@ -70,6 +70,6 @@
  window.attachEvent("onload", downloadJSAtOnload);
  else window.onload = downloadJSAtOnload; */
 
-</script>    
+</script>
 </body>
 </html>

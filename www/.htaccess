@@ -8,3 +8,34 @@
 #
 # En local (Docker), AllowOverride est désactivé sur www/ : sans effet.
 DirectoryIndex index.php
+
+
+# ------------------------------------------------------------------
+# Compression + cache navigateur des fichiers statiques (assets/).
+#
+# Chaque bloc est protégé par <IfModule> : si le module n'est pas
+# disponible chez l'hébergeur, la directive est simplement ignorée
+# (aucune erreur). En local (Docker), AllowOverride est désactivé :
+# ces règles n'ont d'effet que sur OVH.
+# ------------------------------------------------------------------
+
+# Compression gzip des fichiers TEXTE (css, js, html, svg, xml, json).
+# On ne compresse pas les images (png/jpg déjà compressées).
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/css text/xml \
+        application/javascript application/json image/svg+xml
+</IfModule>
+
+# Cache navigateur. Durée courte (1 jour) → pas besoin de versionner
+# les fichiers (« cache-busting ») : une modif est visible le lendemain
+# au plus tard. Les pages HTML dynamiques ne sont jamais mises en cache.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css               "access plus 1 day"
+    ExpiresByType application/javascript "access plus 1 day"
+    ExpiresByType image/svg+xml          "access plus 1 day"
+    ExpiresByType image/png              "access plus 1 day"
+    ExpiresByType image/jpeg             "access plus 1 day"
+    ExpiresByType image/gif              "access plus 1 day"
+    ExpiresByType text/html              "access plus 0 seconds"
+</IfModule>
