@@ -4,9 +4,11 @@
 // CDF_DB_* en local, sinon config_secrets.php sur OVH).
 require_once(__DIR__ . '/config/identifiants_bdd.php'); // définit serveur/bdd/utilisateur/mdp
 
-$connexion="mysql:dbname=".bdd.";host=".serveur;
+$connexion="mysql:dbname=".bdd.";host=".serveur.";charset=utf8"; // charset : équivaut à SET NAMES utf8
 try{
-	$connexion=new PDO($connexion,utilisateur,mdp, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''));
+	// ERRMODE_SILENT : comportement de PHP 7 (PHP 8 lève des exceptions par défaut). Le code
+	// teste le retour de execute()/query() et affiche son propre message d'erreur.
+	$connexion=new PDO($connexion,utilisateur,mdp, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT));
 }
 catch(PDOException $e){
 	printf("Échec de la connexion : %s\n", $e->getMessage());

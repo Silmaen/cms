@@ -9,6 +9,6 @@ Documentation technique et fonctionnelle de l'application du Comité des Fêtes.
 | [domaine-metier.md](domaine-metier.md)                               | Le vocabulaire métier et les grands processus (adhésion, réservation).                                                                                                               |
 | [conventions.md](conventions.md)                                     | Les règles de code à suivre pour contribuer.                                                                                                                                         |
 | [environnements-et-deploiement.md](environnements-et-deploiement.md) | Les 4 environnements (prod / recette / test / local), la détection automatique du thème, les identifiants BDD, le déploiement Git OVH, les containers `.ovhconfig`, et le dépannage. |
-| [roadmap.md](roadmap.md)                                             | Les chantiers à venir (sécurité, PHP 8, traçabilité, interface…), avec badge de priorité. Détails dans le dossier `roadmap/`.                                                       |
+| [roadmap.md](roadmap.md)                                             | Les chantiers à venir (sécurité, traçabilité, interface…), avec badge de priorité. Détails dans le dossier `roadmap/`.                                                       |
 
 > Pour l'installation et la configuration, voir le [README principal](../README.md).
