@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Lance la suite de tests PHPUnit DANS le conteneur web (PHP 7.4, comme la prod).
+# Lance la suite de tests PHPUnit DANS le conteneur web (même PHP que la prod).
 #
 # PHPUnit est utilisé en PHAR (pas de Composer). Le binaire est téléchargé au
 # premier lancement dans tests/.bin/ (ignoré par git). Le conteneur doit tourner

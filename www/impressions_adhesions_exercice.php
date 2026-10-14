@@ -23,7 +23,7 @@ class MYPDF extends TCPDF {
 		// Set font
 		$this->SetFont('helvetica', 'I', 8);
 		// Page number
-		$this->Cell(0, 10, utf8_encode("Cr�� le ").date("d-m-Y").utf8_encode(" - Imprim� le ").date("d-m-Y")." - Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
+		$this->Cell(0, 10, "Créé le ".date("d-m-Y")." - Imprimé le ".date("d-m-Y")." - Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
 
 		$this->SetDrawColor(0, 0, 0);
 		$this->Line(PDF_MARGIN_LEFT, $this->getY(), $this->getPageWidth()-PDF_MARGIN_LEFT, $this->getY());
@@ -87,6 +87,7 @@ $pdf->setFontSubsetting(true);
 // DEBUT DE LA REQUETE SUR LES RESERVATIONS //
 //////////////////////////////////////////////
 $total_adhesions = 0;
+$compteur_lignes_adhesions = 0;
 $compteur_adhesions = 0;
 $compteur_adhesions_page = 0;
 $offset_adhesions = 0;
@@ -99,7 +100,7 @@ LEFT JOIN clients AS t2 ON t2.id_client=t1.id_client
 WHERE (t1.annee=:annee_fiscale_reference AND t1.montant>0)
 ORDER BY t2.association ASC, t2.nom ASC, t2.prenom ASC");
 $sql_exec=$sql_adhesion->execute([":annee_fiscale_reference"=>$_POST["annee_fiscale_reference_adhesion"]]);
-if(!$sql_exec) echo "NB - DONNEES : Pb d'acc�s � la table clients adh�sion";
+if(!$sql_exec) echo "NB - DONNEES : Pb d'accès à la table clients adhésion";
 else
 {
 	foreach ($sql_adhesion->fetchAll() as $row_adhesion)
@@ -132,13 +133,13 @@ else
 			$posy = 0;
 
 			$pdf->SetFont('Helvetica', '', 16);
-			$pdf->MultiCell(200, 5, utf8_encode("<b>Liste des adh�sions affect�es � l'ann�e fiscale de r�f�rence : ".$_POST["annee_fiscale_reference_adhesion"]."-".($_POST["annee_fiscale_reference_adhesion"]+1)."</b>"), 0, 'C', 0, 1, 5, ($offset_titre_adhesions), true,'',true);
+			$pdf->MultiCell(200, 5, "<b>Liste des adhésions affectées à l'année fiscale de référence : ".$_POST["annee_fiscale_reference_adhesion"]."-".($_POST["annee_fiscale_reference_adhesion"]+1)."</b>", 0, 'C', 0, 1, 5, ($offset_titre_adhesions), true,'',true);
 
 			$pdf->SetFont('Helvetica', '', 10);
-			$pdf->MultiCell(10, 7, utf8_encode("<b>Nb</b>"), 0, 'L', 0, 1, 5, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(80, 7, utf8_encode("<b>Association</b>"), 0, 'L', 0, 1, 15, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(80, 7, utf8_encode("<b>Adh�rent</b>"), 0, 'L', 0, 1, 105, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(20, 7, utf8_encode("<b>Montant</b>"), 0, 'L', 0, 1, 185, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(10, 7, "<b>Nb</b>", 0, 'L', 0, 1, 5, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(80, 7, "<b>Association</b>", 0, 'L', 0, 1, 15, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(80, 7, "<b>Adhérent</b>", 0, 'L', 0, 1, 105, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(20, 7, "<b>Montant</b>", 0, 'L', 0, 1, 185, ($offset_titre_colonnes), true,'',true);
 
 			$pdf->SetDrawColor(180, 180, 180);
 			$pdf->Line(205, ($offset_titre_colonnes+7), 5, ($offset_titre_colonnes+7));
@@ -146,7 +147,7 @@ else
 			// Footer
 			$aujourdhui = date("d-m-Y");
 			$pdf->SetFont('Helvetica', '', 8);
-			$pdf->MultiCell(85, 15, utf8_encode("Cr�� le ").$aujourdhui.utf8_encode(" <br />Imprim� le ").$aujourdhui, 0, 'R', 0, 1, 198, 193, true,'',true);
+			$pdf->MultiCell(85, 15, "Créé le ".$aujourdhui." <br />Imprimé le ".$aujourdhui, 0, 'R', 0, 1, 198, 193, true,'',true);
 		}
 
 		$offset_adhesions = ($offset_titre_colonnes + ($compteur_adhesions_page*7));
@@ -170,13 +171,13 @@ if($offset_adhesions>=230)
 	$offset_adhesions = $offset_titre_colonnes + 7;
 }
 
-$pdf->MultiCell(80, 5, utf8_encode("Nombre d'adh�sions : ").$compteur_adhesions, 0, 'L', 0, 1, 30, (($offset_adhesions+20)), true,'',true);
+$pdf->MultiCell(80, 5, "Nombre d'adhésions : ".$compteur_adhesions, 0, 'L', 0, 1, 30, (($offset_adhesions+20)), true,'',true);
 
-$pdf->MultiCell(80, 5, utf8_encode("Montant total des adh�sions : ").$total_adhesions.utf8_encode(" �"), 0, 'L', 0, 1, 110, (($offset_adhesions+20)), true,'',true);
+$pdf->MultiCell(80, 5, "Montant total des adhésions : ".$total_adhesions." €", 0, 'L', 0, 1, 110, (($offset_adhesions+20)), true,'',true);
 
 $pdf->SetFont('Helvetica', 'i', 9);
 
-$pdf->MultiCell(200, 5, utf8_encode("ADHESIONS : Cette synth�se int�gre les adh�sions affect�es � l'exercice ".$_POST["annee_fiscale_reference_adhesion"]." - ".($_POST["annee_fiscale_reference_adhesion"]+1)." (p�riode comprise entre le 01/10 et le 31/09)."), 0, 'C', 0, 1, 3, (($offset_adhesions+40)), true,'',true);
+$pdf->MultiCell(200, 5, "ADHESIONS : Cette synthèse intègre les adhésions affectées à l'exercice ".$_POST["annee_fiscale_reference_adhesion"]." - ".($_POST["annee_fiscale_reference_adhesion"]+1)." (période comprise entre le 01/10 et le 31/09).", 0, 'C', 0, 1, 3, (($offset_adhesions+40)), true,'',true);
 
 // ---------------------------------------------------------
 //Close and output PDF document

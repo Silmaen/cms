@@ -28,11 +28,11 @@ class Smarty_Internal_Resource_Extends extends Smarty_Resource
      * populate Source Object with meta data from Resource
      *
      * @param Smarty_Template_Source   $source    source object
-     * @param Smarty_Internal_Template $_template template object
+     * @param Smarty_Internal_Template|null $_template template object
      *
      * @throws SmartyException
      */
-    public function populate(Smarty_Template_Source $source, Smarty_Internal_Template $_template = null)
+    public function populate(Smarty_Template_Source $source, ?Smarty_Internal_Template $_template = null)
     {
         $uid = '';
         $sources = array();
@@ -88,9 +88,7 @@ class Smarty_Internal_Resource_Extends extends Smarty_Resource
         if (!$source->exists) {
             throw new SmartyException("Unable to load template '{$source->type}:{$source->name}'");
         }
-
         $_components = array_reverse($source->components);
-
         $_content = '';
         /* @var \Smarty_Template_Source $_s */
         foreach ($_components as $_s) {

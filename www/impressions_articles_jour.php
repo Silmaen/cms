@@ -28,10 +28,10 @@ class MYPDF extends TCPDF {
 
 		// set color for text
 		$this->SetTextColor(0, 0, 0);
-		$this->writeHTMLCell(270, 5, 10, $this->getY(), utf8_encode("Le mat�riel pr�t� par le Comit� des F�tes de Genay est sous la responsabilit� de l'adh�rent et doit �tre rendu propre. <b>Tout article manquant ou d�t�rior� vous sera factur�.</b>"), 0, 0, 0, true, 'L', true);
+		$this->writeHTMLCell(270, 5, 10, $this->getY(), "Le matériel prêté par le Comité des Fêtes de Genay est sous la responsabilité de l'adhérent et doit être rendu propre. <b>Tout article manquant ou détérioré vous sera facturé.</b>", 0, 0, 0, true, 'L', true);
 
 		// Page number
-		$this->Cell(0, 10, utf8_encode("Cr�� le ").date("d-m-Y").utf8_encode(" - Imprim� le ").date("d-m-Y")." - Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
+		$this->Cell(0, 10, "Créé le ".date("d-m-Y")." - Imprimé le ".date("d-m-Y")." - Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
 
 	}
 }
@@ -98,7 +98,7 @@ $_POST["date_depart_article"] = GestionDate($_POST["date_depart_article"],'1');
 // RECUPERATION DE L'INVENTAIRE LE PLUS RECENT
 $sql=$connexion->prepare("SELECT id_inventaire FROM inventaires WHERE id_etat=1 ORDER BY date_inventaire DESC LIMIT 1");
 $sql_exec=$sql->execute();
-if(!$sql_exec) echo "INVENTAIRE : Pb d'acc�s � la table INVENTAIRES";
+if(!$sql_exec) echo "INVENTAIRE : Pb d'accès à la table INVENTAIRES";
 else
 {
 	foreach ($sql->fetchAll() as $row)
@@ -109,7 +109,7 @@ else
 
 $sql=$connexion->prepare("SELECT t1.id_article, t4.designation, t1.quantite_totale, t2.quantite_reservee, t2.id_reservation, t3.date_depart, t3.date_retour, t5.id_client, t5.nom, t5.prenom FROM inventaires_articles AS t1 LEFT JOIN reservations_articles AS t2 ON t2.id_article=t1.id_article LEFT JOIN reservations AS t3 On t3.id_reservation=t2.id_reservation LEFT JOIN articles AS t4 ON t4.id_article=t1.id_article LEFT JOIN clients AS t5 ON t5.id_client=t3.id_client WHERE (t1.id_inventaire=:id_inventaire AND t3.id_etat=1 AND t4.id_etat=1 AND t3.date_depart<=:date_depart AND t3.date_retour>:date_depart) ORDER BY t4.designation ASC, t2.quantite_reservee DESC, t5.nom ASC, t5.prenom ASC, t3.date_depart");
 $sql_exec=$sql->execute([":id_inventaire"=>$id_inventaire_selectionne, ":date_depart"=>$_POST["date_depart_article"]]);
-if(!$sql_exec) echo "NB - DONNEES : Pb d'acc�s � la table inventaires";
+if(!$sql_exec) echo "NB - DONNEES : Pb d'accès à la table inventaires";
 else
 {
 	$id_article_temp=0;
@@ -147,7 +147,7 @@ else
 		// ON DENOMBRE LES ARTICLES SORTIS DANS LA PERIODE
 		$sql_departs=$connexion->prepare("SELECT t1.quantite_reservee, t1.id_article, t2.date_depart FROM reservations_articles AS t1 LEFT JOIN reservations AS t2 ON t2.id_reservation=t1.id_reservation WHERE (t2.date_depart<=:date_depart AND t2.date_retour>:date_depart AND t1.id_article=:id_article AND t2.id_etat=1)");
 		$sql_exec=$sql_departs->execute([":date_depart"=>$_POST["date_depart_article"], ":id_article"=>$row["id_article"]]);
-		if(!$sql_exec) echo "NB - DONNEES : Pb d'acc�s � la table reservations";
+		if(!$sql_exec) echo "NB - DONNEES : Pb d'accès à la table reservations";
 		else
 		{
 			foreach ($sql_departs->fetchAll() as $row_nb)
@@ -181,15 +181,15 @@ else
 			$posy = 0;
 
 			$pdf->SetFont('Helvetica', '', 14);
-			$pdf->MultiCell(267, 5, utf8_encode("<b>Etat des r�servations par article au ".$_POST["date_depart_article"]." </b>"), 0, 'C', 0, 1, 15, ($offset_titre_articles), true,'',true);
+			$pdf->MultiCell(267, 5, "<b>Etat des réservations par article au ".$_POST["date_depart_article"]." </b>", 0, 'C', 0, 1, 15, ($offset_titre_articles), true,'',true);
 
 			$pdf->SetFont('Helvetica', '', 10);
-			$pdf->MultiCell(25, 7, utf8_encode("<b>Inventaire</b>"), 0, 'C', 0, 1, 5, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(25, 7, utf8_encode("<b>D�part</b>"), 0, 'C', 0, 1, 30, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(25, 7, utf8_encode("<b>Stock</b>"), 0, 'C', 0, 1, 55, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(95, 7, utf8_encode("<b>Article</b>"), 0, 'L', 0, 1, 80, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(25, 7, utf8_encode("<b>Quantit�</b>"), 0, 'C', 0, 1, 175, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(90, 7, utf8_encode("<b>Adh�rent</b>"), 0, 'L', 0, 1, 200, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(25, 7, "<b>Inventaire</b>", 0, 'C', 0, 1, 5, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(25, 7, "<b>Départ</b>", 0, 'C', 0, 1, 30, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(25, 7, "<b>Stock</b>", 0, 'C', 0, 1, 55, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(95, 7, "<b>Article</b>", 0, 'L', 0, 1, 80, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(25, 7, "<b>Quantité</b>", 0, 'C', 0, 1, 175, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(90, 7, "<b>Adhérent</b>", 0, 'L', 0, 1, 200, ($offset_titre_colonnes), true,'',true);
 
 		}
 

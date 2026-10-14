@@ -420,7 +420,7 @@ elseif (isset($action_selectionne) AND $action_selectionne=="modifier")
 							}
 						}
 
-						$row_articles["quantite_actuelle"]=($row_articles["quantite_totale"] - $row_stock["total_reserve"] + $row_articles["quantite_reservee"] + $row_rendu["quantite_rendue"]);
+						$row_articles["quantite_actuelle"]=($row_articles["quantite_totale"] - $row_stock["total_reserve"] + $row_articles["quantite_reservee"] + ($row_rendu["quantite_rendue"] ?? 0));
 
 						$row_articles["quantite_apres"]=($row_articles["quantite_actuelle"] - $row_articles["quantite_reservee"]);
 					}

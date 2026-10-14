@@ -25,7 +25,7 @@ class MYPDF extends TCPDF {
 
 		// set color for text
 		$this->SetTextColor(0, 0, 0);
-		$this->writeHTMLCell(170, 10, 15, $this->getY(), utf8_encode("Le mat�riel pr�t� par le Comit� des F�tes de Genay est sous la responsabilit� de l'adh�rent et doit �tre rendu propre. <b>Tout article manquant ou d�t�rior� vous sera factur�.</b>"), 0, 0, 0, true, 'J', true);
+		$this->writeHTMLCell(170, 10, 15, $this->getY(), "Le matériel prêté par le Comité des Fêtes de Genay est sous la responsabilité de l'adhérent et doit être rendu propre. <b>Tout article manquant ou détérioré vous sera facturé.</b>", 0, 0, 0, true, 'J', true);
 
 		$this->SetDrawColor(0, 0, 0);
 		$this->SetY(-15);
@@ -33,7 +33,7 @@ class MYPDF extends TCPDF {
 		$this->Line(PDF_MARGIN_LEFT, $this->getY(), $this->getPageWidth()-PDF_MARGIN_LEFT, $this->getY());
 
 		// Page number
-		$this->Cell(0, 10, utf8_encode("Imprim� le ").date("d-m-Y")." - Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
+		$this->Cell(0, 10, "Imprimé le ".date("d-m-Y")." - Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
 
 	}
 }
@@ -49,7 +49,7 @@ if (isset ($_GET["type"]) AND $_GET["type"]=='vide')
 	// RECUPERATION DE L'INVENTAIRE LE PLUS RECENT
 	$sql=$connexion->prepare("SELECT id_inventaire, date_inventaire FROM inventaires WHERE id_etat='1' ORDER BY date_inventaire DESC LIMIT 1");
 	$sql_exec=$sql->execute();
-	if(!$sql_exec) echo "INVENTAIRE : Pb d'acc�s � la table INVENTAIRES";
+	if(!$sql_exec) echo "INVENTAIRE : Pb d'accès à la table INVENTAIRES";
 	else
 	{
 		foreach ($sql->fetchAll() as $row)
@@ -73,7 +73,7 @@ else if(isset($_GET["action"]) AND $_GET["action"]=='imprimer')
 
 $sql=$connexion->prepare("SELECT t1.id_inventaire, t1.commentaire, t1.date_inventaire,t1.date_creation, t1.date_modification, t1.id_statut_inventaire, t4.libelle_statut, t5.id_type_inventaire, t5.libelle_type, t1.id_membre_auteur, t2.nom_utilisateur AS nom_membre_auteur, t2.prenom_utilisateur AS prenom_membre_auteur, t3.id_etat, t3.libelle_etat FROM inventaires AS t1 LEFT JOIN admin_utilisateurs AS t2 ON t2.id_utilisateur=t1.id_membre_auteur LEFT JOIN etats AS t3 ON t3.id_etat=t1.id_etat LEFT JOIN inventaires_statuts AS t4 ON t4.id_statut_inventaire=t1.id_statut_inventaire LEFT JOIN inventaires_types AS t5 ON t5.id_type_inventaire=t1.id_type_inventaire WHERE (t1.id_inventaire= :id_inventaire)");
 $sql_exec=$sql->execute([":id_inventaire"=>$id_inventaire_selectionne]);
-if(!$sql_exec) echo "MODIFIER - DONNEES : Pb d'acc�s � la table inventaires";
+if(!$sql_exec) echo "MODIFIER - DONNEES : Pb d'accès à la table inventaires";
 else
 {
 	foreach ($sql->fetchAll() as $row)
@@ -92,18 +92,18 @@ else
 		$nom_membre_auteur = $row["nom_membre_auteur"];
 		$prenom_membre_auteur = $row["prenom_membre_auteur"];
 
-		// cr�ation de la liste des articles
+		// création de la liste des articles
 		$liste_articles = array();
 		$sql_articles=$connexion->prepare("SELECT t1.id_article, t1.designation FROM articles AS t1 WHERE t1.id_etat='1' ORDER BY t1.designation");
 		$sql_exec=$sql_articles->execute();
-		if(!$sql_exec) echo "LISTE : Pb d'acc�s � la table articles";
+		if(!$sql_exec) echo "LISTE : Pb d'accès à la table articles";
 		else
 		{
 			foreach ($sql_articles->fetchAll() as $row_articles)
 			{
 				$sql_inventaires=$connexion->prepare("SELECT t1.id_article, t1.quantite_precedent, t1.quantite_totale, t1.commentaire FROM inventaires_articles AS t1 LEFT JOIN inventaires AS t2 ON t2.id_inventaire=t1.id_inventaire WHERE t2.id_inventaire=:id_inventaire AND t1.id_article=:id_article");
 				$sql_exec_inventaires=$sql_inventaires->execute([":id_inventaire"=>$id_inventaire_selectionne, ":id_article"=>$row_articles["id_article"]]);
-				if(!$sql_exec) echo "LISTE INVENTAIRES: Pb d'acc�s � la table inventaires";
+				if(!$sql_exec) echo "LISTE INVENTAIRES: Pb d'accès à la table inventaires";
 				else
 				{
 					$row_articles["commentaire"] = ""; // valeur par defaut
@@ -195,11 +195,11 @@ $pdf->setFontSubsetting(true);
 
 			$pdf->SetFont('Helvetica', '', 16);
 			$pdf->SetTextColor(75, 75, 75);
-			$pdf->MultiCell(90, 10, utf8_encode("Inventaire"), 0, 'L', 0, 1, 15, ($posy+5), true,'',true);
+			$pdf->MultiCell(90, 10, "Inventaire", 0, 'L', 0, 1, 15, ($posy+5), true,'',true);
 			$pdf->MultiCell(90, 10, $date_inventaire, 0, 'R', 0, 1, 105, ($posy+5), true,'',true);
 
 			$pdf->SetFont('Helvetica', '', 8);
-			$pdf->MultiCell(170, 5, utf8_encode("Cr�� le ").$date_creation.utf8_encode(" - Modifi� le ").$date_modification.utf8_encode(" par ").$nom_membre_auteur." ".$prenom_membre_auteur, 0, 'L', 0, 1, 15, ($posy+15), true,'',true);
+			$pdf->MultiCell(170, 5, "Créé le ".$date_creation." - Modifié le ".$date_modification." par ".$nom_membre_auteur." ".$prenom_membre_auteur, 0, 'L', 0, 1, 15, ($posy+15), true,'',true);
 
 			$pdf->SetFont('Helvetica', '', 12);
 
@@ -209,11 +209,11 @@ $pdf->setFontSubsetting(true);
 			$pdf->Rect(15, ($offset_articles), 180, 5, 'F', array(),array(245, 245, 245));
 
 			$pdf->SetFont('Helvetica', '', 8);
-			$pdf->MultiCell(80, 5, utf8_encode("<b>Article</b>"), 1, 'L', 0, 1, 15, ($offset_articles), true,'',true);
-			$pdf->MultiCell(20, 5, utf8_encode("<b>Qt�. Avant</b>"), 1, 'C', 0, 1, 75, ($offset_articles), true,'',true);
-			$pdf->MultiCell(20, 5, utf8_encode("<b>Qt�. Actuelle</b>"), 1, 'C', 0, 1, 95, ($offset_articles), true,'',true);
-			$pdf->MultiCell(20, 5, utf8_encode("<b>Ecart</b>"), 1, 'C', 1, 0, 115, ($offset_articles), true,'',true);
-			$pdf->MultiCell(60, 5, utf8_encode("<b>Commentaire</b>"), 1, 'C', 0, 1, 135, ($offset_articles), true,'',true);
+			$pdf->MultiCell(80, 5, "<b>Article</b>", 1, 'L', 0, 1, 15, ($offset_articles), true,'',true);
+			$pdf->MultiCell(20, 5, "<b>Qté. Avant</b>", 1, 'C', 0, 1, 75, ($offset_articles), true,'',true);
+			$pdf->MultiCell(20, 5, "<b>Qté. Actuelle</b>", 1, 'C', 0, 1, 95, ($offset_articles), true,'',true);
+			$pdf->MultiCell(20, 5, "<b>Ecart</b>", 1, 'C', 1, 0, 115, ($offset_articles), true,'',true);
+			$pdf->MultiCell(60, 5, "<b>Commentaire</b>", 1, 'C', 0, 1, 135, ($offset_articles), true,'',true);
 
 			$pdf->SetDrawColor(180, 180, 180);
 			$pdf->Line(15, ($offset_articles + 5), 195, ($offset_articles + 5));

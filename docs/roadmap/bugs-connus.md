@@ -67,3 +67,29 @@ la session semble stocker l'identifiant sous `$_SESSION["id_utilisateur"]` (util
 partout ailleurs, y compris les `$smarty->assign` du cas « ajouter »). Si la clé
 `id_membre_auteur` n'est jamais renseignée, l'auteur enregistré vaut NULL/0. **À
 vérifier** en base réelle avant toute correction.
+
+## 🔴 Tri d'une liste sans préférence enregistrée — colonne d'un autre menu
+
+`GestionTri()` (`cgi-bin/config/fonctions_general.php`).
+
+Si l'utilisateur n'a aucune ligne `tri_utilisateur=1` dans `admin_utilisateurs_session`
+pour le menu affiché (ex. un utilisateur créé récemment), `$_SESSION["colonne"]` garde
+la colonne du **menu précédent** : la requête de liste échoue (« LISTE : Pb d'accès à la
+table ITEMS 3 », « Unknown column 'nom_utilisateur' ») et la liste reste vide.
+Correctif : retomber sur `$colonne_default` quand aucune préférence n'existe.
+
+## 🟠 Impressions « sans adhésion » / « sans dons » — `GROUP BY` incomplet
+
+`www/impressions_reservations_sans_adhesions.php`, `www/impressions_reservations_sans_dons.php`.
+
+La requête sélectionne des colonnes absentes du `GROUP BY` : refusée en
+`ONLY_FULL_GROUP_BY` (défaut MySQL 8, donc en local) → le PDF n'est pas généré. Sur OVH,
+dépend du `sql_mode` du serveur. Correctif : agréger ou compléter le `GROUP BY`.
+
+## 🟡 Stock disponible — `quantite_rendue` toujours nulle
+
+`www/reservations_formulaire.php` (calcul de `quantite_actuelle`).
+
+Le calcul ajoute `$row_rendu["quantite_rendue"]`, clé qui n'existe jamais (la boucle
+remplit `$row_articles["quantite_rendue"]`) : le terme vaut toujours 0. Probablement
+`$row_articles["quantite_rendue"]` attendu. **À confirmer** métier avant correction.

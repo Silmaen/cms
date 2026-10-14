@@ -5,7 +5,7 @@ l'essentiel. Toute la communication, le code et la documentation sont **en fran√
 
 ## Mettre en place l'environnement local
 
-L'application tourne en Docker (PHP 7.4 + MySQL) :
+L'application tourne en Docker (PHP 8.5 + MySQL) :
 
 ```bash
 cp .env.sample .env    # au premier clone (puis ajuster UID/GID)

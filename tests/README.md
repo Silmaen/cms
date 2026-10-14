@@ -15,7 +15,7 @@ La stack doit tourner (`./dc.sh up`). Puis :
 ./tests/run.sh --filter Date   # filtrer par nom de test
 ```
 
-PHPUnit (version `PHPUNIT_VERSION` de `.env.defaults`, compatible **PHP 7.4**) est utilisé
+PHPUnit (version `PHPUNIT_VERSION` de `.env.defaults`, compatible PHP 7.3 → 8.5) est utilisé
 en **PHAR**, téléchargé au premier lancement dans `tests/.bin/` (ignoré par git). **Pas de
 Composer.** Les tests s'exécutent **dans le conteneur** (même PHP que la prod).
 
@@ -38,8 +38,7 @@ téléchargeable** de chaque exécution.
 > procéduraux et couplés à `exit()`/Smarty/SQL. L'intérêt du rapport est surtout la
 > **carte par fichier** (ce qui n'a aucun test). En revanche la **logique réutilisable**
 > (`fonctions_general.php`, `environnement.php`) est quasi complète. Le total montera
-> quand on extraira la logique des contrôleurs en fonctions testables (cf.
-> [modernisation PHP 8](../docs/roadmap/php8.md)) et qu'on étendra le golden master.
+> quand on extraira la logique des contrôleurs en fonctions testables et qu'on étendra le golden master.
 
 ## Structure
 

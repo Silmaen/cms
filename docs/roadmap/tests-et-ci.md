@@ -28,8 +28,7 @@ Détails d'utilisation : [`../../tests/README.md`](../../tests/README.md).
 
 Les contrôleurs `www/*.php` (procéduraux, couplés à `$_GET`/`$_POST`, Smarty, `exit`) ne
 sont pas testables unitairement → on les couvre par golden master (rendu figé), et on
-extraira progressivement la logique en fonctions testables (lié à la
-[modernisation PHP 8](php8.md)).
+extraira progressivement la logique en fonctions testables.
 
 ## Étapes
 
