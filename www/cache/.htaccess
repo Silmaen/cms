@@ -1,0 +1,11 @@
+# Dossier de cache de Smarty (fichiers générés côté serveur).
+# Aucun accès web autorisé : PHP y accède par le disque, pas par HTTP.
+<IfModule mod_authz_core.c>
+    # Apache 2.4 (OVH stable64)
+    Require all denied
+</IfModule>
+<IfModule !mod_authz_core.c>
+    # Repli Apache 2.2
+    Order allow,deny
+    Deny from all
+</IfModule>
