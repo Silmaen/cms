@@ -1,7 +1,7 @@
 # Image PHP + Apache pour l'application Comité des Fêtes.
 # La version de PHP provient de .ovhconfig (source unique) : docker/build.sh la lit et
 # la passe en argument de build PHP_VERSION. Le défaut ci-dessous n'est qu'un filet.
-ARG PHP_VERSION=7.4
+ARG PHP_VERSION=8.5
 FROM php:${PHP_VERSION}-apache
 
 # --- Extensions PHP ---

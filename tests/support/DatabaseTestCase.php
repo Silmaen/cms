@@ -30,11 +30,10 @@ abstract class DatabaseTestCase extends TestCase
 
 		try {
 			$pdo = new PDO(
-				"mysql:host={$host};port={$port}",
+				"mysql:host={$host};port={$port};charset=utf8",
 				$user,
 				$pass,
 				[
-					PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'",
 					PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 				]
 			);

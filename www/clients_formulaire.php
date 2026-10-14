@@ -72,7 +72,7 @@ if(isset($action_selectionne) AND $action_selectionne=="ajouter")
 	$liste_adhesions = array();
 	$row_adhesions["id_adhesion"] = '0';
 	// NOUS TESTONS SI NOUS SOMMES ENCORE SUR L'ANCIEN EXERCICE OU SUR LE NOUVEAU
-	if(date(m)>9)
+	if(date("m")>9)
 	{
 		$row_adhesions["annee"] = date("Y").' - '.(date("Y")+1);
 		$debut_exercice_fiscal = date("Y").'-10-01 <br />';
@@ -124,7 +124,7 @@ elseif (isset($action_selectionne) AND $action_selectionne=="copier")
 			$row_adhesions["id_adhesion"] = '0';
 
 			// NOUS TESTONS SI NOUS SOMMES ENCORE SUR L'ANCIEN EXERCICE OU SUR LE NOUVEAU
-			if(date(m)>9)
+			if(date("m")>9)
 			{
 				$row_adhesions["annee"] = date("Y").' - '.(date("Y")+1);
 			}
@@ -173,7 +173,7 @@ elseif (isset($action_selectionne) AND $action_selectionne=="modifier")
 			$compteur_annee = 0;
 
 			// NOUS TESTONS SI NOUS SOMMES ENCORE SUR L'ANCIEN EXERCICE OU SUR LE NOUVEAU
-			if(date(m)>9)
+			if(date("m")>9)
 			{
 				$annee_fiscale_courante = date("Y");
 				$debut_exercice_fiscal = date("Y").'-10-01 <br />';

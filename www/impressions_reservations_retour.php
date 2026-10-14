@@ -28,10 +28,10 @@ class MYPDF extends TCPDF {
 
 		// set color for text
 		$this->SetTextColor(0, 0, 0);
-		$this->writeHTMLCell(100, 5, 10, $this->getY(), utf8_encode("Le mat�riel pr�t� par le Comit� des F�tes de Genay est sous la responsabilit� de l'adh�rent et doit �tre rendu propre. <b>Tout article manquant ou d�t�rior� vous sera factur�.</b>"), 0, 0, 0, true, 'L', true);
+		$this->writeHTMLCell(100, 5, 10, $this->getY(), "Le matériel prêté par le Comité des Fêtes de Genay est sous la responsabilité de l'adhérent et doit être rendu propre. <b>Tout article manquant ou détérioré vous sera facturé.</b>", 0, 0, 0, true, 'L', true);
 
 		// Page number
-		$this->Cell(0, 10, utf8_encode("Cr�� le ").date("d-m-Y").utf8_encode(" - Imprim� le ").date("d-m-Y")." - Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
+		$this->Cell(0, 10, "Créé le ".date("d-m-Y")." - Imprimé le ".date("d-m-Y")." - Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
 
 	}
 }
@@ -103,10 +103,10 @@ else
 }
 
 $nb_reservations = 0;
-// On v�rifie s'il y a des r�sultats => des r�servations � rentrer ce jour l�
+// On vérifie s'il y a des résultats => des réservations à rentrer ce jour là
 $sql_nb=$connexion->prepare("SELECT COUNT(DISTINCT t1.id_reservation) as resultat FROM reservations_articles AS t1 LEFT JOIN reservations AS t2 ON t2.id_reservation=t1.id_reservation WHERE (t2.date_retour=:date_retour AND t1.quantite_reservee>0 AND t2.id_etat<>3)");
 $sql_exec=$sql_nb->execute([":date_retour"=>$_POST["date_retour_reservation"]]);
-if(!$sql_exec) echo "DONNEES : Pb d'acc�s � la table reservations 1";
+if(!$sql_exec) echo "DONNEES : Pb d'accès à la table reservations 1";
 else
 {
 	foreach ($sql_nb->fetchAll() as $row_nb)
@@ -125,7 +125,7 @@ if($nb_reservations==0)
 	$_POST["date_retour_reservation"] = GestionDate($_POST["date_retour_reservation"],'0');
 
 	$pdf->SetFont('Helvetica', '', 16);
-	$pdf->MultiCell(180, 5, utf8_encode("<b>Aucune r�servation � rentrer en date du ".$_POST["date_retour_reservation"]." </b>"), 0, 'C', 0, 1, 15, 100, true,'',true);
+	$pdf->MultiCell(180, 5, "<b>Aucune réservation à rentrer en date du ".$_POST["date_retour_reservation"]." </b>", 0, 'C', 0, 1, 15, 100, true,'',true);
 }
 else
 {
@@ -136,7 +136,7 @@ else
 	LEFT JOIN clients_statuts AS t3 ON t3.id_statut_client=t2.id_statut_client
 	WHERE (t1.date_retour=:date_retour AND t1.id_etat<>3) ORDER BY t2.association, t2.nom, t2.prenom");
 	$sql_exec=$sql->execute([":date_retour"=>$_POST["date_retour_reservation"]]);
-	if(!$sql_exec) echo "DONNEES : Pb d'acc�s � la table reservations";
+	if(!$sql_exec) echo "DONNEES : Pb d'accès à la table reservations";
 	else
 	{
 		// CREATION PDF
@@ -153,26 +153,26 @@ else
 				$pdf->SetFont('Helvetica', '', 12);
 				$pdf->SetTextColor(75, 75, 75);
 
-				// Affichage des r�servations
+				// Affichage des réservations
 				$offset_titre_reservations = 20;
 
 				$pdf->SetFont('Helvetica', '', 16);
-				$pdf->MultiCell(290, 5, utf8_encode("<b>Liste des r�servations avec un retour le ".GestionDate($row["date_retour"],'0')." </b>"), 0, 'C', 0, 1, 5, ($offset_titre_reservations), true,'',true);
+				$pdf->MultiCell(290, 5, "<b>Liste des réservations avec un retour le ".GestionDate($row["date_retour"],'0')." </b>", 0, 'C', 0, 1, 5, ($offset_titre_reservations), true,'',true);
 
-				// R�servations
+				// Réservations
 				$offset_reservations = ($offset_titre_reservations + 10 + ($compteur_reservation*7));
 
 				if(($compteur_page==1 AND $compteur_reservation==0) OR ($compteur_page>1 AND (fmod($compteur_reservation, $nb_reservations_par_page)==0)))
 				{
 
 					$pdf->SetFont('Helvetica', '', 12);
-					$pdf->MultiCell(45, 7, utf8_encode("<b>Statut</b>"), 0, 'L', 0, 1, 5, ($offset_reservations), true,'',true);
-					$pdf->MultiCell(95, 7, utf8_encode("<b>Libell�</b>"), 0, 'L', 0, 1, 50, ($offset_reservations), true,'',true);
-					$pdf->MultiCell(45, 7, utf8_encode("<b>Contact</b>"), 0, 'L', 0, 1, 145, ($offset_reservations), true,'',true);
-					$pdf->MultiCell(40, 7, utf8_encode("<b>T�l�phone</b>"), 0, 'C', 0, 1, 190, ($offset_reservations), true,'',true);
-					$pdf->MultiCell(20, 7, utf8_encode("<b>Retour</b>"), 0, 'C', 0, 1, 230, ($offset_reservations), true,'',true);
-					$pdf->MultiCell(20, 7, utf8_encode("<b>Ch�que</b>"), 0, 'C', 0, 1, 250, ($offset_reservations), true,'',true);
-					$pdf->MultiCell(20, 7, utf8_encode("<b>Esp�ces</b>"), 0, 'C', 0, 1, 270, ($offset_reservations), true,'',true);
+					$pdf->MultiCell(45, 7, "<b>Statut</b>", 0, 'L', 0, 1, 5, ($offset_reservations), true,'',true);
+					$pdf->MultiCell(95, 7, "<b>Libellé</b>", 0, 'L', 0, 1, 50, ($offset_reservations), true,'',true);
+					$pdf->MultiCell(45, 7, "<b>Contact</b>", 0, 'L', 0, 1, 145, ($offset_reservations), true,'',true);
+					$pdf->MultiCell(40, 7, "<b>Téléphone</b>", 0, 'C', 0, 1, 190, ($offset_reservations), true,'',true);
+					$pdf->MultiCell(20, 7, "<b>Retour</b>", 0, 'C', 0, 1, 230, ($offset_reservations), true,'',true);
+					$pdf->MultiCell(20, 7, "<b>Chèque</b>", 0, 'C', 0, 1, 250, ($offset_reservations), true,'',true);
+					$pdf->MultiCell(20, 7, "<b>Espèces</b>", 0, 'C', 0, 1, 270, ($offset_reservations), true,'',true);
 
 					$pdf->SetDrawColor(180, 180, 180);
 					$pdf->Line(5, ($offset_reservations + 7), 290, ($offset_reservations + 7));
