@@ -6,7 +6,7 @@ adhérents, des adhésions annuelles, de l'inventaire du matériel, et des
 (reçus, bordereaux de départ et de retour, listes du jour).
 
 > ℹ️ Application « maison », en PHP procédural + Smarty, historiquement hébergée
-> sur un mutualisé **OVH** (PHP 7.4, MySQL). Les libellés, la base de données et
+> sur un mutualisé **OVH** (PHP 8.5, MySQL). Les libellés, la base de données et
 > l'interface sont **en français**.
 
 ---
@@ -47,13 +47,13 @@ adhérents, des adhésions annuelles, de l'inventaire du matériel, et des
 
 | Domaine         | Choix                                                                     |
 |-----------------|---------------------------------------------------------------------------|
-| Langage         | PHP 7.4 (procédural)                                                      |
+| Langage         | PHP 8.5 (procédural)                                                      |
 | Base de données | MySQL (PDO)                                                               |
 | Templating      | [Smarty](https://www.smarty.net/) (délimiteurs `<!--{ }-->`)              |
 | PDF             | [TCPDF](https://tcpdf.org/)                                               |
 | Front           | Bootstrap 4.1.3, FontAwesome 4.7, jQuery, Popper                          |
 | Composants      | gijgo (calendriers), Kartik, bootstrap-fileinput, TinyMCE, jQuery-Confirm |
-| Hébergement     | OVH mutualisé (`.ovhconfig`, `app.engine=php` 7.4)                        |
+| Hébergement     | OVH mutualisé (`.ovhconfig`, `app.engine=php` 8.5)                        |
 
 ## Architecture
 
@@ -127,7 +127,7 @@ cms/
 
 ## Développement avec Docker
 
-Un environnement Docker Compose reproduit l'hébergement OVH (PHP 7.4 + MySQL) et
+Un environnement Docker Compose reproduit l'hébergement OVH (PHP 8.5 + MySQL) et
 sert **un site unique** (comme en production) sur sa base de données, plus un
 **phpMyAdmin** pour la consulter. Le dossier courant est monté dans le conteneur :
 le code est modifiable à chaud. L'environnement est détecté comme `local`
@@ -157,7 +157,7 @@ automatiquement au premier démarrage).
 
 ## Installation locale
 
-> Alternative sans Docker. Prérequis : PHP 7.4+ avec l'extension PDO MySQL, un
+> Alternative sans Docker. Prérequis : PHP 8.5 avec l'extension PDO MySQL, un
 > serveur MySQL, un serveur web (Apache) dont la racine pointe sur `www/`.
 
 1. Créer une base MySQL locale (par défaut `comitefetes`).
@@ -247,7 +247,7 @@ La documentation complète se trouve dans le dossier [`docs/`](docs/README.md) :
 - [`domaine-metier.md`](docs/domaine-metier.md) — le vocabulaire et les processus métier.
 - [`conventions.md`](docs/conventions.md) — les conventions de code du projet.
 - [`environnements-et-deploiement.md`](docs/environnements-et-deploiement.md) — les 4 environnements (prod / recette / test / local), la détection du thème, les identifiants BDD, le déploiement Git OVH, les containers `.ovhconfig` et le dépannage.
-- [`roadmap.md`](docs/roadmap.md) — les chantiers à venir (détails dans `docs/roadmap/`).
+- [`roadmap.md`](docs/roadmap.md) — les chantiers à venir (détails dans `docs/roadmap/`) ; ce qui est livré est dans [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Auteurs et crédits
 

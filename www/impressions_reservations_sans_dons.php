@@ -23,7 +23,7 @@ class MYPDF extends TCPDF {
 		// Set font
 		$this->SetFont('helvetica', 'I', 8);
 		// Page number
-		$this->Cell(0, 10, utf8_encode("Cr�� le ").date("d-m-Y").utf8_encode(" - Imprim� le ").date("d-m-Y")." - Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
+		$this->Cell(0, 10, "Créé le ".date("d-m-Y")." - Imprimé le ".date("d-m-Y")." - Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
 
 		$this->SetDrawColor(0, 0, 0);
 		$this->Line(PDF_MARGIN_LEFT, $this->getY(), $this->getPageWidth()-PDF_MARGIN_LEFT, $this->getY());
@@ -99,7 +99,7 @@ WHERE t2.id_statut_client<>2 AND t1.annee_reservation=:annee_fiscale_reference A
 ORDER BY t2.association ASC, t2.nom ASC, t2.prenom ASC;");
 
 $sql_exec=$sql_clients->execute([":annee_fiscale_reference"=>$annee_fiscale_reference_dons]);
-if(!$sql_exec) echo "NB - DONNEES : Pb d'acc�s � la table clients";
+if(!$sql_exec) echo "NB - DONNEES : Pb d'accès à la table clients";
 else
 {
 	$id_client_temp=0;
@@ -139,18 +139,18 @@ else
 			$posy = 0;
 
 			$pdf->SetFont('Helvetica', '', 16);
-			$pdf->MultiCell(200, 5, utf8_encode("<b>Liste des adh�rents ayant fait au moins une r�servation sans avoir pay� de don pour l'ann�e fiscale de r�f�rence : ".$annee_fiscale_reference_dons."-".($annee_fiscale_reference_dons+1)."</b>"), 0, 'C', 0, 1, 5, ($offset_titre_clients), true,'',true);
+			$pdf->MultiCell(200, 5, "<b>Liste des adhérents ayant fait au moins une réservation sans avoir payé de don pour l'année fiscale de référence : ".$annee_fiscale_reference_dons."-".($annee_fiscale_reference_dons+1)."</b>", 0, 'C', 0, 1, 5, ($offset_titre_clients), true,'',true);
 
 			$pdf->SetFont('Helvetica', '', 10);
-			$pdf->MultiCell(10, 7, utf8_encode("<b>Nb7</b>"), 0, 'L', 0, 1, 5, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(80, 7, utf8_encode("<b>Association</b>"), 0, 'L', 0, 1, 15, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(80, 7, utf8_encode("<b>Adh�rent</b>"), 0, 'L', 0, 1, 95, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(40, 7, utf8_encode("<b>Nb de r�servations</b>"), 0, 'L', 0, 1, 175, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(10, 7, "<b>Nb7</b>", 0, 'L', 0, 1, 5, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(80, 7, "<b>Association</b>", 0, 'L', 0, 1, 15, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(80, 7, "<b>Adhérent</b>", 0, 'L', 0, 1, 95, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(40, 7, "<b>Nb de réservations</b>", 0, 'L', 0, 1, 175, ($offset_titre_colonnes), true,'',true);
 
 			// Footer
 			$aujourdhui = date("d-m-Y");
 			$pdf->SetFont('Helvetica', '', 8);
-			$pdf->MultiCell(85, 15, utf8_encode("Cr�� le ").$aujourdhui.utf8_encode(" <br />Imprim� le ").$aujourdhui, 0, 'R', 0, 1, 198, 193, true,'',true);
+			$pdf->MultiCell(85, 15, "Créé le ".$aujourdhui." <br />Imprimé le ".$aujourdhui, 0, 'R', 0, 1, 198, 193, true,'',true);
 		}
 
 		// Clients

@@ -23,7 +23,7 @@ class MYPDF extends TCPDF {
 		// Set font
 		$this->SetFont('helvetica', 'I', 8);
 		// Page number
-		$this->Cell(0, 10, utf8_encode("Cr�� le ").date("d-m-Y").utf8_encode(" - Imprim� le ").date("d-m-Y")." - Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
+		$this->Cell(0, 10, "Créé le ".date("d-m-Y")." - Imprimé le ".date("d-m-Y")." - Page ".$this->getAliasNumPage().'/'.$this->getAliasNbPages(), 0, false, 'R', 0, '', 0, false, 'T', 'M');
 
 		$this->SetDrawColor(0, 0, 0);
 		$this->Line(PDF_MARGIN_LEFT, $this->getY(), $this->getPageWidth()-PDF_MARGIN_LEFT, $this->getY());
@@ -105,7 +105,7 @@ WHERE (t1.id_etat=1 AND t2.don>0 AND t2.date_don>=:date_debut_reglements_synthes
 ORDER BY t1.association ASC, t1.nom ASC, t1.prenom ASC, t2.date_don");
 $sql_exec=$sql_dons->execute([":date_debut_reglements_synthese"=>$_POST["date_debut_reglements_synthese"], ":date_fin_reglements_synthese"=>$_POST["date_fin_reglements_synthese"]]);
 
-if(!$sql_exec) echo "NB - DONNEES : Pb d'acc�s � la table reservations";
+if(!$sql_exec) echo "NB - DONNEES : Pb d'accès à la table reservations";
 else
 {
 	$id_client_temp=0;
@@ -151,24 +151,24 @@ else
 			$posy = 0;
 
 			$pdf->SetFont('Helvetica', '', 16);
-			$pdf->MultiCell(200, 5, utf8_encode("<b>D�tail des dons per�us entre le  ".$date_debut_reglements_synthese." et le ".$date_fin_reglements_synthese."</b>"), 0, 'C', 0, 1, 5, ($offset_titre_clients), true,'',true);
+			$pdf->MultiCell(200, 5, "<b>Détail des dons perçus entre le  ".$date_debut_reglements_synthese." et le ".$date_fin_reglements_synthese."</b>", 0, 'C', 0, 1, 5, ($offset_titre_clients), true,'',true);
 
 			$pdf->SetFont('Helvetica', '', 14);
-			$pdf->MultiCell(200, 5, utf8_encode("<b>Liste des dons</b>"), 0, 'C', 0, 1, 5, ($offset_titre_clients+15), true,'',true);
+			$pdf->MultiCell(200, 5, "<b>Liste des dons</b>", 0, 'C', 0, 1, 5, ($offset_titre_clients+15), true,'',true);
 
 			$pdf->SetFont('Helvetica', '', 8);
-			$pdf->MultiCell(10, 7, utf8_encode("<b>Nb</b>"), 0, 'L', 0, 1, 5, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(50, 7, utf8_encode("<b>Association</b>"), 0, 'L', 0, 1, 15, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(50, 7, utf8_encode("<b>Adh�rent</b>"), 0, 'L', 0, 1, 65, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(25, 7, utf8_encode("<b>D�part le</b>"), 0, 'C', 0, 1, 115, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(25, 7, utf8_encode("<b>Retour le</b>"), 0, 'C', 0, 1, 140, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(25, 7, utf8_encode("<b>Date Don</b>"), 0, 'C', 0, 1, 165, ($offset_titre_colonnes), true,'',true);
-			$pdf->MultiCell(20, 7, utf8_encode("<b>Montant</b>"), 0, 'C', 0, 1, 190, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(10, 7, "<b>Nb</b>", 0, 'L', 0, 1, 5, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(50, 7, "<b>Association</b>", 0, 'L', 0, 1, 15, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(50, 7, "<b>Adhérent</b>", 0, 'L', 0, 1, 65, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(25, 7, "<b>Départ le</b>", 0, 'C', 0, 1, 115, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(25, 7, "<b>Retour le</b>", 0, 'C', 0, 1, 140, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(25, 7, "<b>Date Don</b>", 0, 'C', 0, 1, 165, ($offset_titre_colonnes), true,'',true);
+			$pdf->MultiCell(20, 7, "<b>Montant</b>", 0, 'C', 0, 1, 190, ($offset_titre_colonnes), true,'',true);
 
 			// Footer
 			$aujourdhui = date("d-m-Y");
 			$pdf->SetFont('Helvetica', '', 8);
-			$pdf->MultiCell(85, 15, utf8_encode("Cr�� le ").$aujourdhui.utf8_encode(" <br />Imprim� le ").$aujourdhui, 0, 'R', 0, 1, 198, 193, true,'',true);
+			$pdf->MultiCell(85, 15, "Créé le ".$aujourdhui." <br />Imprimé le ".$aujourdhui, 0, 'R', 0, 1, 198, 193, true,'',true);
 		}
 
 		// Clients
@@ -209,16 +209,16 @@ else
 		$offset_clients = 40;
 
 		$pdf->SetFont('Helvetica', '', 16);
-		$pdf->MultiCell(200, 5, utf8_encode("<b>D�tail des dons per�us entre le ".$date_debut_reglements_synthese." et le ".$date_fin_reglements_synthese."</b>"), 0, 'C', 0, 1, 5, ($offset_titre_clients), true,'',true);
+		$pdf->MultiCell(200, 5, "<b>Détail des dons perçus entre le ".$date_debut_reglements_synthese." et le ".$date_fin_reglements_synthese."</b>", 0, 'C', 0, 1, 5, ($offset_titre_clients), true,'',true);
 
 		$pdf->SetFont('Helvetica', '', 14);
-		$pdf->MultiCell(200, 5, utf8_encode("<b>Liste des dons</b>"), 0, 'C', 0, 1, 5, ($offset_titre_clients+15), true,'',true);
+		$pdf->MultiCell(200, 5, "<b>Liste des dons</b>", 0, 'C', 0, 1, 5, ($offset_titre_clients+15), true,'',true);
 
 	}
 
 	$pdf->MultiCell(80, 5, "Nombre de dons : ".$nb_dons, 0, 'L', 0, 1, 30, (($offset_clients+20)), true,'',true);
 
-	$pdf->MultiCell(80, 5, "Montant total des dons : ".$total_dons.utf8_encode(" �"), 0, 'L', 0, 1, 130, (($offset_clients+20)), true,'',true);
+	$pdf->MultiCell(80, 5, "Montant total des dons : ".$total_dons." €", 0, 'L', 0, 1, 130, (($offset_clients+20)), true,'',true);
 
 }
 

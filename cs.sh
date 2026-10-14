@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# Mise en forme du code PHP (php-cs-fixer), DANS le conteneur web (PHP 7.4).
+# Mise en forme du code PHP (php-cs-fixer), DANS le conteneur web.
 #
 # php-cs-fixer est utilisé en PHAR (pas de Composer). Le binaire est téléchargé au
 # premier lancement dans tests/.bin/ (ignoré par git). Le conteneur doit tourner
@@ -25,7 +25,7 @@ export COMPOSE_ENV_FILES="$ENV_FILES"
 
 # Version de l'outil : source = .env.defaults (surchargeable par .env).
 VERSION="$(grep -hE '^PHP_CS_FIXER_VERSION=' .env .env.defaults 2>/dev/null | head -1 | cut -d= -f2 | tr -d '[:space:]')"
-VERSION="${VERSION:-3.13.0}"
+VERSION="${VERSION:-3.95.27}"
 
 mkdir -p tests/.bin
 if [ ! -f tests/.bin/php-cs-fixer.phar ]; then

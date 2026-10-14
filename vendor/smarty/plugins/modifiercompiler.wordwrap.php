@@ -11,7 +11,7 @@
  * Name:     wordwrap
  * Purpose:  wrap a string of text at a given length
  *
- * @link   http://smarty.php.net/manual/en/language.modifier.wordwrap.php wordwrap (Smarty online manual)
+ * @link   https://www.smarty.net/manual/en/language.modifier.wordwrap.php wordwrap (Smarty online manual)
  * @author Uwe Tews
  *
  * @param array                                 $params parameters
@@ -33,7 +33,7 @@ function smarty_modifiercompiler_wordwrap($params, Smarty_Internal_TemplateCompi
     }
     $function = 'wordwrap';
     if (Smarty::$_MBSTRING) {
-        $function = $compiler->getPlugin('mb_wordwrap','modifier');
+        $function = $compiler->getPlugin('mb_wordwrap', 'modifier');
     }
     return $function . '(' . $params[ 0 ] . ',' . $params[ 1 ] . ',' . $params[ 2 ] . ',' . $params[ 3 ] . ')';
 }
