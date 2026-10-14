@@ -10,8 +10,9 @@
 # Pour une PR fermée, GitHub exécute la version de ce fichier présente sur la
 # branche CIBLE : il doit donc exister sur main et recette.
 #
-# NOTE : si un ruleset interdit le force-push sur recette/test, il faut y autoriser
-# GitHub Actions en contournement (ou pousser avec une clé de déploiement).
+# NOTE : les rulesets de recette/test refusent le push du GITHUB_TOKEN. On pousse
+# donc avec une clé de déploiement en écriture (secret REALIGNEMENT_DEPLOY_KEY),
+# déclarée en contournement (« Deploy keys ») dans ces rulesets.
 
 name: Réalignement des branches
 
@@ -21,7 +22,7 @@ on:
     branches: [main, recette]
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: realignement-branches
@@ -39,6 +40,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
+          ssh-key: ${{ secrets.REALIGNEMENT_DEPLOY_KEY }}
 
       - name: Rebaser et pousser
         env:
