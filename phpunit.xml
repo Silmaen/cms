@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Configuration PHPUnit 9.6 (dernière version compatible PHP 7.4).
+  Configuration PHPUnit 9.6.
   Lancé DANS le conteneur Docker via tests/run.sh.
 
   Les notices/warnings NE font PAS échouer les tests : on veut observer le
@@ -26,9 +26,11 @@
         <include>
             <directory suffix=".php">www</directory>
             <directory suffix=".php">cgi-bin/config</directory>
+            <directory suffix=".php">metier</directory>
         </include>
         <exclude>
             <file>cgi-bin/config/config_secrets.php</file>
+            <directory>www/assets/vendor</directory>
         </exclude>
     </coverage>
 

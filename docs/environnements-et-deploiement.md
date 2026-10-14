@@ -186,7 +186,7 @@ le compte) choisit le moteur PHP :
 
 ```ini
 app.engine=php
-app.engine.version=7.4
+app.engine.version=8.5
 http.firewall=none
 environment=production
 container.image=stable64
@@ -199,7 +199,7 @@ une **liste figée de versions PHP** :
 |-------------------|-------------------------------|
 | `legacy`          | 5.4 → 7.0                     |
 | `stable`          | 5.4 → 7.3                     |
-| **`stable64`**    | **7.4 → 8.3** *(utilisé ici)* |
+| **`stable64`**    | **7.4 → 8.5** *(utilisé ici)* |
 
 Deux règles à retenir :
 
@@ -207,6 +207,7 @@ Deux règles à retenir :
   de chaque site), **mais le `container.image` doit être identique partout** sur un même
   hébergement. Mélanger `stable` et `stable64` → OVH n'arrive pas à servir → **erreur 501**.
 - Le compte étant en `stable64`, le **plancher est PHP 7.4** (impossible d'utiliser 7.2/7.3).
+  L'application tourne en **PHP 8.5**.
   Pour tester une autre version sur `test`, garder `stable64` et changer seulement
   `app.engine.version` dans le `.ovhconfig` de la branche `test`.
 
@@ -216,7 +217,7 @@ Deux règles à retenir :
 
 | Symptôme                                                                                       | Cause                                                                                                              | Correctif                                                                                       |
 |------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| **501 « GET not supported for current URL »** sur toutes les URL (même les fichiers statiques) | `container.image` du site différent de celui du compte (`stable` vs `stable64`), ou version PHP indisponible (7.4) | Aligner `.ovhconfig` sur `container.image=stable64` + une version ≥ 7.4                         |
+| **501 « GET not supported for current URL »** sur toutes les URL (même les fichiers statiques) | `container.image` du site différent de celui du compte (`stable` vs `stable64`), ou version PHP indisponible         | Aligner `.ovhconfig` sur `container.image=stable64` + une version proposée par OVH                |
 | **Webhook `push` → 400 `invalid body`**                                                        | Content type du webhook en `x-www-form-urlencoded`                                                                 | Passer le webhook en `application/json`                                                         |
 | **Webhook `ping` → 400**                                                                       | Normal (OVH rejette le ping GitHub)                                                                                | À ignorer ; seul le `push` compte                                                               |
 | **Déploiement `fatal: refusing to merge unrelated histories`**                                 | Force-push (réécriture d'historique) sur une branche déployée                                                      | Réinitialiser la copie OVH (délier/relier ou `git reset --hard`), puis **ne plus force-pusher** |
@@ -233,7 +234,7 @@ Marche à suivre, identique pour `recette` et `main` :
 1. **La base OVH** de l'environnement existe (créée dans l'espace client, schéma importé).
 2. Déposer sur le serveur `cgi-bin/config/config_secrets.php` avec les identifiants **de
    cette base** (§3).
-3. Vérifier que le `.ovhconfig` déployé est en `container.image=stable64` + PHP ≥ 7.4 (§6).
+3. Vérifier que le `.ovhconfig` déployé est en `container.image=stable64` + PHP 8.5 (§6).
    Il l'est déjà dans le dépôt ; il suivra au merge.
 4. Les `.htaccess` de routage sont déjà versionnés (§5) : rien à faire.
 5. Relier l'intégration **Git** OVH à la branche, **webhook en `application/json`** (§4).

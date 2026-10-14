@@ -3,7 +3,7 @@ session_start();
 ///////////////////////////////////////////
 // Configuration et initilisation Smarty //
 ///////////////////////////////////////////
-require_once('../cgi-bin/smarty/Smarty.class.php');
+require_once('../vendor/smarty/Smarty.class.php');
 $smarty = new Smarty();
 $smarty->template_dir = 'templates';
 $smarty->compile_dir = 'templates_c';
@@ -11,6 +11,8 @@ $smarty->config_dir = 'configs';
 $smarty->cache_dir = 'cache';
 $smarty->left_delimiter = '<!--{';
 $smarty->right_delimiter = '}-->';
+// Variable de template absente → vide, sans avertissement (comportement de Smarty 3).
+$smarty->muteUndefinedOrNullWarnings();
 
 ///////////////////////////////////////////////
 // Détection de l'environnement (thème + BDD) //
@@ -26,9 +28,11 @@ require_once(__DIR__ . '/environnement.php');
 //   - sur OVH    : fichier hors-git config_secrets.php (voir .dist).
 require_once(__DIR__ . '/identifiants_bdd.php');
 
-$connexion="mysql:dbname=".bdd.";host=".serveur;
+$connexion="mysql:dbname=".bdd.";host=".serveur.";charset=utf8"; // charset : équivaut à SET NAMES utf8
 try{
-	$connexion=new PDO($connexion,utilisateur,mdp, array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''));
+	// ERRMODE_SILENT : comportement de PHP 7 (PHP 8 lève des exceptions par défaut). Le code
+	// teste le retour de execute()/query() et affiche son propre message d'erreur.
+	$connexion=new PDO($connexion,utilisateur,mdp, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT));
 }
 catch(PDOException $e){
 	printf("Échec de la connexion : %s\n", $e->getMessage());

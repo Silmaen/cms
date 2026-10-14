@@ -77,10 +77,8 @@ mais ce chantier **ne doit pas bloquer** la modernisation d'infra (axe 1).
 **Si on y va un jour :** après la migration VPS, de façon **incrémentale** — nouvelle appli
 Django derrière le même reverse-proxy, bascule écran par écran plutôt qu'un big-bang.
 
-> Note : voir aussi le chantier [PHP 8](php8.md). Rendre l'appli sûre en PHP 8.x est un
-> objectif à **court terme** (indépendant et bien moins coûteux) ; le rewrite Django est
-> une alternative de **long terme**. Les deux ne se cumulent pas : si Django aboutit, PHP 8
-> devient sans objet — mais on ne parie pas là-dessus tant que Django n'est pas engagé.
+> Note : le passage à PHP 8.5 est fait (voir `CHANGELOG.md`) ; le rewrite Django reste
+> une alternative de **long terme**, à ne pas engager sans volonté claire.
 
 ---
 
@@ -140,7 +138,7 @@ une console web 100 % dédiée Postgres.
 
 1. **Court terme, concret** — migrer l'hébergement vers un **VPS-1**, PHP + **MariaDB**
    inchangés, déploiement Git/Docker. Bénéfice immédiat, risque faible, coût égal ou moindre.
-2. **Court/moyen terme, indépendant** — sécuriser l'appli en **PHP 8** (cf. [php8.md](php8.md)).
+2. ~~**Court/moyen terme, indépendant** — sécuriser l'appli en **PHP 8**~~ — fait (PHP 8.5).
 3. **Long terme, hypothétique** — *si* la volonté persiste, **rewrite Django incrémental**,
    et **à ce moment-là seulement** trancher **PostgreSQL vs SQLite**.
 

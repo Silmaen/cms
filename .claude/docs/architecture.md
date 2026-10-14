@@ -1,6 +1,6 @@
 # Architecture (référence agent)
 
-PHP 7.4 procédural, sans framework/routeur. 1 URL = 1 fichier `www/*.php`.
+PHP 8.5 procédural, sans framework/routeur. 1 URL = 1 fichier `www/*.php`.
 Doc humaine équivalente : `docs/architecture.md` (ne pas dupliquer, ce fichier
 est optimisé pour action rapide).
 
@@ -59,7 +59,7 @@ Délimiteurs `<!--{ $var }-->`. Fragments : `header.tpl`, `header-cdn.tpl`,
 
 ## PDF
 
-`www/impressions_*.php` (10 écrans) via TCPDF (`cgi-bin/tcpdf/`).
+`www/impressions_*.php` (10 écrans) via TCPDF (`vendor/tcpdf/`).
 `impressions_automatique_reservations_jour.php` est appelé par le cron.
 
 ## Environnements (prod / recette / test / local)

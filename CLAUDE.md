@@ -7,7 +7,7 @@
 
 Application web « maison » de gestion pour le Comité des Fêtes de Genay :
 clients/adhérents, adhésions annuelles, articles, inventaire et **réservations
-de matériel**, avec édition PDF. PHP 7.4 procédural + Smarty + MySQL (PDO),
+de matériel**, avec édition PDF. PHP 8.5 procédural + Smarty 4 + TCPDF + MySQL (PDO),
 hébergée sur mutualisé OVH.
 
 ## Repères rapides
@@ -19,18 +19,19 @@ hébergée sur mutualisé OVH.
 | Connexion BDD + init Smarty | `cgi-bin/config/config_general.php` |
 | Fonctions transverses (auth, menu, tri…) | `cgi-bin/config/fonctions_general.php` |
 | Tâche planifiée | `cgi-bin/reservations_maj_automatique.php` |
-| Environnement de recette (copie complète) | `recette/` |
+| Logique métier (une couche par domaine) | `metier/*.php` |
+| Bibliothèques tierces (Smarty, TCPDF) | `vendor/` |
 
 ## Règles de travail
 
 - **Docker/outillage** : ce projet n'a pas de conteneur ; c'est du PHP interprété.
-  Pas de build. Pour exécuter/tester, utiliser un PHP 7.4 + MySQL (voir README).
+  Pas de build. Pour exécuter/tester, utiliser un PHP 8.5 + MySQL (voir README).
 - **Pattern d'un écran** : `require config_general + fonctions_general` →
   `gestionIdentification($connexion)` (garde, sinon redirige vers `index.php`) →
   lecture `$_GET`/`$_POST` (`action`, `id_*`) → SQL PDO → `$smarty->assign(...)` →
   `$smarty->display('xxx.tpl')`. **Respecter ce squelette** pour tout nouvel écran.
 - **Un seul code, plusieurs environnements** : il n'y a plus de dossier `recette/`
-  dupliqué. Le même code (`www/` + `cgi-bin/`) est déployé sur trois branches git
+  dupliqué. Le même code (`www/` + `cgi-bin/` + `metier/` + `vendor/`) est déployé sur trois branches git
   (`main`→prod, `recette`→recette, `test`→test) plus le Docker local.
   L'environnement est **détecté automatiquement** (`cgi-bin/config/environnement.php`
   via `CDF_ENV` ou le nom d'hôte) et pilote la couleur du thème (vert/bleu/rouge/violet)
