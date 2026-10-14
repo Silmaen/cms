@@ -1,0 +1,72 @@
+# Réalignement des branches après fusion d'une Pull Request de promotion.
+#
+#   recette -> main    fusionnée : recette est rebasée sur main, puis test sur recette
+#   test    -> recette fusionnée : test est rebasée sur recette
+#
+# Une fusion « squash » crée sur la cible un commit neuf : sans ce réalignement,
+# la branche source diverge de sa cible et la PR suivante embarque l'historique
+# déjà livré. Seuls les commits arrivés sur la source APRÈS la fusion sont rejoués.
+#
+# Pour une PR fermée, GitHub exécute la version de ce fichier présente sur la
+# branche CIBLE : il doit donc exister sur main et recette.
+#
+# NOTE : si un ruleset interdit le force-push sur recette/test, il faut y autoriser
+# GitHub Actions en contournement (ou pousser avec une clé de déploiement).
+
+name: Réalignement des branches
+
+on:
+  pull_request:
+    types: [closed]
+    branches: [main, recette]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: realignement-branches
+  cancel-in-progress: false
+
+jobs:
+  realigner:
+    if: >-
+      github.event.pull_request.merged == true &&
+      ((github.base_ref == 'main' && github.head_ref == 'recette') ||
+       (github.base_ref == 'recette' && github.head_ref == 'test'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer l'historique complet
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Rebaser et pousser
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD: ${{ github.head_ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898341+github-actions[bot]@users.noreply.github.com"
+
+          # rebaser <branche> <nouvelle base> <ancienne base>
+          rebaser() {
+            echo "Rebase de '$1' sur '$2' (commits après $3)"
+            git checkout -B "$1" "origin/$1"
+            git rebase --onto "$2" "$3" "$1"
+          }
+
+          ancien_head=$(git rev-parse "origin/$HEAD")
+          rebaser "$HEAD" "origin/$BASE" "$HEAD_SHA"
+          baux=("--force-with-lease=$HEAD:$ancien_head")
+          branches=("$HEAD")
+
+          # Promotion en prod : test reposait sur l'ancienne recette, on la suit.
+          if [ "$HEAD" = "recette" ]; then
+            ancien_test=$(git rev-parse origin/test)
+            rebaser test recette "$ancien_head"
+            baux+=("--force-with-lease=test:$ancien_test")
+            branches+=(test)
+          fi
+
+          git push --atomic "${baux[@]}" origin "${branches[@]}"
