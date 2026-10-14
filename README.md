@@ -134,9 +134,14 @@ le code est modifiable à chaud. L'environnement est détecté comme `local`
 prévisualiser les thèmes `test` / `recette` / `prod`.
 
 ```bash
-./docker/build.sh      # construit l'image web (contourne une limite de BuildKit)
-docker compose up -d   # démarre les services
+cp .env.sample .env    # au premier clone (puis ajuster UID/GID)
+./dc.sh up             # construit l'image si besoin, pose l'env, démarre la stack
+./dc.sh down           # arrête (garde les données)
 ```
+
+> `./dc.sh` est un wrapper de `docker compose` (racine du dépôt) qui positionne
+> `COMPOSE_ENV_FILES` (empilement `.env.defaults` + `.env`). Détails :
+> [`docker/README.md`](docker/README.md).
 
 | Service        | Accès                                                       |
 |----------------|-------------------------------------------------------------|

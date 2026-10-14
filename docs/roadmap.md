@@ -13,8 +13,12 @@
 
 ## Technique
 
-- [ ] 🔴 **Tests unitaires + exécution automatique (CI)** — mettre en place des tests et les lancer automatiquement à chaque push. → [détails](roadmap/tests-et-ci.md)
+- [x] 🔴 **Tests unitaires + exécution automatique (CI)** — socle en place (fonctions pures/BDD + golden master des vues + CI) ; à étendre au fil de l'eau. → [détails](roadmap/tests-et-ci.md)
 - [ ] 🟠 **Compatibilité PHP 8** — moderniser le code (le plancher OVH est déjà 7.4 ; l'appli n'est pas encore sûre en 8.x). → [détails](roadmap/php8.md)
+
+## Infrastructure & modernisation
+
+- [ ] ⚪ **Migration vers un backend plus moderne** — chantier long terme, encore exploratoire : hébergement mutualisé → VPS Docker, PHP → éventuellement Python/Django, MySQL → PostgreSQL/SQLite. À mener en trois étapes découplées, jamais en une fois. → [détails](roadmap/migration-backend.md)
 
 ## Traçabilité
 

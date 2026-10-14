@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Configuration PHPUnit 9.6 (dernière version compatible PHP 7.4).
+  Lancé DANS le conteneur Docker via tests/run.sh.
+
+  Les notices/warnings NE font PAS échouer les tests : on veut observer le
+  comportement RÉEL du site (qui tourne avec ce niveau d'erreurs), y compris ses
+  bizarreries (variable non définie renvoyant null, etc.).
+-->
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.6/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="false"
+         convertWarningsToExceptions="false"
+         convertDeprecationsToExceptions="false"
+         cacheResult="false">
+    <!-- Périmètre de la couverture : TOUT notre code PHP — contrôleurs `www/*.php`
+         ET logique `cgi-bin/config`. Les bibliothèques tierces (smarty, tcpdf…) n'ont
+         pas de .php sous www/ et sont hors périmètre ; on exclut le secret local.
+         NB : les contrôleurs ne sont pas testés ligne-à-ligne (golden master = rendu),
+         ils apparaissent donc en grande partie non couverts — c'est le reflet honnête
+         de la surface restant à tester (cf. roadmap). -->
+    <coverage>
+        <include>
+            <directory suffix=".php">www</directory>
+            <directory suffix=".php">cgi-bin/config</directory>
+        </include>
+        <exclude>
+            <file>cgi-bin/config/config_secrets.php</file>
+        </exclude>
+    </coverage>
+
+    <testsuites>
+        <testsuite name="unit">
+            <directory>tests/unit</directory>
+        </testsuite>
+        <testsuite name="integration">
+            <directory>tests/integration</directory>
+        </testsuite>
+        <testsuite name="golden">
+            <directory>tests/golden</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>
