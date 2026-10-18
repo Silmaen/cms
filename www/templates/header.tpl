@@ -120,10 +120,10 @@
 	<nav>
 		<div class="row ml-1 mr-2 mt-2">
 			<div class="col-4">
-				<!--{if $smarty.session.breadcrumb=="Accueil"}-->
-					<a class="breadcrumb-item text-dark" href="accueil.php">//&nbsp; Accueil</a>
-				<!--{else}-->
-					<a class="breadcrumb-item text-dark" href="<!--{$smarty.session.nom_table}-->_liste.php?id_admin_menu=<!--{$smarty.session.id_admin_menu_selectionne}-->">//&nbsp; <!--{$smarty.session.breadcrumb}--></a>
+				<!--{* Lien de retour, sur les seuls écrans qui le demandent (formulaires : $breadcrumb).
+				       Sur une liste ou l'accueil, il répéterait l'onglet actif et le titre. *}-->
+				<!--{if $breadcrumb|default:''!=''}-->
+					<a class="breadcrumb-item text-dark" href="<!--{$smarty.session.nom_table}-->_liste.php?id_admin_menu=<!--{$smarty.session.id_admin_menu_selectionne}-->"><i class="fas fa-arrow-left"></i>&nbsp; <!--{$breadcrumb}--></a>
 				<!--{/if}-->
 			</div>
 
