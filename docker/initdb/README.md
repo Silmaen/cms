@@ -20,14 +20,18 @@ de la base (volume vide), par ordre alphabétique. Formats acceptés : `.sql`,
 
 ## Réimporter après avoir ajouté/modifié un fichier
 
-Les scripts ne se rejouent **que sur un volume vide**. Pour repartir de zéro et
-forcer un nouvel import :
+Les scripts ne se rejouent **que sur un dossier de données vide** (`docker/data/`, monté
+en dossier et non en volume : `docker compose down -v` ne l'efface donc pas). Le plus
+simple est de réimporter à chaud, stack démarrée :
 
 ```bash
-# ⚠️ supprime les données de la base locale (pas la base OVH)
-docker compose down -v
-docker compose up -d --build
+# ⚠️ remplace les données de la base locale (pas la base OVH ; la base de tests est conservée)
+./dc.sh exec -T db mysql -uroot -proot -e "DROP DATABASE comitefetes; CREATE DATABASE comitefetes; GRANT ALL ON comitefetes.* TO 'cdf'@'%';"
+./dc.sh exec -T db mysql -uroot -proot comitefetes < docker/initdb/cdfgenaytbbdd_mysql_db.sql
 ```
+
+Un dump plus ancien que le code est remis à niveau tout seul à la première page ouverte
+(migrations à chaud, voir `docs/base-de-donnees.md`).
 
 > Astuce : on peut aussi importer un dump à chaud via phpMyAdmin
 > (http://localhost:8082) sans passer par ce dossier.
