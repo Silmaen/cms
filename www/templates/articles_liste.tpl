@@ -85,7 +85,7 @@
 					
 					<div class="pull-right mb-3">
 						<!--{if $smarty.session.droit==1}-->
-							<a href="articles_formulaire.php?action=ajouter" class="btn btn-success mr-3" role="button" aria-pressed="true"><i class="fas fa-plus-circle"></i></a>
+							<a href="articles_formulaire.php?action=ajouter" class="btn btn-success mr-3" role="button" data-toggle="tooltip" data-placement="bottom" title="Ajouter" aria-pressed="true"><i class="fas fa-plus-circle"></i></a>
 						<!--{/if}-->		
 					</div>
 					
@@ -150,11 +150,11 @@
 				<!--{section name=liste_items loop=$liste_items}-->
 
 				<!--{if $liste_items[liste_items].id_etat=='1'}-->
-					<!--{$picto_etat='<i class="fa fa-circle fa-xs text-success" aria-hidden="true"></i>'}-->
+					<!--{$picto_etat='<i class="fa fa-circle fa-xs text-success" title="Actif" aria-hidden="true"></i>'}-->
 				<!--{elseif $liste_items[liste_items].id_etat=='2'}-->	
-					<!--{$picto_etat='<i class="fa fa-circle fa-xs text-warning" aria-hidden="true"></i>'}-->
+					<!--{$picto_etat='<i class="fa fa-circle fa-xs text-warning" title="Archivé" aria-hidden="true"></i>'}-->
 				<!--{else}-->
-					<!--{$picto_etat='<i class="fa fa-circle fa-xs text-danger" aria-hidden="true"></i>'}-->
+					<!--{$picto_etat='<i class="fa fa-circle fa-xs text-danger" title="Supprimé" aria-hidden="true"></i>'}-->
 				<!--{/if}-->
 
 

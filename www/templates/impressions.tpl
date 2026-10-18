@@ -13,7 +13,7 @@
 							<input type="text" class="form-control form-control-danger" id="date_depart_reservation" name="date_depart_reservation" value="<!--{$aujourdhui}-->" onkeydown="return false" >
 						</div>				
 						<div class="col-1">							
-							<button id="btnSubmit" type="submit" class="btn btn-vert"><i class="fas fa-print fa-lg"></i></button>
+							<button id="btnSubmit" type="submit" class="btn btn-vert" data-toggle="tooltip" data-placement="bottom" title="Imprimer"><i class="fas fa-print fa-lg"></i></button>
 						</div>
 						<div class="col-1">&nbsp;</div>
 					</div>
@@ -58,7 +58,7 @@
 
 
 							<div class="col-1 text-right bg-light">							
-								<button id="btnSubmit" type="submit" class="btn btn-vert"><i class="fas fa-print fa-lg"></i></button>
+								<button id="btnSubmit" type="submit" class="btn btn-vert" data-toggle="tooltip" data-placement="bottom" title="Imprimer"><i class="fas fa-print fa-lg"></i></button>
 							</div>				
 						</div>			
 						<script>
@@ -107,7 +107,7 @@
 							<input type="text" class="form-control form-control-danger" id="date_retour_reservation" name="date_retour_reservation" value="<!--{$aujourdhui}-->" onkeydown="return false" >
 						</div>				
 						<div class="col-1">							
-							<button id="btnSubmit" type="submit" class="btn btn-vert"><i class="fas fa-print fa-lg"></i></button>
+							<button id="btnSubmit" type="submit" class="btn btn-vert" data-toggle="tooltip" data-placement="bottom" title="Imprimer"><i class="fas fa-print fa-lg"></i></button>
 						</div>
 						<div class="col-1">&nbsp;</div>
 					</div>
@@ -149,7 +149,7 @@
 
 
 							<div class="col-1 text-right bg-light">							
-								<button id="btnSubmit" type="submit" class="btn btn-vert"><i class="fas fa-print fa-lg"></i></button>
+								<button id="btnSubmit" type="submit" class="btn btn-vert" data-toggle="tooltip" data-placement="bottom" title="Imprimer"><i class="fas fa-print fa-lg"></i></button>
 							</div>				
 						</div>			
 						<script>
@@ -207,7 +207,7 @@
 							<input type="text" class="form-control form-control-danger" id="date_depart_article" name="date_depart_article" value="<!--{$aujourdhui}-->" onkeydown="return false" >
 						</div>				
 						<div class="col-1">							
-							<button id="btnSubmit" type="submit" class="btn btn-vert"><i class="fas fa-print fa-lg"></i></button>
+							<button id="btnSubmit" type="submit" class="btn btn-vert" data-toggle="tooltip" data-placement="bottom" title="Imprimer"><i class="fas fa-print fa-lg"></i></button>
 						</div>
 						<div class="col-1">&nbsp;</div>
 					</div>
@@ -253,7 +253,7 @@
 							</div>				
 
 							<div class="col-1 text-right bg-light">							
-								<button id="btnSubmit" type="submit" class="btn btn-vert"><i class="fas fa-print fa-lg"></i></button>
+								<button id="btnSubmit" type="submit" class="btn btn-vert" data-toggle="tooltip" data-placement="bottom" title="Imprimer"><i class="fas fa-print fa-lg"></i></button>
 							</div>				
 						</div>			
 			
@@ -299,7 +299,7 @@
 							</div>				
 
 							<div class="col-1 text-right bg-light">							
-								<button id="btnSubmit" type="submit" class="btn btn-vert"><i class="fas fa-print fa-lg"></i></button>
+								<button id="btnSubmit" type="submit" class="btn btn-vert" data-toggle="tooltip" data-placement="bottom" title="Imprimer"><i class="fas fa-print fa-lg"></i></button>
 							</div>				
 						</div>			
 			
@@ -348,7 +348,7 @@
 							</div>				
 
 							<div class="col-1 text-right bg-light">							
-								<button id="btnSubmit" type="submit" class="btn btn-vert"><i class="fas fa-print fa-lg"></i></button>
+								<button id="btnSubmit" type="submit" class="btn btn-vert" data-toggle="tooltip" data-placement="bottom" title="Imprimer"><i class="fas fa-print fa-lg"></i></button>
 							</div>				
 						</div>			
 
