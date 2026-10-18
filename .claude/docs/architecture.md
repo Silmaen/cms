@@ -54,7 +54,7 @@ cohabitation normale. **Conserver la définition en PascalCase.**
 
 ## Smarty
 
-Délimiteurs `<!--{ $var }-->`. Fragments : `header.tpl`, `header-cdn.tpl`,
+Délimiteurs `<!--{ $var }-->`. Fragments : `header.tpl`,
 `header_mdp.tpl`, `footer.tpl`. Compilation dans `www/templates_c/`.
 
 ## PDF
