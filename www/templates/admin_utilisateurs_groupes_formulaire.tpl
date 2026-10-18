@@ -56,7 +56,7 @@
 			<a href="<!--{$smarty.session.nom_table}-->_liste.php?id_admin_menu=<!--{$smarty.session.id_admin_menu_selectionne}-->" class="btn btn-lg btn-danger" role="button" data-toggle="tooltip" data-placement="bottom" title="Annuler" aria-pressed="true"><i class="fas fa-times-circle fa-lg"></i></a>
 			<!--{if $smarty.session.droit==1}-->
 				&nbsp;&nbsp;&nbsp;
-				<button id="btnSubmit" type="submit" class="btn btn-lg btn-vert"><i class="fas fa-check-circle fa-lg"></i></button>
+				<button id="btnSubmit" type="submit" class="btn btn-lg btn-vert" data-toggle="tooltip" data-placement="bottom" title="Valider"><i class="fas fa-check-circle fa-lg"></i></button>
 			<!--{/if}-->
 		</div>		
 
