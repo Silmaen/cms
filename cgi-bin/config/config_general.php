@@ -42,6 +42,8 @@ catch(PDOException $e){
 // Mise à niveau du schéma à chaud (base restaurée depuis une sauvegarde antérieure).
 require_once(__DIR__ . '/../../metier/schema.php');
 SchemaMettreAJour($connexion);
+// Préférences utilisateur : lues à la connexion par GestionIdentification().
+require_once(__DIR__ . '/../../metier/preferences.php');
 
 /////////////////////////////////////////////////////
 // Exposition de l'environnement aux vues (templates) //

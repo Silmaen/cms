@@ -93,3 +93,14 @@ dépend du `sql_mode` du serveur. Correctif : agréger ou compléter le `GROUP B
 Le calcul ajoute `$row_rendu["quantite_rendue"]`, clé qui n'existe jamais (la boucle
 remplit `$row_articles["quantite_rendue"]`) : le terme vaut toujours 0. Probablement
 `$row_articles["quantite_rendue"]` attendu. **À confirmer** métier avant correction.
+
+## 🟡 Page protégée sans session — redirection perdue si les erreurs sont affichées
+
+`cgi-bin/config/fonctions_general.php`, `GestionIdentification()`.
+
+Sans session, la fonction lit `$_POST["email"]` / `$_POST["mdp"]` sans `isset()`. Quand
+`display_errors` est actif (Docker local), les avertissements « Undefined array key » sont
+envoyés avant le `header("Location:index.php")`, qui échoue : on obtient une page blanche
+d'avertissements au lieu de la page de connexion (le `exit()` empêche toute fuite de
+contenu). Sans affichage des erreurs (OVH), la redirection fonctionne. Correctif : tester
+la présence des champs avant la requête.
