@@ -37,7 +37,7 @@
     <script src="assets/vendor/gijgo/js/messages/messages.fr-fr.js" type="text/javascript"></script>
 
 </head>
-<body data-env="<!--{$cdf_env}-->">
+<body data-env="<!--{$cdf_env}-->" data-theme="<!--{$smarty.session.theme|default:'clair'}-->">
 
 	<!--{if $cdf_env_badge}--><div class="cdf-env-badge"><!--{$cdf_env_libelle}--></div><!--{/if}-->
 
@@ -91,6 +91,9 @@
 
 					-->
 					<!--{/if}-->
+					<li class="nav-item">
+						<a class="nav-link text-dark font-weight-bold" href="preferences.php" title="Mes préférences" alt="Mes préférences"><i class="fas fa-cog fa-lg"></i></a>
+					</li>
 					<li class="nav-item">
 						<a class="nav-link text-dark font-weight-bold" href="index.php?action=deconnecter" title="Déconnecter <!--{$smarty.session.prenom_utilisateur}--> <!--{$smarty.session.nom_utilisateur}-->" alt="Déconnecter <!--{$smarty.session.prenom_utilisateur}--> <!--{$smarty.session.nom_utilisateur}-->"><i class="fas fa-power-off fa-lg"></i></a>
 					</li>

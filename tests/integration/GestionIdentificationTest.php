@@ -9,6 +9,7 @@ final class GestionIdentificationTest extends DatabaseTestCase
 	protected function setUp(): void
 	{
 		parent::setUp();
+		SchemaMettreAJour($this->pdo); // table des préférences, lue à la connexion
 		// Un utilisateur dont le mot de passe est stocké haché (comme en prod).
 		$mdp = GestionHashage('secret');
 		$this->pdo->exec(
@@ -29,6 +30,16 @@ final class GestionIdentificationTest extends DatabaseTestCase
 		$this->assertSame('Jean', $_SESSION['prenom_utilisateur']);
 		$this->assertEquals(1, $_SESSION['id_utilisateur_groupe']);
 		$this->assertEquals(50, $_SESSION['items_par_page']);
+		$this->assertSame('clair', $_SESSION['theme']); // aucune préférence → défaut
+	}
+
+	public function testThemePrefereChargeEnSession(): void
+	{
+		PreferenceEnregistrer($this->pdo, 3, 'theme', 'sombre');
+		$_POST = ['email' => 'jean@exemple.fr', 'mdp' => 'secret'];
+
+		$this->assertTrue(GestionIdentification($this->pdo));
+		$this->assertSame('sombre', $_SESSION['theme']);
 	}
 
 	public function testMauvaisMotDePasseRenvoieFalse(): void

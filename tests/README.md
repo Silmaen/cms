@@ -67,10 +67,12 @@ un snapshot après un changement voulu : supprimer le fichier concerné et relan
 - ✅ **Fonctions pures** : `GestionHashage`, `GestionDate`, `GestionUtilisateursEtats`.
 - ✅ **Fonctions BDD** : `GestionMenu`, `GestionSuppression`, `GestionIdentification`,
   `GestionPagination`, `GestionMenusDroits`, `DupliquerSessionUtilisateur`, `GestionTri`.
+- ✅ **Préférences utilisateur** : `PreferencesTest` (défauts, validation, pagination appliquée
+  à tous les écrans) ; thème chargé en session par `GestionIdentification`.
 - ✅ **Migrations de schéma** : la fixture est une base en version 0 ; `SchemaTest` vérifie la
   mise à niveau, son idempotence et le rejeu sur une base partiellement migrée.
-- ✅ **Vues (golden master)** : page de connexion (`index.tpl`) et accueil connecté
-  (`accueil.tpl` → navbar du header).
+- ✅ **Vues (golden master)** : page de connexion (`index.tpl`), accueil connecté
+  (`accueil.tpl` → navbar du header) et « Mes préférences » (`preferences.tpl`).
 - ✅ **CI** : `.github/workflows/tests.yml` — sur chaque **Pull Request** (MySQL démarré
   via `docker run`, versions lues dans `.ovhconfig` / `.env.defaults`).
 

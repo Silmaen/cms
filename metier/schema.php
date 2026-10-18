@@ -46,7 +46,12 @@ function SchemaVersionCode()
  */
 function SchemaVersionBase($connexion)
 {
-	$resultat = $connexion->query("SELECT version FROM admin_schema WHERE id_schema=1");
+	// Table absente : false en mode silencieux (production), exception sinon (tests).
+	try {
+		$resultat = $connexion->query("SELECT version FROM admin_schema WHERE id_schema=1");
+	} catch (PDOException $e) {
+		$resultat = false;
+	}
 	if (!$resultat) {
 		return 0;
 	}
