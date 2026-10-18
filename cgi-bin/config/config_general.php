@@ -1,4 +1,7 @@
 <?php
+// Cookie de session en SameSite=Lax : envoyé lors des navigations normales (liens, e-mails),
+// pas lors des requêtes émises depuis un autre site.
+ini_set('session.cookie_samesite', 'Lax');
 session_start();
 ///////////////////////////////////////////
 // Configuration et initilisation Smarty //

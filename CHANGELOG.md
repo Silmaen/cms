@@ -4,6 +4,9 @@ Ce qui est livré. Ce qui est prévu est dans [`docs/roadmap.md`](docs/roadmap.m
 
 ## En développement
 
+- Template inutilisé `header-cdn.tpl` (variante du header chargée depuis des CDN) supprimé.
+- Fil d'ariane : « // Réservations » (doublon de l'onglet et du titre) supprimé des listes et de l'accueil ; les formulaires affichent un lien « ← Retour à la liste ».
+- Cookie de session en `SameSite=Lax` (avertissement du navigateur supprimé).
 - Formulaire article : l'en-tête n'est plus affiché en double (test de non-régression sur tous les templates).
 - Console du navigateur assainie : police Font Awesome 4.7 aux boîtes de glyphes recalculées (avertissement « Glyph bbox was incorrect »), référence à une carte de sources absente retirée de `popper.min.js` (404).
 - **Interface « moderne »** au choix dans « Mes préférences » (barre claire, tableaux et formulaires en cartes, pagination en pastilles), compatible thème sombre ; l'interface classique reste celle par défaut.
