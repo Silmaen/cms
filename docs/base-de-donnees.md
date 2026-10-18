@@ -14,6 +14,22 @@ s'articulent.
 - **Clés primaires** : la colonne `id_<table>` (ex. `id_client`) ; les
   `AUTO_INCREMENT`/`PRIMARY KEY` sont posés par des `ALTER TABLE` en fin de dump.
 
+## Mise à jour du schéma « à chaud »
+
+On peut restaurer à tout moment une sauvegarde **plus ancienne** que le code : l'application
+la remet à niveau toute seule, à la première page ouverte, sans script à lancer.
+
+- La table `admin_schema` retient la **version** du schéma de la base.
+- Les évolutions sont des **migrations numérotées** dans `metier/schema.php`. Celles que
+  la base n'a pas encore sont appliquées dans l'ordre ; une base sans `admin_schema`
+  (antérieure à ce mécanisme) est en version 0 et les reçoit toutes.
+- Chaque migration est **rejouable** : elle vérifie ce qui existe déjà avant d'agir.
+- Pour faire évoluer le schéma : **ajouter** une migration en fin de liste, ne jamais en
+  modifier une existante, ni faire un `ALTER TABLE` à la main.
+
+Tables créées par migration : `admin_schema` et `admin_utilisateurs_preferences`
+(préférences utilisateur, une ligne par utilisateur et par préférence).
+
 ## Les grandes familles de tables
 
 **Les données métier** — le cœur de l'activité :

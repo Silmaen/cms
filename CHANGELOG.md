@@ -4,6 +4,7 @@ Ce qui est livré. Ce qui est prévu est dans [`docs/roadmap.md`](docs/roadmap.m
 
 ## En développement
 
+- Mise à jour du schéma de la base **à chaud** par migrations numérotées : une sauvegarde ancienne restaurée se remet à niveau seule.
 - Passage à **PHP 8.5** (`.ovhconfig`, image Docker locale, CI).
 - Smarty 3.1.32 → **4.5.8** et TCPDF 6.4.1 → **6.11.4**, compatibles PHP 8.5.
 - Accents des PDF restaurés : ils étaient devenus `�` lors de la conversion des sources en UTF-8 ; `utf8_encode()` (déprécié) supprimé.
