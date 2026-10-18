@@ -36,6 +36,9 @@ hébergée sur mutualisé OVH.
   L'environnement est **détecté automatiquement** (`cgi-bin/config/environnement.php`
   via `CDF_ENV` ou le nom d'hôte) et pilote la couleur du thème (vert/bleu/rouge/violet)
   et le bandeau. Ne pas ré-introduire de duplication de dossier.
+- **Schéma à chaud** : toute modification de schéma = nouvelle migration rejouable en fin
+  de `metier/schema.php` (une base restaurée depuis une sauvegarde ancienne se remet à
+  niveau seule). Voir [`base-de-donnees.md`](.claude/docs/base-de-donnees.md).
 - **Soft-delete** : ne jamais `DELETE` une ligne métier ; utiliser `id_etat`
   (1=actif, 2=archivé, 3=supprimé) via `gestionSuppression()`.
 - **Secrets BDD hors git** : `config_general.php` est désormais versionné et **sans

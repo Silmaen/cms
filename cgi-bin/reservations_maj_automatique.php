@@ -15,6 +15,10 @@ catch(PDOException $e){
 	exit();
 }
 
+// Mise à niveau du schéma à chaud (base restaurée depuis une sauvegarde antérieure).
+require_once(__DIR__ . '/../metier/schema.php');
+SchemaMettreAJour($connexion);
+
 $resultat_cron ="fichier appelé <br/>";
 
 // CHANGEMENT DE L'ETAT DES RESERVATIONS DONT LA DATE DE RETOUR > AUJOURD'HUI
