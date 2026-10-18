@@ -9,6 +9,7 @@ require_once __DIR__ . '/../cgi-bin/config/environnement.php';
 
 // Couche métier (fonctions extraites des contrôleurs).
 require_once __DIR__ . '/../metier/schema.php';
+require_once __DIR__ . '/../metier/preferences.php';
 require_once __DIR__ . '/../metier/commun.php';
 require_once __DIR__ . '/../metier/articles.php';
 require_once __DIR__ . '/../metier/inventaires.php';

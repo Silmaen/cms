@@ -35,5 +35,4 @@
 
 ## Fonctionnalités
 
-- [ ] ⚪ **Préférences utilisateur** — un profil de préférences que l'utilisateur peut consulter et modifier. → [détails](roadmap/preferences-utilisateur.md)
 - [ ] ⚪ **Aide en ligne** — une aide accessible directement dans l'application.
