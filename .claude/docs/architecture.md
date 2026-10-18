@@ -77,6 +77,15 @@ Indépendamment, le **thème clair/sombre** est une préférence utilisateur
 `<body>` (`header.tpl`), règles sombres sous `body[data-theme="sombre"]` dans
 `styles.css` ; `auto` est résolu en `sombre` par un script en tête de `<body>`.
 Toute nouvelle règle CSS de couleur doit avoir son pendant sombre.
+De même, l'**interface** (`classique` par défaut / `moderne`) est une préférence :
+`data-ui` sur `<body>`, surcouche `www/assets/css/moderne.css` dont **chaque**
+sélecteur commence par `body[data-ui="moderne"]` (le classique n'est jamais touché) ;
+ses variables `--ui-*` reprennent celles du thème sombre quand il est actif.
+Mêmes templates pour les deux interfaces : ne pas dupliquer d'écran.
+Ses icônes : les classes Font Awesome des templates sont redessinées en CSS avec
+Bootstrap Icons (`www/assets/vendor/bootstrap-icons/`) ; une nouvelle icône FA
+utilisée dans un template doit recevoir sa correspondance dans `moderne.css`,
+sinon elle reste en Font Awesome en interface moderne.
 
 ## Secrets
 

@@ -16,6 +16,7 @@ final class PagePreferencesTest extends SmartyRenderTestCase
 			'nom_utilisateur'           => 'Dupont',
 			'id_utilisateur_groupe'     => 2,
 			'theme'                     => 'sombre',
+			'interface'                 => 'moderne',
 		];
 
 		$html = $this->rendre('preferences.tpl', [
@@ -24,6 +25,8 @@ final class PagePreferencesTest extends SmartyRenderTestCase
 			],
 			'theme'                => 'sombre',
 			'liste_themes'         => PreferencesChoix()['theme'],
+			'interface'            => 'moderne',
+			'liste_interfaces'     => PreferencesChoix()['interface'],
 			'items_par_page'       => 50,
 			'liste_items_par_page' => [50 => '50 par page'] + PreferencesItemsParPageChoix(),
 			'message_formulaire'   => 'Préférences enregistrées',
