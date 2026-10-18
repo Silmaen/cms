@@ -32,6 +32,6 @@ préférences générique si on en prévoit d'autres.
 ## Étapes
 
 1. ~~Décider du stockage~~ → table clé/valeur `admin_utilisateurs_preferences`, créée par migration à chaud (`metier/schema.php`).
-2. Écran « Mes préférences » (lecture + édition).
+2. ~~Écran « Mes préférences »~~ → `www/preferences.php` : thème (mémorisé, porté par `data-theme` sur `<body>`) et lignes par page (appliquées à toutes les listes).
 3. Variables CSS de thème + jeu de règles sombres ; application selon la préférence.
 4. Option `auto` : suivre `prefers-color-scheme` du navigateur.
