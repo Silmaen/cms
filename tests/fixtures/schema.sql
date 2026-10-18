@@ -2,6 +2,12 @@
 -- Reprend les colonnes réelles (cf. docs/base-de-donnees.md) des tables utilisées
 -- par les fonctions testées. Rechargé avant CHAQUE test (isolation) : DROP + CREATE.
 -- Aucune donnée personnelle : les tests insèrent eux-mêmes leurs données synthétiques.
+--
+-- Ce schéma est celui d'une base ANTÉRIEURE aux migrations (version 0) : les tables
+-- créées par metier/schema.php sont supprimées, un test les obtient via SchemaMettreAJour().
+
+DROP TABLE IF EXISTS admin_schema;
+DROP TABLE IF EXISTS admin_utilisateurs_preferences;
 
 DROP TABLE IF EXISTS admin_menu;
 CREATE TABLE admin_menu (

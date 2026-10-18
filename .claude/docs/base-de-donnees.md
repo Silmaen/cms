@@ -12,6 +12,7 @@ Métier : `clients`, `clients_adhesions`, `clients_statuts`, `clients_import`,
 Test/bac à sable (ignorer) : `reservations_test`, `reservations_test_avec_id`.
 Admin : `etats`, `admin_menu`, `admin_menus_groupes`, `admin_utilisateurs`,
 `admin_utilisateurs_groupes`, `admin_utilisateurs_session`, `log_cron`.
+Créées par migration (`metier/schema.php`) : `admin_schema`, `admin_utilisateurs_preferences`.
 
 ## Colonnes (d'après les INSERT réels)
 
@@ -42,6 +43,21 @@ Admin : `etats`, `admin_menu`, `admin_menus_groupes`, `admin_utilisateurs`,
   `ordre`.
 - **admin_menus_groupes** : `id_utilisateur_groupe`, `id_admin_menu`, `droit`.
 - **log_cron** : `date`, `id_reservation`.
+- **admin_schema** : `id_schema`(PK, toujours 1), `version`, `date_modification`.
+- **admin_utilisateurs_preferences** : `id_utilisateur` + `cle` (PK), `valeur`,
+  `date_modification`. Préférence absente = valeur par défaut (comportement antérieur).
+
+## Évolution du schéma : migrations à chaud
+
+Une sauvegarde **antérieure** peut être restaurée à tout moment : le code la remet à
+niveau seul. Toute modification de schéma est une **migration numérotée** ajoutée en fin
+de `SchemaMigrations()` (`metier/schema.php`), jamais un `ALTER` manuel.
+`SchemaMettreAJour()` (appelée après la connexion dans `config_general.php` et la tâche
+planifiée) compare `admin_schema.version` à la dernière migration et applique l'écart ;
+base sans `admin_schema` = version 0, tout est rejoué. Chaque migration est donc
+**rejouable** (vérifier l'état réel avant d'agir). Sens unique : un ancien code ne lit
+jamais une base plus récente → supprimer une colonne ou changer un type est permis
+(en convertissant les données dans la migration).
 
 ## Conventions de schéma (à respecter pour toute nouvelle table/colonne)
 

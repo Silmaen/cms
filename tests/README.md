@@ -67,6 +67,8 @@ un snapshot après un changement voulu : supprimer le fichier concerné et relan
 - ✅ **Fonctions pures** : `GestionHashage`, `GestionDate`, `GestionUtilisateursEtats`.
 - ✅ **Fonctions BDD** : `GestionMenu`, `GestionSuppression`, `GestionIdentification`,
   `GestionPagination`, `GestionMenusDroits`, `DupliquerSessionUtilisateur`, `GestionTri`.
+- ✅ **Migrations de schéma** : la fixture est une base en version 0 ; `SchemaTest` vérifie la
+  mise à niveau, son idempotence et le rejeu sur une base partiellement migrée.
 - ✅ **Vues (golden master)** : page de connexion (`index.tpl`) et accueil connecté
   (`accueil.tpl` → navbar du header).
 - ✅ **CI** : `.github/workflows/tests.yml` — sur chaque **Pull Request** (MySQL démarré
