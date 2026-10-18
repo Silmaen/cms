@@ -38,6 +38,18 @@
 
 </head>
 <body data-env="<!--{$cdf_env}-->" data-theme="<!--{$smarty.session.theme|default:'clair'}-->">
+	<script>
+		// Thème « auto » : on suit le réglage de l'appareil, et ses changements en direct.
+		// Le CSS ne connaît que « sombre » ; exécuté avant le contenu, donc sans flash clair.
+		(function () {
+			var corps = document.body;
+			if (corps.getAttribute('data-theme') !== 'auto' || !window.matchMedia) return;
+			var modeSombre = window.matchMedia('(prefers-color-scheme: dark)');
+			function appliquer() { corps.setAttribute('data-theme', modeSombre.matches ? 'sombre' : 'auto'); }
+			appliquer();
+			if (modeSombre.addEventListener) modeSombre.addEventListener('change', appliquer);
+		})();
+	</script>
 
 	<!--{if $cdf_env_badge}--><div class="cdf-env-badge"><!--{$cdf_env_libelle}--></div><!--{/if}-->
 

@@ -68,3 +68,103 @@ body[data-env="local"]   { --cdf-primaire: #7d3fb8; }
   opacity: .92;
   pointer-events: none;
 }
+
+/* ------------------------------------------------------------------ */
+/* Thème sombre (préférence utilisateur, voir www/preferences.php).    */
+/* L'attribut data-theme est posé sur <body> par header.tpl :          */
+/*   clair  = rendu Bootstrap d'origine (aucune règle ci-dessous) ;    */
+/*   sombre = règles ci-dessous ;                                       */
+/*   auto   = header.tpl le bascule en « sombre » si l'appareil est    */
+/*            réglé en mode sombre (prefers-color-scheme).             */
+/* Bootstrap 4 n'a pas de mode sombre : on surcharge ses composants.   */
+/* La couleur d'accent (--cdf-primaire, par environnement) ne change pas. */
+/* ------------------------------------------------------------------ */
+body[data-theme="sombre"] {
+  --cdf-fond: #1b1e21;
+  --cdf-surface: #262a2e;
+  --cdf-surface-inactive: #30353a;
+  --cdf-bordure: #454c53;
+  --cdf-texte: #e1e4e7;
+  --cdf-texte-secondaire: #a3abb3;
+  --cdf-lien: #7ab3ff;
+
+  color-scheme: dark; /* barres de défilement, listes déroulantes et champs natifs sombres */
+  background-color: var(--cdf-fond);
+  color: var(--cdf-texte);
+}
+
+body[data-theme="sombre"] a:not(.btn):not(.nav-link):not(.page-link) { color: var(--cdf-lien); }
+/* Les traits colorés (bg-vert) gardent la couleur d'accent. */
+body[data-theme="sombre"] hr:not(.bg-vert) { border-top-color: var(--cdf-bordure); }
+
+/* Textes et fonds utilitaires (Bootstrap les pose en !important). */
+body[data-theme="sombre"] .text-dark:not(.nav-link) { color: var(--cdf-texte) !important; }
+body[data-theme="sombre"] .text-gris,
+body[data-theme="sombre"] .text-muted,
+body[data-theme="sombre"] .text-secondary { color: var(--cdf-texte-secondaire) !important; }
+body[data-theme="sombre"] .bg-light,
+body[data-theme="sombre"] .bg-white { background-color: var(--cdf-surface) !important; }
+body[data-theme="sombre"] .thead-gris,
+body[data-theme="sombre"] .bg-gris { background-color: #3b4147; }
+body[data-theme="sombre"] .border { border-color: var(--cdf-bordure) !important; }
+
+/* Tableaux. */
+body[data-theme="sombre"] .table { color: var(--cdf-texte); }
+body[data-theme="sombre"] .table td,
+body[data-theme="sombre"] .table th,
+body[data-theme="sombre"] .table thead th { border-color: var(--cdf-bordure); }
+body[data-theme="sombre"] .table-striped tbody tr:nth-of-type(odd) { background-color: rgba(255, 255, 255, .04); }
+body[data-theme="sombre"] .table-hover tbody tr:hover { background-color: rgba(255, 255, 255, .08); color: var(--cdf-texte); }
+
+/* Formulaires. */
+body[data-theme="sombre"] .form-control,
+body[data-theme="sombre"] .custom-select,
+body[data-theme="sombre"] .input-group-text {
+  background-color: var(--cdf-surface);
+  border-color: var(--cdf-bordure);
+  color: var(--cdf-texte);
+}
+body[data-theme="sombre"] .form-control:focus {
+  background-color: var(--cdf-surface);
+  color: var(--cdf-texte);
+}
+body[data-theme="sombre"] .form-control:disabled,
+body[data-theme="sombre"] .form-control[readonly] { background-color: var(--cdf-surface-inactive); }
+body[data-theme="sombre"] .form-control::placeholder { color: var(--cdf-texte-secondaire); }
+
+/* Pagination, cartes, listes, menus déroulants, fenêtres modales. */
+body[data-theme="sombre"] .page-link,
+body[data-theme="sombre"] .card,
+body[data-theme="sombre"] .list-group-item,
+body[data-theme="sombre"] .dropdown-menu,
+body[data-theme="sombre"] .modal-content {
+  background-color: var(--cdf-surface);
+  border-color: var(--cdf-bordure);
+  color: var(--cdf-texte);
+}
+body[data-theme="sombre"] .page-item.disabled .page-link { background-color: var(--cdf-surface-inactive); border-color: var(--cdf-bordure); }
+body[data-theme="sombre"] .dropdown-item { color: var(--cdf-texte); }
+body[data-theme="sombre"] .dropdown-item:hover,
+body[data-theme="sombre"] .dropdown-item:focus { background-color: var(--cdf-surface-inactive); color: var(--cdf-texte); }
+body[data-theme="sombre"] .close { color: var(--cdf-texte); text-shadow: none; }
+
+/* Bibliothèques tierces : boîtes de confirmation (jquery-confirm), calendrier (gijgo),
+   envoi de fichiers (bootstrap-fileinput). */
+body[data-theme="sombre"] .jconfirm .jconfirm-box,
+body[data-theme="sombre"] .gj-picker,
+body[data-theme="sombre"] .file-preview,
+body[data-theme="sombre"] .file-preview-frame,
+body[data-theme="sombre"] .file-drop-zone {
+  background-color: var(--cdf-surface);
+  border-color: var(--cdf-bordure);
+  color: var(--cdf-texte);
+}
+body[data-theme="sombre"] .jconfirm .jconfirm-box div.jconfirm-content-pane,
+body[data-theme="sombre"] .jconfirm .jconfirm-box div.jconfirm-title-c { color: var(--cdf-texte); }
+body[data-theme="sombre"] .gj-picker div[role="navigator"],
+body[data-theme="sombre"] .gj-picker table tr td div { color: var(--cdf-texte); }
+body[data-theme="sombre"] .gj-picker table tr td.gj-cursor-pointer:hover div { background-color: var(--cdf-surface-inactive); }
+body[data-theme="sombre"] .gj-picker [role="header"] { background-color: var(--cdf-surface-inactive); color: var(--cdf-texte-secondaire); }
+body[data-theme="sombre"] .gj-picker [role="header"] [role="date"] { color: var(--cdf-texte); }
+body[data-theme="sombre"] .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default { background-color: var(--cdf-surface-inactive); color: var(--cdf-texte); }
+body[data-theme="sombre"] .jconfirm .jconfirm-box .jconfirm-buttons button.btn-default:hover { background-color: var(--cdf-bordure); }

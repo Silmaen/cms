@@ -33,5 +33,7 @@ préférences générique si on en prévoit d'autres.
 
 1. ~~Décider du stockage~~ → table clé/valeur `admin_utilisateurs_preferences`, créée par migration à chaud (`metier/schema.php`).
 2. ~~Écran « Mes préférences »~~ → `www/preferences.php` : thème (mémorisé, porté par `data-theme` sur `<body>`) et lignes par page (appliquées à toutes les listes).
-3. Variables CSS de thème + jeu de règles sombres ; application selon la préférence.
-4. Option `auto` : suivre `prefers-color-scheme` du navigateur.
+3. ~~Règles sombres~~ → `www/assets/css/styles.css`, toutes sous `body[data-theme="sombre"]` (le thème clair n'est pas touché).
+4. ~~Option `auto`~~ → petit script en tête de `header.tpl` qui bascule `data-theme` en `sombre` selon `prefers-color-scheme`, en direct.
+
+Reste ouvert : la page de connexion (sans session) est toujours en clair ; d'autres préférences pourront s'ajouter dans `PreferencesChoix()` sans migration.
