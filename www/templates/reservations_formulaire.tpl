@@ -360,7 +360,7 @@
 					<a href="<!--{$smarty.session.nom_table}-->_liste.php?id_admin_menu=<!--{$smarty.session.id_admin_menu_selectionne}-->" class="btn btn-lg btn-danger" role="button" data-toggle="tooltip" data-placement="bottom" title="Annuler" aria-pressed="true"><i class="fas fa-times-circle fa-lg"></i></a>
 					<!--{if $smarty.session.droit==1}-->
 						&nbsp;&nbsp;&nbsp;
-						<button id="btnSubmit" type="submit" class="btn btn-lg btn-vert"><i class="fas fa-check-circle fa-lg"></i></button>
+						<button id="btnSubmit" type="submit" class="btn btn-lg btn-vert" data-toggle="tooltip" data-placement="bottom" title="Valider"><i class="fas fa-check-circle fa-lg"></i></button>
 						
 						<!--{if $email_client!=''}-->
 							&nbsp;&nbsp;&nbsp;
@@ -416,11 +416,11 @@
 				<!--{/if}-->
 				
 				<!--{if $liste_articles[liste_articles].id_etat_article=='1'}-->
-					<!--{$picto_etat='<i class="fa fa-circle fa-xs text-success" aria-hidden="true"></i>'}-->
+					<!--{$picto_etat='<i class="fa fa-circle fa-xs text-success" title="Actif" aria-hidden="true"></i>'}-->
 				<!--{elseif $liste_articles[liste_articles].id_etat_article=='2'}-->	
-					<!--{$picto_etat='<i class="fa fa-circle fa-xs text-warning" aria-hidden="true"></i>'}-->
+					<!--{$picto_etat='<i class="fa fa-circle fa-xs text-warning" title="Archivé" aria-hidden="true"></i>'}-->
 				<!--{else}-->
-					<!--{$picto_etat='<i class="fa fa-circle fa-xs text-danger" aria-hidden="true"></i>'}-->
+					<!--{$picto_etat='<i class="fa fa-circle fa-xs text-danger" title="Supprimé" aria-hidden="true"></i>'}-->
 				<!--{/if}-->
 
 				
@@ -436,7 +436,7 @@
 							<label class="col-form-label" for="qtetotale_<!--{$compteur}-->">&nbsp;<!--{$picto_etat}--> <!--{$liste_articles[liste_articles].designation}--></label>
 							
 							<!--{if $liste_articles[liste_articles].nom_fichier!=''}-->	
-								<a href="fichiers/<!--{$liste_articles[liste_articles].nom_fichier}-->.<!--{$liste_articles[liste_articles].extension}-->" target="_blank" class="btn text-dark mr-3" role="button" aria-hidden="true"><i class="fa fa-file-image-o" ></i></a>
+								<a href="fichiers/<!--{$liste_articles[liste_articles].nom_fichier}-->.<!--{$liste_articles[liste_articles].extension}-->" target="_blank" class="btn text-dark mr-3" role="button" data-toggle="tooltip" data-placement="bottom" title="Voir la photo de l'article" aria-hidden="true"><i class="fa fa-file-image-o" ></i></a>
 							<!--{/if}-->
 							
 						</div>
@@ -633,7 +633,7 @@
 			<a href="<!--{$smarty.session.nom_table}-->_liste.php?id_admin_menu=<!--{$smarty.session.id_admin_menu_selectionne}-->" class="btn btn-lg btn-danger" role="button" data-toggle="tooltip" data-placement="bottom" title="Annuler" aria-pressed="true"><i class="fas fa-times-circle fa-lg"></i></a>
 			<!--{if $smarty.session.droit==1}-->
 				&nbsp;&nbsp;&nbsp;
-				<button id="btnSubmit" type="submit" class="btn btn-lg btn-vert"><i class="fas fa-check-circle fa-lg"></i></button>
+				<button id="btnSubmit" type="submit" class="btn btn-lg btn-vert" data-toggle="tooltip" data-placement="bottom" title="Valider"><i class="fas fa-check-circle fa-lg"></i></button>
 				
 				<!--{if $email_client!=''}-->
 					&nbsp;&nbsp;&nbsp;

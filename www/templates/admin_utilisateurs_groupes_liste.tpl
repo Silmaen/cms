@@ -84,7 +84,7 @@
 					
 					<div class="pull-right mb-3">
 						<!--{if $smarty.session.droit==1}-->
-							<a href="<!--{$smarty.session.nom_table}-->_formulaire.php?action=ajouter" class="btn btn-success mr-3" role="button" aria-pressed="true"><i class="fas fa-plus-circle"></i></a>	
+							<a href="<!--{$smarty.session.nom_table}-->_formulaire.php?action=ajouter" class="btn btn-success mr-3" role="button" data-toggle="tooltip" data-placement="bottom" title="Ajouter" aria-pressed="true"><i class="fas fa-plus-circle"></i></a>	
 						<!--{/if}-->	
 					</div>
 					
