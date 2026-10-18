@@ -36,4 +36,6 @@ préférences générique si on en prévoit d'autres.
 3. ~~Règles sombres~~ → `www/assets/css/styles.css`, toutes sous `body[data-theme="sombre"]` (le thème clair n'est pas touché).
 4. ~~Option `auto`~~ → petit script en tête de `header.tpl` qui bascule `data-theme` en `sombre` selon `prefers-color-scheme`, en direct.
 
+Ajout : préférence **interface** (`classique` par défaut / `moderne`), surcouche CSS `www/assets/css/moderne.css` sous `body[data-ui="moderne"]`, sur les mêmes templates.
+
 Reste ouvert : la page de connexion (sans session) est toujours en clair ; d'autres préférences pourront s'ajouter dans `PreferencesChoix()` sans migration.

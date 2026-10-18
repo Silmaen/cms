@@ -4,6 +4,18 @@
 		<input type="hidden" id="action" name="action" value="valider">
 
 		<div class="form-group row">
+			<label class="col-sm-2 col-form-label" for="interface">Interface :</label>
+			<div class="col-sm-4">
+				<select class="form-control" id="interface" name="interface">
+					<!--{foreach $liste_interfaces as $valeur => $libelle}-->
+						<option value="<!--{$valeur}-->"<!--{if $valeur==$interface}--> selected<!--{/if}-->><!--{$libelle}--></option>
+					<!--{/foreach}-->
+				</select>
+				<small class="form-text text-muted">Mêmes écrans et mêmes fonctions ; seule la présentation change.</small>
+			</div>
+		</div>
+
+		<div class="form-group row">
 			<label class="col-sm-2 col-form-label" for="theme">Thème :</label>
 			<div class="col-sm-4">
 				<select class="form-control" id="theme" name="theme">

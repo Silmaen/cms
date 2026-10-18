@@ -20,6 +20,10 @@ function PreferencesChoix()
 			'sombre' => 'Sombre',
 			'auto'   => 'Automatique (suit le réglage de l\'appareil)',
 		),
+		'interface' => array(
+			'classique' => 'Classique',
+			'moderne'   => 'Moderne',
+		),
 	);
 }
 

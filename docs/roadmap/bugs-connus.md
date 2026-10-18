@@ -104,3 +104,12 @@ envoyés avant le `header("Location:index.php")`, qui échoue : on obtient une p
 d'avertissements au lieu de la page de connexion (le `exit()` empêche toute fuite de
 contenu). Sans affichage des erreurs (OVH), la redirection fonctionne. Correctif : tester
 la présence des champs avant la requête.
+
+## 🟡 Filtres des réservations — libellés non cliquables
+
+`www/templates/reservations_liste.tpl`, filtres Actives / Toutes / A valider / 6 mois.
+
+Chaque `<label>` porte `for="filtre_reservations"`, alors que les boutons radio ont pour
+identifiants `filtre_reservations_1`, `_3`, `_4`, `_5` : cliquer sur le texte ne fait rien,
+il faut viser le bouton radio. (L'interface moderne contourne le problème : le bouton
+radio couvre toute la pastille.) Correctif : `for="filtre_reservations_N"` sur chaque libellé.
