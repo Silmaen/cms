@@ -4,6 +4,7 @@ Ce qui est livré. Ce qui est prévu est dans [`docs/roadmap.md`](docs/roadmap.m
 
 ## En développement
 
+- Info-bulles ajoutées sur les 24 boutons et liens à icône seule qui n'en avaient pas (Valider, Ajouter, Imprimer, photo d'article…) et sur les pastilles d'état (Actif / Archivé / Supprimé) ; test qui l'impose à tous les templates.
 - Template inutilisé `header-cdn.tpl` (variante du header chargée depuis des CDN) supprimé.
 - Fil d'ariane : « // Réservations » (doublon de l'onglet et du titre) supprimé des listes et de l'accueil ; les formulaires affichent un lien « ← Retour à la liste ».
 - Cookie de session en `SameSite=Lax` (avertissement du navigateur supprimé).
