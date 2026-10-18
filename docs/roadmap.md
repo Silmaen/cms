@@ -30,7 +30,6 @@
 ## Interface
 
 - [ ] ⚪ **Rendu responsive** — adapter l'affichage aux petits écrans et revoir les largeurs de colonnes.
-- [ ] ⚪ **Thème sombre** — proposer un mode sombre, mémorisé dans les préférences utilisateur. → [détails](roadmap/preferences-utilisateur.md)
 - [ ] ⚪ **Logo du Comité des Fêtes** — remplacer le logo provisoire « cms ».
 
 ## Fonctionnalités

@@ -4,6 +4,7 @@ Ce qui est livré. Ce qui est prévu est dans [`docs/roadmap.md`](docs/roadmap.m
 
 ## En développement
 
+- **Thème sombre** au choix dans « Mes préférences » (clair, sombre, ou automatique selon l'appareil) ; le thème clair est inchangé.
 - Écran **« Mes préférences »** (icône ⚙ de la barre) : thème et nombre de lignes par page, appliqué à toutes les listes.
 - Mise à jour du schéma de la base **à chaud** par migrations numérotées : une sauvegarde ancienne restaurée se remet à niveau seule.
 - Passage à **PHP 8.5** (`.ovhconfig`, image Docker locale, CI).

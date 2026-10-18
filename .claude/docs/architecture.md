@@ -72,6 +72,12 @@ expose `CDF_ENV` / `CDF_ENV_LIBELLE` / `CDF_ENV_BADGE` aux templates : couleur d
 thème (`data-env` sur `<body>` → var CSS `--cdf-primaire`) et bandeau
 d'environnement. Vert=prod, bleu=recette, rouge/orange=test, violet=local.
 
+Indépendamment, le **thème clair/sombre** est une préférence utilisateur
+(`metier/preferences.php`, chargée en session à la connexion) : `data-theme` sur
+`<body>` (`header.tpl`), règles sombres sous `body[data-theme="sombre"]` dans
+`styles.css` ; `auto` est résolu en `sombre` par un script en tête de `<body>`.
+Toute nouvelle règle CSS de couleur doit avoir son pendant sombre.
+
 ## Secrets
 
 `config_general.php` est désormais **versionné et sans secret**. Les identifiants
