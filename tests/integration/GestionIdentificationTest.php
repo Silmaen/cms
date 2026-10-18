@@ -31,6 +31,7 @@ final class GestionIdentificationTest extends DatabaseTestCase
 		$this->assertEquals(1, $_SESSION['id_utilisateur_groupe']);
 		$this->assertEquals(50, $_SESSION['items_par_page']);
 		$this->assertSame('clair', $_SESSION['theme']); // aucune préférence → défaut
+		$this->assertSame('classique', $_SESSION['interface']);
 	}
 
 	public function testThemePrefereChargeEnSession(): void

@@ -18,7 +18,7 @@ final class PreferencesTest extends DatabaseTestCase
 
 	public function testValeursParDefautSansPreferenceEnregistree(): void
 	{
-		$this->assertSame(['theme' => 'clair'], PreferencesLire($this->pdo, 1));
+		$this->assertSame(['theme' => 'clair', 'interface' => 'classique'], PreferencesLire($this->pdo, 1));
 	}
 
 	public function testEnregistrerPuisRelire(): void
@@ -31,6 +31,13 @@ final class PreferencesTest extends DatabaseTestCase
 		$this->assertSame('clair', PreferencesLire($this->pdo, 2)['theme']);
 	}
 
+	public function testInterfaceModerne(): void
+	{
+		$this->assertTrue(PreferenceEnregistrer($this->pdo, 1, 'interface', 'moderne'));
+		$this->assertFalse(PreferenceEnregistrer($this->pdo, 1, 'interface', 'futuriste'));
+		$this->assertSame(['theme' => 'clair', 'interface' => 'moderne'], PreferencesLire($this->pdo, 1));
+	}
+
 	public function testCleOuValeurInconnueRefusee(): void
 	{
 		$this->assertFalse(PreferenceEnregistrer($this->pdo, 1, 'theme', 'fluo'));
@@ -41,14 +48,14 @@ final class PreferencesTest extends DatabaseTestCase
 	public function testValeurObsoleteEnBaseIgnoree(): void
 	{
 		$this->pdo->exec("INSERT INTO admin_utilisateurs_preferences (id_utilisateur, cle, valeur) VALUES (1, 'theme', 'fluo'), (1, 'retiree', 'x')");
-		$this->assertSame(['theme' => 'clair'], PreferencesLire($this->pdo, 1));
+		$this->assertSame(['theme' => 'clair', 'interface' => 'classique'], PreferencesLire($this->pdo, 1));
 	}
 
 	public function testTableAbsenteDonneLesValeursParDefaut(): void
 	{
 		$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_SILENT);
 		$this->pdo->exec("DROP TABLE admin_utilisateurs_preferences");
-		$this->assertSame(['theme' => 'clair'], PreferencesLire($this->pdo, 1));
+		$this->assertSame(['theme' => 'clair', 'interface' => 'classique'], PreferencesLire($this->pdo, 1));
 	}
 
 	public function testItemsParPageAppliqueATousLesEcransDeLUtilisateur(): void

@@ -26,13 +26,17 @@ if(isset($_POST["action"]) AND $_POST["action"]=="valider")
 {
 	$enregistre = true;
 
-	if(PreferenceEnregistrer($connexion, $_SESSION["id_utilisateur"], 'theme', $_POST["theme"] ?? ''))
+	// Chaque préférence est aussi mise en session ($_SESSION['theme'], $_SESSION['interface']…).
+	foreach(array_keys(PreferencesChoix()) as $cle)
 	{
-		$_SESSION['theme'] = $_POST["theme"];
-	}
-	else
-	{
-		$enregistre = false;
+		if(PreferenceEnregistrer($connexion, $_SESSION["id_utilisateur"], $cle, $_POST[$cle] ?? ''))
+		{
+			$_SESSION[$cle] = $_POST[$cle];
+		}
+		else
+		{
+			$enregistre = false;
+		}
 	}
 
 	// Seulement si la valeur change : l'enregistrer écrase le réglage propre à chaque liste.
@@ -62,6 +66,8 @@ if(isset($_GET["enregistre"]))
 $preferences = PreferencesLire($connexion, $_SESSION["id_utilisateur"]);
 $smarty->assign('theme',$preferences['theme']);
 $smarty->assign('liste_themes',PreferencesChoix()['theme']);
+$smarty->assign('interface',$preferences['interface']);
+$smarty->assign('liste_interfaces',PreferencesChoix()['interface']);
 
 $items_par_page = PreferencesItemsParPageLire($connexion, $_SESSION["id_utilisateur"]);
 if($items_par_page===false) echo "Préférences : Pb d'accès à la table admin_utilisateurs";
