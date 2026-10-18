@@ -4,6 +4,13 @@ Ce qui est livré. Ce qui est prévu est dans [`docs/roadmap.md`](docs/roadmap.m
 
 ## En développement
 
+- Formulaire article : l'en-tête n'est plus affiché en double (test de non-régression sur tous les templates).
+- Console du navigateur assainie : police Font Awesome 4.7 aux boîtes de glyphes recalculées (avertissement « Glyph bbox was incorrect »), référence à une carte de sources absente retirée de `popper.min.js` (404).
+- **Interface « moderne »** au choix dans « Mes préférences » (barre claire, tableaux et formulaires en cartes, pagination en pastilles), compatible thème sombre ; l'interface classique reste celle par défaut.
+- Interface moderne : icônes au trait fin (Bootstrap Icons, servies en local) et palette de boutons harmonisée, avec boutons d'action teintés dans les listes.
+- Interface moderne : boutons d'action des listes sur une seule ligne, en trois groupes (consultation/édition, état, suppression à part).
+- Interface moderne : barre de filtres des listes en barre d'outils (recherche avec loupe, filtres en pastilles entièrement cliquables, bouton « Ajouter » libellé).
+- Interface moderne : formulaires avec libellés au-dessus des champs et barre Annuler / Enregistrer collée en bas d'écran ; en-tête de page (fil d'ariane + titre à gauche, message en pastille) ; tri, info-bulles et boîtes de confirmation modernisés.
 - **Thème sombre** au choix dans « Mes préférences » (clair, sombre, ou automatique selon l'appareil) ; le thème clair est inchangé.
 - Écran **« Mes préférences »** (icône ⚙ de la barre) : thème et nombre de lignes par page, appliqué à toutes les listes.
 - Mise à jour du schéma de la base **à chaud** par migrations numérotées : une sauvegarde ancienne restaurée se remet à niveau seule.

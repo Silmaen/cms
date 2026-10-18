@@ -1,0 +1,581 @@
+/* ------------------------------------------------------------------ */
+/* Interface « moderne » (préférence utilisateur, voir                 */
+/* www/preferences.php). L'attribut data-ui est posé sur <body> par    */
+/* header.tpl : « classique » (défaut) n'est concerné par aucune règle */
+/* de ce fichier ; « moderne » est une surcouche de présentation sur   */
+/* les mêmes écrans (mêmes templates, mêmes fonctions).                */
+/*                                                                    */
+/* Compatible thème sombre : les variables --ui-* reprennent celles    */
+/* du thème sombre (styles.css) quand il est actif, sinon des valeurs  */
+/* claires. La couleur d'accent reste celle de l'environnement.        */
+/* ------------------------------------------------------------------ */
+body[data-ui="moderne"] {
+  --ui-fond: var(--cdf-fond, #f3f5f8);
+  --ui-surface: var(--cdf-surface, #ffffff);
+  --ui-surface-2: var(--cdf-surface-inactive, #eef1f5);
+  --ui-bordure: var(--cdf-bordure, #dfe3e8);
+  --ui-texte: var(--cdf-texte, #1f2937);
+  --ui-texte-2: var(--cdf-texte-secondaire, #6b7280);
+  --ui-ombre: 0 1px 2px rgba(16, 24, 40, .06), 0 2px 6px rgba(16, 24, 40, .08);
+  --ui-rayon: .6rem;
+
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  background-color: var(--ui-fond);
+  color: var(--ui-texte);
+}
+
+/* ---------- Barre de menu : claire, filet d'accent en haut ---------- */
+body[data-ui="moderne"] .navbar.bg-vert {
+  background-color: var(--ui-surface);
+  border-top: 4px solid var(--cdf-primaire);
+  box-shadow: var(--ui-ombre);
+  padding-top: .35rem;
+  padding-bottom: .35rem;
+}
+body[data-ui="moderne"] .navbar-brand svg g { fill: var(--ui-texte); }
+body[data-ui="moderne"] .navbar .nav-link {
+  color: var(--ui-texte-2) !important;
+  border-radius: .5rem;
+  padding: .45rem .8rem;
+  transition: background-color .15s, color .15s;
+}
+body[data-ui="moderne"] .navbar .nav-link:hover {
+  color: var(--ui-texte) !important;
+  background-color: var(--ui-surface-2);
+}
+body[data-ui="moderne"] .navbar .nav-link.active {
+  color: var(--cdf-primaire) !important;
+  background-color: var(--ui-surface-2);
+}
+body[data-ui="moderne"][data-theme="sombre"] .navbar .nav-link.active {
+  color: color-mix(in srgb, var(--cdf-primaire) 60%, #fff) !important; /* accent éclairci : lisible sur fond sombre */
+}
+/* Icône du menu replié (mobile) : prévue pour fond foncé, inversée sur fond clair. */
+body[data-ui="moderne"]:not([data-theme="sombre"]) .navbar-toggler-icon { filter: invert(1); }
+
+/* ---------- Fil d'ariane et titre de page ---------- */
+body[data-ui="moderne"] .breadcrumb-item { color: var(--ui-texte-2) !important; font-size: .9rem; }
+body[data-ui="moderne"] h1.text-gris {
+  color: var(--ui-texte);
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: -.01em;
+}
+body[data-ui="moderne"] hr.style-5 {
+  background: transparent;
+  border-top: 1px solid var(--ui-bordure);
+}
+
+/* ---------- Tableaux : carte blanche, en-tête discret, sans rayures ---------- */
+body[data-ui="moderne"] .table {
+  background-color: var(--ui-surface);
+  color: var(--ui-texte);
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: var(--ui-rayon);
+  box-shadow: var(--ui-ombre);
+  overflow: hidden;
+}
+/* En-têtes gris (thead des listes, ligne d'en-tête « row bg-gris » des formulaires). */
+body[data-ui="moderne"] .thead-gris,
+body[data-ui="moderne"] .row.bg-gris { background-color: var(--ui-surface-2); }
+body[data-ui="moderne"] .thead-gris.text-white,
+body[data-ui="moderne"] .thead-gris .text-white,
+body[data-ui="moderne"] .row.bg-gris.text-white { color: var(--ui-texte-2) !important; }
+/* Bouton de la colonne triée : reste blanc sur sa couleur. */
+body[data-ui="moderne"] .thead-gris .btn-info.text-white { color: #fff !important; }
+body[data-ui="moderne"] .table thead th {
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  border-top: 0;
+  border-bottom: 1px solid var(--ui-bordure);
+}
+body[data-ui="moderne"] .table td { vertical-align: middle; border-top: 1px solid var(--ui-bordure); }
+body[data-ui="moderne"] .table-striped tbody tr:nth-of-type(odd) { background-color: transparent; }
+body[data-ui="moderne"] .table-hover tbody tr:hover {
+  background-color: var(--ui-surface-2);
+  color: var(--ui-texte);
+}
+
+/* ---------- Formulaires de saisie : posés sur une carte ---------- */
+body[data-ui="moderne"] form[id^="formulaire-"] {
+  display: flow-root; /* contient les boutons flottants Annuler/Valider */
+  background-color: var(--ui-surface);
+  border-radius: var(--ui-rayon);
+  box-shadow: var(--ui-ombre);
+  padding: 1.5rem;
+  margin: 0 1rem 2rem;
+  max-width: calc(100% - 2rem);
+}
+body[data-ui="moderne"] .col-form-label { color: var(--ui-texte-2); font-weight: 500; }
+body[data-ui="moderne"] .form-control,
+body[data-ui="moderne"] .custom-select {
+  background-color: var(--ui-surface);
+  border-color: var(--ui-bordure);
+  border-radius: .5rem;
+  color: var(--ui-texte);
+}
+body[data-ui="moderne"] .form-control:focus {
+  border-color: var(--cdf-primaire);
+  box-shadow: 0 0 0 .2rem color-mix(in srgb, var(--cdf-primaire) 25%, transparent);
+}
+body[data-ui="moderne"] .form-control:disabled,
+body[data-ui="moderne"] .form-control[readonly] { background-color: var(--ui-surface-2); }
+
+/* ---------- Boutons ---------- */
+body[data-ui="moderne"] .btn {
+  border-radius: .5rem;
+  font-weight: 500;
+  transition: filter .15s, box-shadow .15s;
+}
+body[data-ui="moderne"] .btn-sm { border-radius: .4rem; }
+body[data-ui="moderne"] .btn-lg { border-radius: .65rem; box-shadow: var(--ui-ombre); }
+body[data-ui="moderne"] .btn:not(.btn-link):hover { filter: brightness(1.07); }
+
+/* ---------- Pagination : pastilles séparées, page courante en accent ---------- */
+body[data-ui="moderne"] .pagination { gap: .25rem; }
+body[data-ui="moderne"] .page-link,
+body[data-ui="moderne"] .page-link.bg-gris {
+  background-color: var(--ui-surface);
+  border-color: var(--ui-bordure);
+  border-radius: .5rem !important;
+  color: var(--ui-texte-2);
+}
+/* Les écrans marquent la page courante « disabled » ; les flèches inactives aussi
+   (mais elles portent un aria-label). */
+body[data-ui="moderne"] .page-item.disabled .page-link:not([aria-label]) {
+  background-color: var(--cdf-primaire);
+  border-color: var(--cdf-primaire);
+  color: #fff;
+}
+
+/* ---------- Blocs encadrés (écran Impressions) ---------- */
+body[data-ui="moderne"] .border-vert.bg-light {
+  background-color: var(--ui-surface) !important;
+  border: 1px solid var(--ui-bordure) !important;
+  border-top: 3px solid var(--cdf-primaire) !important;
+  border-radius: var(--ui-rayon);
+  box-shadow: var(--ui-ombre);
+}
+body[data-ui="moderne"] .border-vert.bg-light .bg-light { background-color: transparent !important; }
+body[data-ui="moderne"] .col-form-label b { color: var(--ui-texte); font-weight: 600; }
+
+/* ---------- Bibliothèques tierces ---------- */
+body[data-ui="moderne"] .jconfirm .jconfirm-box,
+body[data-ui="moderne"] .gj-picker { border-radius: var(--ui-rayon); box-shadow: 0 8px 24px rgba(16, 24, 40, .18); }
+
+/* ---------- Icônes : jeu Bootstrap Icons (trait fin) à la place de Font Awesome ---------- */
+/* Les templates gardent leurs classes Font Awesome (fa-edit, fa-print…) : seul le glyphe
+   change, et uniquement en interface moderne. La police n'est téléchargée par le
+   navigateur que si une de ces règles s'applique. Icônes non listées : Font Awesome. */
+@font-face {
+  font-family: "bootstrap-icons";
+  font-display: block;
+  src: url("../vendor/bootstrap-icons/fonts/bootstrap-icons.woff2") format("woff2"),
+       url("../vendor/bootstrap-icons/fonts/bootstrap-icons.woff") format("woff");
+}
+body[data-ui="moderne"] .fa-times-circle::before,
+body[data-ui="moderne"] .fa-check-circle::before,
+body[data-ui="moderne"] .fa-print::before,
+body[data-ui="moderne"] .fa-trash-alt::before,
+body[data-ui="moderne"] .fa-sort-alpha-down::before,
+body[data-ui="moderne"] .fa-sort-alpha-up::before,
+body[data-ui="moderne"] .fa-plus-circle::before,
+body[data-ui="moderne"] .fa-edit::before,
+body[data-ui="moderne"] .fa-copy::before,
+body[data-ui="moderne"] .fa-play::before,
+body[data-ui="moderne"] .fa-archive::before,
+body[data-ui="moderne"] .fa-envelope::before,
+body[data-ui="moderne"] .fa-users::before,
+body[data-ui="moderne"] .fa-user::before,
+body[data-ui="moderne"] .fa-power-off::before,
+body[data-ui="moderne"] .fa-list-alt::before,
+body[data-ui="moderne"] .fa-question::before,
+body[data-ui="moderne"] .fa-cog::before,
+body[data-ui="moderne"] .fa-calendar::before,
+body[data-ui="moderne"] .fa-file-word-o::before,
+body[data-ui="moderne"] .fa-file-text-o::before,
+body[data-ui="moderne"] .fa-file-powerpoint-o::before,
+body[data-ui="moderne"] .fa-file-pdf-o::before,
+body[data-ui="moderne"] .fa-file-movie-o::before,
+body[data-ui="moderne"] .fa-file-image-o::before,
+body[data-ui="moderne"] .fa-file-excel-o::before,
+body[data-ui="moderne"] .fa-file-code-o::before,
+body[data-ui="moderne"] .fa-file-audio-o::before,
+body[data-ui="moderne"] .fa-file-archive-o::before {
+  font-family: "bootstrap-icons" !important;
+  font-weight: 400 !important;
+  font-style: normal;
+  line-height: 1;
+  vertical-align: -.125em;
+  -webkit-font-smoothing: antialiased;
+}
+body[data-ui="moderne"] .fa-times-circle::before { content: "\f623"; } /* x-circle */
+body[data-ui="moderne"] .fa-check-circle::before { content: "\f26b"; } /* check-circle */
+body[data-ui="moderne"] .fa-print::before { content: "\f501"; } /* printer */
+body[data-ui="moderne"] .fa-trash-alt::before { content: "\f78b"; } /* trash3 */
+body[data-ui="moderne"] .fa-sort-alpha-down::before { content: "\f571"; } /* sort-alpha-down */
+body[data-ui="moderne"] .fa-sort-alpha-up::before { content: "\f573"; } /* sort-alpha-up */
+body[data-ui="moderne"] .fa-plus-circle::before { content: "\f4fa"; } /* plus-circle */
+body[data-ui="moderne"] .fa-edit::before { content: "\f4ca"; } /* pencil-square */
+body[data-ui="moderne"] .fa-copy::before { content: "\f759"; } /* copy */
+body[data-ui="moderne"] .fa-play::before { content: "\f4f4"; } /* play-fill */
+body[data-ui="moderne"] .fa-archive::before { content: "\f10d"; } /* archive */
+body[data-ui="moderne"] .fa-envelope::before { content: "\f32f"; } /* envelope */
+body[data-ui="moderne"] .fa-users::before { content: "\f4d0"; } /* people */
+body[data-ui="moderne"] .fa-user::before { content: "\f4e1"; } /* person */
+body[data-ui="moderne"] .fa-power-off::before { content: "\f4ff"; } /* power */
+body[data-ui="moderne"] .fa-list-alt::before { content: "\f227"; } /* card-list */
+body[data-ui="moderne"] .fa-question::before { content: "\f505"; } /* question-circle */
+body[data-ui="moderne"] .fa-cog::before { content: "\f3e5"; } /* gear */
+body[data-ui="moderne"] .fa-calendar::before { content: "\f214"; } /* calendar3 */
+body[data-ui="moderne"] .fa-file-word-o::before { content: "\f38d"; } /* file-earmark-word */
+body[data-ui="moderne"] .fa-file-text-o::before { content: "\f38b"; } /* file-earmark-text */
+body[data-ui="moderne"] .fa-file-powerpoint-o::before { content: "\f381"; } /* file-earmark-ppt */
+body[data-ui="moderne"] .fa-file-pdf-o::before { content: "\f63e"; } /* file-earmark-pdf */
+body[data-ui="moderne"] .fa-file-movie-o::before { content: "\f37b"; } /* file-earmark-play */
+body[data-ui="moderne"] .fa-file-image-o::before { content: "\f36d"; } /* file-earmark-image */
+body[data-ui="moderne"] .fa-file-excel-o::before { content: "\f368"; } /* file-earmark-excel */
+body[data-ui="moderne"] .fa-file-code-o::before { content: "\f362"; } /* file-earmark-code */
+body[data-ui="moderne"] .fa-file-audio-o::before { content: "\f377"; } /* file-earmark-music */
+body[data-ui="moderne"] .fa-file-archive-o::before { content: "\f391"; } /* file-earmark-zip */
+
+/* ---------- Couleurs des boutons : palette harmonisée ---------- */
+/* Chaque variante Bootstrap reçoit sa couleur dans --ui-btn ; même sens qu'en classique
+   (bleu = modifier, rouge = supprimer…), teintes accordées entre elles. */
+body[data-ui="moderne"] .btn-primary   { --ui-btn: #2563eb; }
+body[data-ui="moderne"] .btn-info      { --ui-btn: #0891b2; }
+body[data-ui="moderne"] .btn-orange    { --ui-btn: #ea580c; }
+body[data-ui="moderne"] .btn-secondary { --ui-btn: #64748b; }
+body[data-ui="moderne"] .btn-success   { --ui-btn: #16a34a; }
+body[data-ui="moderne"] .btn-warning   { --ui-btn: #d97706; }
+body[data-ui="moderne"] .btn-danger    { --ui-btn: #dc2626; }
+body[data-ui="moderne"] .btn-vert      { --ui-btn: var(--cdf-primaire); }
+
+/* Boutons principaux : aplat. */
+body[data-ui="moderne"] .btn:is(.btn-primary, .btn-info, .btn-orange, .btn-secondary, .btn-success, .btn-warning, .btn-danger, .btn-vert) {
+  background-color: var(--ui-btn);
+  border-color: var(--ui-btn);
+  color: #fff;
+}
+
+/* Petits boutons d'action des listes et bouton Annuler : teintés (fond léger, icône
+   colorée), aplat au survol. Réservé aux navigateurs qui gèrent color-mix() ; les autres
+   gardent l'aplat ci-dessus. */
+@supports (background-color: color-mix(in srgb, red 10%, transparent)) {
+  body[data-ui="moderne"] .btn-sm:is(.btn-primary, .btn-info, .btn-orange, .btn-secondary, .btn-success, .btn-warning, .btn-danger),
+  body[data-ui="moderne"] .btn-lg.btn-danger {
+    background-color: color-mix(in srgb, var(--ui-btn) 14%, transparent);
+    border-color: transparent;
+    color: var(--ui-btn);
+  }
+  body[data-ui="moderne"][data-theme="sombre"] .btn-sm:is(.btn-primary, .btn-info, .btn-orange, .btn-secondary, .btn-success, .btn-warning, .btn-danger),
+  body[data-ui="moderne"][data-theme="sombre"] .btn-lg.btn-danger {
+    background-color: color-mix(in srgb, var(--ui-btn) 24%, transparent);
+    color: color-mix(in srgb, var(--ui-btn) 55%, #fff);
+  }
+  body[data-ui="moderne"] .btn-sm:is(.btn-primary, .btn-info, .btn-orange, .btn-secondary, .btn-success, .btn-warning, .btn-danger):hover,
+  body[data-ui="moderne"] .btn-lg.btn-danger:hover {
+    background-color: var(--ui-btn);
+    color: #fff;
+    filter: none;
+  }
+}
+/* Icônes au trait fin : un peu plus grandes dans les petits boutons pour rester lisibles. */
+body[data-ui="moderne"] .btn-sm > i { font-size: 1rem; }
+
+/* Calendrier gijgo : sa feuille impose l'ancien vert de prod (#a2c231) ; on reprend
+   la couleur d'accent de l'environnement. */
+body[data-ui="moderne"] .gj-datepicker-bootstrap [role="right-icon"] button {
+  background-color: var(--cdf-primaire);
+  border-color: var(--cdf-primaire);
+  border-radius: 0 .5rem .5rem 0;
+}
+body[data-ui="moderne"] .gj-modal .gj-picker-bootstrap.datepicker [role="body"] { color: var(--cdf-primaire); }
+
+/* ---------- Disposition des boutons d'action des listes ---------- */
+/* Dernière colonne des listes (« Actions ») : une seule ligne, colonne ajustée à son
+   contenu, boutons carrés, trois groupes espacés : consultation/édition, changement
+   d'état (activer, archiver), puis la suppression à part pour éviter les clics par
+   erreur. font-size: 0 neutralise les espaces insécables des templates ; les boutons
+   gardent leur propre taille. */
+/* Les lignes des listes sont des grilles flex (<tr class="row">, cellules col-N) : la
+   colonne Actions reçoit la même largeur fixe dans l'en-tête et le corps (colonnes
+   alignées, place pour 7 boutons), les autres colonnes rétrécissent d'autant. */
+body[data-ui="moderne"] .table tr.row { flex-wrap: nowrap; margin-left: 0; margin-right: 0; }
+body[data-ui="moderne"] .table tr.row > * {
+  flex-shrink: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+body[data-ui="moderne"] .table tr.row > :last-child {
+  flex: 0 0 19rem;
+  max-width: 19rem;
+  white-space: nowrap;
+  text-align: right !important;
+  padding-right: 1rem;
+}
+body[data-ui="moderne"] .table tbody td:last-child { font-size: 0; }
+body[data-ui="moderne"] .table tbody td:last-child .btn-sm {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  margin-left: .25rem;
+  font-size: .875rem;
+  vertical-align: middle;
+}
+body[data-ui="moderne"] .table tbody td:last-child .btn-sm.btn-success,
+body[data-ui="moderne"] .table tbody td:last-child .btn-sm.btn-danger { margin-left: 1rem; }
+/* « Archiver » suit « Activer » dans le même groupe. */
+body[data-ui="moderne"] .table tbody td:last-child .btn-sm.btn-success + .btn-sm.btn-warning { margin-left: .25rem; }
+
+/* ---------- Barre de filtres des listes ---------- */
+/* Bandeau au-dessus de chaque liste (<nav aria-label="Pagination"> : recherche et filtres
+   à gauche, pagination / nombre par page / ajout à droite) : barre d'outils sur une
+   carte, filtres en pastilles, actions alignées à droite. */
+body[data-ui="moderne"] nav[aria-label="Pagination"] {
+  background-color: var(--ui-surface);
+  border-radius: var(--ui-rayon);
+  box-shadow: var(--ui-ombre);
+  padding: .75rem 1rem;
+  margin: 0 0 1rem;
+}
+body[data-ui="moderne"] nav[aria-label="Pagination"] > .row { align-items: center; row-gap: .75rem; }
+
+/* Gauche : recherche avec loupe, puis filtres. */
+body[data-ui="moderne"] nav[aria-label="Pagination"] .form-inline { flex-wrap: wrap; gap: .5rem; }
+body[data-ui="moderne"] nav[aria-label="Pagination"] .form-inline > .form-group {
+  flex: 1 1 14rem;
+  max-width: 22rem;
+  padding: 0;
+  margin: 0;
+}
+body[data-ui="moderne"] #recherche {
+  flex: 1 1 auto;
+  max-width: 22rem;
+  margin: 0 !important;
+  border-radius: 999px;
+  padding-left: 2.25rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%238a94a3' viewBox='0 0 16 16'%3E%3Cpath d='M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85zm-5.242.656a5 5 0 1 1 0-10 5 5 0 0 1 0 10'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: .85rem center;
+}
+
+/* Filtres (boutons radio) en pastilles : le bouton radio, invisible, couvre toute la
+   pastille, qui devient entièrement cliquable. */
+body[data-ui="moderne"] nav[aria-label="Pagination"] .form-inline > .col-2 {
+  flex: 0 0 auto;
+  max-width: none;
+  width: auto;
+  padding: 0;
+  position: relative;
+}
+body[data-ui="moderne"] nav[aria-label="Pagination"] .form-check-input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 1;
+}
+body[data-ui="moderne"] nav[aria-label="Pagination"] .form-check-label {
+  display: inline-flex;
+  align-items: center;
+  width: auto;
+  height: 2.25rem;
+  padding: 0 1rem;
+  border-radius: 999px;
+  font-size: .9rem;
+  color: var(--ui-texte-2) !important;
+  transition: background-color .15s, color .15s, border-color .15s;
+}
+body[data-ui="moderne"] nav[aria-label="Pagination"] .form-check-input:hover + .form-check-label { background-color: var(--ui-surface-2); }
+body[data-ui="moderne"] nav[aria-label="Pagination"] .form-check-input:focus-visible + .form-check-label {
+  box-shadow: 0 0 0 .2rem color-mix(in srgb, var(--cdf-primaire) 25%, transparent);
+}
+body[data-ui="moderne"] nav[aria-label="Pagination"] .form-check-input:checked + .form-check-label {
+  background-color: color-mix(in srgb, var(--cdf-primaire) 14%, var(--ui-surface));
+  border-color: var(--cdf-primaire);
+  color: var(--cdf-primaire) !important;
+  font-weight: 600;
+}
+body[data-ui="moderne"][data-theme="sombre"] nav[aria-label="Pagination"] .form-check-input:checked + .form-check-label {
+  background-color: color-mix(in srgb, var(--cdf-primaire) 28%, var(--ui-surface));
+  color: color-mix(in srgb, var(--cdf-primaire) 55%, #fff) !important;
+}
+
+/* Droite : nombre par page, pagination, puis « Ajouter » (ordre visuel fixé ici :
+   les templates les posent en flottants, dans l'ordre inverse). */
+body[data-ui="moderne"] nav[aria-label="Pagination"] > .row > :last-child {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+body[data-ui="moderne"] nav[aria-label="Pagination"] > .row > :last-child > * { float: none; margin: 0 !important; }
+body[data-ui="moderne"] nav[aria-label="Pagination"] > .row > :last-child > div:has(#formulairePagination) { order: 1; }
+body[data-ui="moderne"] nav[aria-label="Pagination"] > .row > :last-child > .pagination { order: 2; }
+body[data-ui="moderne"] nav[aria-label="Pagination"] > .row > :last-child > div:has(.btn-success) { order: 3; }
+body[data-ui="moderne"] #formulairePagination { margin: 0 !important; }
+body[data-ui="moderne"] #items_par_page { width: auto; }
+body[data-ui="moderne"] nav[aria-label="Pagination"] .btn-success {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  margin: 0 !important;
+  height: calc(1.5em + .75rem + 2px);
+}
+body[data-ui="moderne"] nav[aria-label="Pagination"] .btn-success::after { content: "Ajouter"; }
+
+/* ---------- Formulaires : libellés au-dessus des champs ---------- */
+/* Les lignes de formulaire alternent libellé (col-sm-2) et champ (col-sm-N). On les
+   pose sur une grille de 12 colonnes : libellés en 1re rangée, champs en 2e, chaque
+   paire couvrant 2 + N colonnes — les largeurs et alignements d'origine sont gardés
+   (y compris les paires vides qui servent de cales). */
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row:has(> .col-form-label) {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: 1.25rem;
+  row-gap: .3rem;
+  margin: 0 0 1.1rem;
+}
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row:has(> .col-form-label) > * {
+  max-width: none;
+  width: auto;
+  padding: 0;
+  grid-row: 2;
+}
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row:has(> .col-form-label) > .col-form-label {
+  grid-row: 1;
+  align-self: end;
+  text-align: left !important;
+  font-size: .8rem;
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--ui-texte-2);
+}
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label:has(+ .col-sm-1),
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label + .col-sm-1 { grid-column: span 3; }
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label:has(+ .col-sm-2),
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label + .col-sm-2 { grid-column: span 4; }
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label:has(+ .col-sm-3),
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label + .col-sm-3 { grid-column: span 5; }
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label:has(+ .col-sm-4),
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label + .col-sm-4 { grid-column: span 6; }
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label:has(+ .col-sm-5),
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label + .col-sm-5 { grid-column: span 7; }
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label:has(+ .col-sm-6),
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label + .col-sm-6 { grid-column: span 8; }
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label:has(+ .col-sm-8),
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label + .col-sm-8 { grid-column: span 10; }
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label:has(+ .col-sm-10),
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row > .col-form-label + .col-sm-10 { grid-column: span 12; }
+
+/* Intertitres et séparateurs dans les formulaires. */
+body[data-ui="moderne"] form[id^="formulaire-"] h2 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--ui-texte) !important;
+  margin: .5rem 0 .75rem;
+}
+
+/* Barre d'actions des formulaires (Annuler / Valider) : collée en bas de l'écran,
+   boutons libellés. */
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row.float-right {
+  float: none !important; /* .float-right de Bootstrap est en !important */
+  clear: both;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: .75rem;
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  margin: 1.5rem -1.5rem -1.5rem !important;
+  padding: .85rem 1.5rem;
+  background-color: var(--ui-surface);
+  border-top: 1px solid var(--ui-bordure);
+  border-radius: 0 0 var(--ui-rayon) var(--ui-rayon);
+  font-size: 0; /* neutralise les &nbsp; entre les boutons */
+}
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row.float-right .btn-lg {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .95rem;
+  padding: .55rem 1.15rem;
+  box-shadow: none;
+}
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row.float-right .btn-lg .fa-lg { font-size: 1.1rem; }
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row.float-right .btn-danger::after { content: "Annuler"; }
+body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row.float-right button[type="submit"]::after { content: "Enregistrer"; }
+
+/* ---------- En-tête de page : fil d'ariane au-dessus d'un titre aligné à gauche ---------- */
+body[data-ui="moderne"] .navbar + nav > .row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  margin: 1rem 1rem .25rem !important;
+}
+body[data-ui="moderne"] .navbar + nav > .row > * { max-width: none; padding: 0; }
+body[data-ui="moderne"] .navbar + nav > .row > :nth-child(1) { grid-column: 1; grid-row: 1; }
+body[data-ui="moderne"] .navbar + nav > .row > :nth-child(2) { grid-column: 1; grid-row: 2; text-align: left !important; }
+body[data-ui="moderne"] .navbar + nav > .row > :nth-child(3) { grid-column: 2; grid-row: 1 / span 2; }
+body[data-ui="moderne"] .navbar + nav .breadcrumb-item { padding: 0; font-size: .8rem; }
+body[data-ui="moderne"] .navbar + nav h1.text-gris { font-size: 1.5rem; margin: .1rem 0 0; }
+body[data-ui="moderne"] .navbar + nav .container-fluid { padding: 0 1rem; }
+
+/* Message de l'écran (« Formulaire d'ajout », « Bonjour… », erreurs) : pastille discrète
+   au lieu d'un texte rouge en gras. */
+body[data-ui="moderne"] .navbar + nav h6.text-danger {
+  display: inline-block !important; /* .d-inline de Bootstrap est en !important */
+  margin: 0 !important;
+  padding: .35rem .85rem;
+  border-radius: 999px;
+  background-color: color-mix(in srgb, var(--cdf-primaire) 12%, var(--ui-surface));
+  color: var(--ui-texte) !important;
+  font-size: .85rem;
+  font-weight: 500 !important;
+}
+body[data-ui="moderne"] .navbar + nav h6.text-danger:empty { display: none !important; }
+
+/* ---------- Petites finitions ---------- */
+/* Tri des colonnes : bouton discret, colonne triée en accent teinté. */
+body[data-ui="moderne"] .thead-gris .btn { padding: .1rem .4rem; font-size: .8rem; line-height: 1.4; box-shadow: none; }
+body[data-ui="moderne"] .thead-gris .btn-info.text-white {
+  background-color: color-mix(in srgb, var(--cdf-primaire) 15%, transparent);
+  border-color: transparent;
+  color: var(--cdf-primaire) !important;
+}
+/* Info-bulles. */
+body[data-ui="moderne"] .tooltip-inner { border-radius: .45rem; padding: .35rem .65rem; font-size: .8rem; }
+/* Boîtes de confirmation : boutons en casse normale, arrondis. */
+body[data-ui="moderne"] .jconfirm .jconfirm-box .jconfirm-buttons button {
+  text-transform: none;
+  font-weight: 500;
+  border-radius: .5rem;
+}
+/* En-têtes des grilles dans les formulaires (articles d'un inventaire, historique des
+   règlements) : comme les en-têtes de tableaux. */
+body[data-ui="moderne"] form[id^="formulaire-"] .row.bg-dark,
+body[data-ui="moderne"] form[id^="formulaire-"] .row.bg-gris {
+  background-color: var(--ui-surface-2) !important;
+  color: var(--ui-texte-2) !important;
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  border-radius: .5rem .5rem 0 0;
+}
+body[data-ui="moderne"] form[id^="formulaire-"] .row.bg-dark > h5,
+body[data-ui="moderne"] form[id^="formulaire-"] .row.bg-gris > h5 { font-size: inherit; font-weight: inherit; margin: 0; }

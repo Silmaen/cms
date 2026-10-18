@@ -70,7 +70,9 @@ function GestionIdentification($connexion)
 				$_SESSION["nom_utilisateur"] = $data["nom_utilisateur"];
 				$_SESSION["prenom_utilisateur"] = $data["prenom_utilisateur"];
 				$_SESSION['items_par_page'] = $data["items_par_page"];
-				$_SESSION['theme'] = PreferencesLire($connexion, $data["id_utilisateur"])['theme'];
+				$preferences = PreferencesLire($connexion, $data["id_utilisateur"]);
+				$_SESSION['theme'] = $preferences['theme'];
+				$_SESSION['interface'] = $preferences['interface'];
 				return true;
 			}
 		}
