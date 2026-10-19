@@ -151,8 +151,8 @@
 				<!--{section name=liste_items loop=$liste_items}-->
 
 				<tr class="row">
-					<td class="col-10 text-left"><!--{$liste_items[liste_items].libelle_utilisateur_groupe}--></td>
-					<td class="col-2 text-center">
+					<td class="col-10 text-left" data-carte="titre"><!--{$liste_items[liste_items].libelle_utilisateur_groupe}--></td>
+					<td class="col-2 text-center" data-carte="actions">
 						<a href="admin_utilisateurs_groupes_formulaire.php?action=modifier&id_utilisateur_groupe=<!--{$liste_items[liste_items].id_utilisateur_groupe}-->" class="btn btn-sm btn-success" role="button" data-toggle="tooltip" data-placement="bottom" title="Modifier" aria-pressed="true"><i class="fas fa-edit"></i></a>
 						
 						<!--{if $smarty.session.id_utilisateur_groupe<=2}-->

@@ -121,21 +121,21 @@
 				
 				
 					<div id="ligne_<!--{$compteur}-->" name="ligne_<!--{$compteur}-->" class="row <!--{$couleur_fond}-->">
-						<div class="col-3 text-left">
+						<div class="col-3 text-left" data-carte="titre">
 							<label class="col-form-label" for="qtetotale_<!--{$compteur}-->"><!--{$liste_articles[liste_articles].designation}--></label>
 						</div>
-						<div class="col-2 text-center">
+						<div class="col-2 text-center" data-label="Précédente">
 							<input type="hidden" id="id_article_<!--{$compteur}-->" name="id_article_<!--{$compteur}-->" value="<!--{$liste_articles[liste_articles].id_article}-->" <!--{$readonly}-->>
 
 							<input type="number" class="form-control text-center" id="qteprecedent_<!--{$compteur}-->" name="qteprecedent_<!--{$compteur}-->" value="<!--{$liste_articles[liste_articles].quantite_precedent}-->" readonly>
 						</div>
-						<div class="col-2 text-center">
+						<div class="col-2 text-center" data-label="Actuelle">
 							<input type="number" class="form-control text-center" id="qtetotale_<!--{$compteur}-->" name="qtetotale_<!--{$compteur}-->" value="<!--{$liste_articles[liste_articles].quantite_totale}-->" onChange="Ecart(<!--{$compteur}-->);" <!--{$readonly}-->>
 						</div>
-						<div class="col-2 text-center">
+						<div class="col-2 text-center" data-label="Écart">
 							<input type="number" class="form-control text-center" id="resultat_<!--{$compteur}-->" name="resultat_<!--{$compteur}-->" value="<!--{$liste_articles[liste_articles].ecart}-->" readonly>
 						</div>
-						<div class="col-3 text-left">
+						<div class="col-3 text-left" data-label="Commentaire">
 							<input type="text" class="form-control text-center" id="commentaire_<!--{$compteur}-->" name="commentaire_<!--{$compteur}-->" value="<!--{$liste_articles[liste_articles].commentaire}-->" <!--{$readonly}-->>
 						</div>
 						

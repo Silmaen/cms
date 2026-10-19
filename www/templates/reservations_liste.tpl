@@ -182,16 +182,16 @@
 				
 				
 				<tr class="row">
-					<td class="col-3 text-left">
+					<td class="col-3 text-left" data-label="Association">
 						&nbsp;<!--{$picto_etat}--> 
 						&nbsp; <!--{$liste_items[liste_items].quantite_reservee}--> 
 						&nbsp; <!--{$liste_items[liste_items].association}-->
 					</td>
-					<td class="col-2 text-left"><!--{$liste_items[liste_items].nom}--> <!--{$liste_items[liste_items].prenom}--></td>
-					<td class="col-2 text-left"><!--{$liste_items[liste_items].date_depart|date_format:"%d-%m-%Y"}--></td>
-					<td class="col-2 text-left"><!--{$liste_items[liste_items].date_retour|date_format:"%d-%m-%Y"}--></td>
-					<td class="col-1 text-left"><!--{$liste_items[liste_items].date_modification|date_format:"%d-%m-%Y"}--> - <!--{$liste_items[liste_items].heure_modification|date_format:"%H:%M"}--></td>
-					<td class="col-2 text-center">
+					<td class="col-2 text-left" data-carte="titre"><!--{$liste_items[liste_items].nom}--> <!--{$liste_items[liste_items].prenom}--></td>
+					<td class="col-2 text-left" data-label="Départ le"><!--{$liste_items[liste_items].date_depart|date_format:"%d-%m-%Y"}--></td>
+					<td class="col-2 text-left" data-label="Retour le"><!--{$liste_items[liste_items].date_retour|date_format:"%d-%m-%Y"}--></td>
+					<td class="col-1 text-left" data-label="Modifié le"><!--{$liste_items[liste_items].date_modification|date_format:"%d-%m-%Y"}--> - <!--{$liste_items[liste_items].heure_modification|date_format:"%H:%M"}--></td>
+					<td class="col-2 text-center" data-carte="actions">
 							<a href="reservations_formulaire.php?action=modifier&id_reservation=<!--{$liste_items[liste_items].id_reservation}-->" class="btn btn-primary btn-sm" role="button" data-toggle="tooltip" data-placement="bottom" title="Modifier" aria-pressed="true"><i class="fas fa-edit"></i></a>
 						
 						<!--{if $liste_items[liste_items].email!=''}-->

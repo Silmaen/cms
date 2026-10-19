@@ -4,6 +4,9 @@ Ce qui est livré. Ce qui est prévu est dans [`docs/roadmap.md`](docs/roadmap.m
 
 ## En développement
 
+- Téléphone : grilles d'articles (réservation, inventaire, historique adhérent) sur deux lignes avec libellés au lieu d'un défilement horizontal ; boutons d'action côte à côte ; bloc « Informations Adhérent » replié par défaut.
+- Listes : plus de défilement horizontal de 15 px sur ordinateur (marges négatives des lignes hors conteneur).
+- **Affichage sur téléphone et tablette**, dans les deux interfaces : listes en cartes (libellés, actions en bas), menu replié sous 992 px, formulaires et impressions sur une colonne, grilles d'articles défilables, plus aucun défilement horizontal de 360 à 1 200 px.
 - Info-bulles ajoutées sur les 24 boutons et liens à icône seule qui n'en avaient pas (Valider, Ajouter, Imprimer, photo d'article…) et sur les pastilles d'état (Actif / Archivé / Supprimé) ; test qui l'impose à tous les templates.
 - Template inutilisé `header-cdn.tpl` (variante du header chargée depuis des CDN) supprimé.
 - Fil d'ariane : « // Réservations » (doublon de l'onglet et du titre) supprimé des listes et de l'accueil ; les formulaires affichent un lien « ← Retour à la liste ».
