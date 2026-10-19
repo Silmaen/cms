@@ -147,16 +147,16 @@
 					
 				
 					<div id="ligne_<!--{$compteur}-->" name="ligne_<!--{$compteur}-->" class="row <!--{$couleur_fond}-->">
-						<div class="col-4 text-left">
+						<div class="col-4 text-left" data-carte="titre">
 							<label class="col-form-label" for="montant_<!--{$compteur}-->"><!--{$liste_adhesions[liste_adhesions].annee}--></label>
 						</div>
-						<div class="col-4 text-center">
+						<div class="col-4 text-center" data-label="Adhésion €">
 							<input type="hidden" id="id_adhesion_<!--{$compteur}-->" name="id_adhesion_<!--{$compteur}-->" value="<!--{$liste_adhesions[liste_adhesions].id_adhesion}-->" >
 							<input type="hidden" id="annee_<!--{$compteur}-->" name="annee_<!--{$compteur}-->" value="<!--{$liste_adhesions[liste_adhesions].annee}-->" >
 
 							<input type="number" class="form-control text-center" id="montant_<!--{$compteur}-->" name="montant_<!--{$compteur}-->" value="<!--{$liste_adhesions[liste_adhesions].montant}-->" <!--{$readonly_adhesion}-->>
 						</div>
-						<div class="col-4 text-center">
+						<div class="col-4 text-center" data-label="Dons €">
 						
 						<!--{if $smarty.session.id_utilisateur_groupe==1}-->
 							<input type="number" class="form-control text-center" id="don_<!--{$compteur}-->" name="don_<!--{$compteur}-->" value="<!--{$liste_adhesions[liste_adhesions].don}-->" readonly>			

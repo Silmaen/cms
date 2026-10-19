@@ -21,6 +21,24 @@ final class TemplatesTest extends TestCase
 	}
 
 	/**
+	 * Sur téléphone, chaque ligne de liste devient une carte (responsive.css) : chaque
+	 * cellule du corps doit dire comment l'afficher — libellé (data-label) ou rôle dans la
+	 * carte (data-carte="titre" / "actions").
+	 */
+	public function testCellulesDeListePreparesPourLesCartes(): void
+	{
+		foreach (glob(__DIR__ . '/../../www/templates/*_liste.tpl') as $fichier) {
+			$source = file_get_contents($fichier);
+			$corps = substr($source, strpos($source, '<tbody'), strpos($source, '</tbody>') - strpos($source, '<tbody'));
+			preg_match_all('/<td\b[^>]*>/', $corps, $cellules);
+			$this->assertNotEmpty($cellules[0], basename($fichier) . ' : aucune cellule');
+			foreach ($cellules[0] as $cellule) {
+				$this->assertMatchesRegularExpression('/\bdata-(label|carte)="/', $cellule, basename($fichier) . ' : ' . $cellule);
+			}
+		}
+	}
+
+	/**
 	 * Tout bouton ou lien qui n'affiche qu'une icône porte une info-bulle (title) ou un
 	 * aria-label. Le texte fourni par une variable Smarty compte comme un libellé.
 	 */

@@ -159,10 +159,10 @@
 
 
 				<tr class="row">
-					<td class="col-2 text-left">&nbsp;<!--{$picto_etat}--> &nbsp<!--{$liste_items[liste_items].quantite_totale}--></td>
-					<td class="col-6 text-left"><!--{$liste_items[liste_items].designation}--></td>
-					<td class="col-2 text-left"><!--{$liste_items[liste_items].date_modification|date_format:"%d-%m-%Y"}--></td>
-					<td class="col-2 text-center">
+					<td class="col-2 text-left" data-label="Stock">&nbsp;<!--{$picto_etat}--> &nbsp<!--{$liste_items[liste_items].quantite_totale}--></td>
+					<td class="col-6 text-left" data-carte="titre"><!--{$liste_items[liste_items].designation}--></td>
+					<td class="col-2 text-left" data-label="Modifié le"><!--{$liste_items[liste_items].date_modification|date_format:"%d-%m-%Y"}--></td>
+					<td class="col-2 text-center" data-carte="actions">
 					
 							<a href="reservations_liste.php?id_admin_menu=1&id_article=<!--{$liste_items[liste_items].id_article}-->" class="btn btn-info btn-sm" role="button" data-toggle="tooltip" data-placement="bottom" title="Réservations" aria-pressed="true"><i class="far fa-list-alt"></i></a>
 							
