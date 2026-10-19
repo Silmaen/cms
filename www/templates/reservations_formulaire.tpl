@@ -258,10 +258,12 @@
 	<!--{if $action!='ajouter-valider'}-->
 		
 
-		<div class="container-fluid">		
+		<!--{* Repliable : ouvert sur ordinateur, replié par défaut sur téléphone (scripts.js). *}-->
+		<details class="cdf-repliable" open>
+		<summary class="container-fluid">		
 			<hr class="style-5 bg-vert">
 			<h2 class="text-left text-gris mb-3">Informations Adhérent</h2>
-		</div>
+		</summary>
 	
 
 		<div class="form-group row">
@@ -340,6 +342,8 @@
 			</div>
 		</div>
 
+
+		</details>
 
 		<hr class="style-5 bg-vert">
 
@@ -432,7 +436,7 @@
 							
 				
 					<div id="ligne_<!--{$compteur}-->" name="ligne_<!--{$compteur}-->" class="row <!--{$couleur_fond}-->">
-						<div class="col-4 text-left">
+						<div class="col-4 text-left" data-carte="titre">
 							<label class="col-form-label" for="qtetotale_<!--{$compteur}-->">&nbsp;<!--{$picto_etat}--> <!--{$liste_articles[liste_articles].designation}--></label>
 							
 							<!--{if $liste_articles[liste_articles].nom_fichier!=''}-->	
@@ -440,7 +444,7 @@
 							<!--{/if}-->
 							
 						</div>
-						<div class="col-2 text-center">
+						<div class="col-2 text-center" data-label="Inventaire">
 							<input type="hidden" id="id_article_<!--{$compteur}-->" name="id_article_<!--{$compteur}-->" value="<!--{$liste_articles[liste_articles].id_article}-->" >
 
 						<!--{if $date_retour_temp>=$aujourdhui_temp}-->	
@@ -451,7 +455,7 @@
 
 						
 						</div>
-						<div class="col-2 text-center">
+						<div class="col-2 text-center" data-label="Dispo avant">
 						<!--{if $date_retour_temp>=$aujourdhui_temp}-->	
 							<input type="number" class="form-control text-center" id="qtedispoavant_<!--{$compteur}-->" name="qtedispoavant_<!--{$compteur}-->" value="<!--{$liste_articles[liste_articles].quantite_actuelle}-->" readonly>
 						<!--{else}-->
@@ -459,14 +463,14 @@
 						<!--{/if}-->
 
 						</div>
-						<div class="col-2 text-center">
+						<div class="col-2 text-center" data-label="Réservée">
 						<!--{if $date_retour_temp>=$aujourdhui_temp}-->	
 							<input type="number" class="form-control text-center" id="qtereservee_<!--{$compteur}-->" name="qtereservee_<!--{$compteur}-->" value="<!--{$liste_articles[liste_articles].quantite_reservee}-->" onChange="Soustraction(<!--{$compteur}-->);" <!--{$readonly}-->>
 						<!--{else}-->
 							<input type="number" class="form-control text-center" id="qtereservee_<!--{$compteur}-->" name="qtereservee_<!--{$compteur}-->" value="<!--{$liste_articles[liste_articles].quantite_reservee}-->" onChange="Soustraction(<!--{$compteur}-->);" readonly>
 						<!--{/if}-->
 						</div>
-						<div class="col-2 text-center">
+						<div class="col-2 text-center" data-label="Dispo après">
 						<!--{if $date_retour_temp>=$aujourdhui_temp}-->	
 							<input type="number" class="form-control text-center" id="resultat_<!--{$compteur}-->" name="resultat_<!--{$compteur}-->" value="<!--{$liste_articles[liste_articles].quantite_apres}-->" readonly>
 						<!--{else}-->

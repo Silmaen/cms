@@ -1,0 +1,212 @@
+/* ------------------------------------------------------------------ */
+/* Affichage sur petits écrans (téléphones), pour les DEUX interfaces. */
+/* Tout est en media query : au-delà de 768 px de large, rien ne       */
+/* change. Les ajustements propres à l'interface moderne sont en fin   */
+/* de moderne.css (même seuil).                                        */
+/*                                                                    */
+/*   - listes : chaque ligne devient une carte (titre, informations     */
+/*     libellées par data-label, boutons d'action en bas) ;            */
+/*   - bandeaux, formulaires, impressions : une seule colonne ;         */
+/*   - grilles d'articles des formulaires : défilement horizontal.      */
+/* ------------------------------------------------------------------ */
+/* ---------- Menu replié (bouton ☰) jusqu'à 992 px ---------- */
+/* Le template déplie le menu dès 768 px (navbar-expand-md), mais logo + 5 rubriques +
+   4 icônes ne tiennent pas sous 992 px : on garde le menu replié jusque-là. */
+@media (max-width: 991.98px) {
+  .navbar-expand-md { flex-wrap: wrap; }
+  .navbar-expand-md .navbar-toggler { display: block; }
+  .navbar-expand-md .navbar-collapse:not(.show):not(.collapsing) { display: none !important; }
+  .navbar-expand-md .navbar-collapse.show { display: block !important; flex-basis: 100%; }
+  .navbar-expand-md .navbar-nav { flex-direction: column; }
+  /* Menu déplié : une rubrique par ligne, icônes côte à côte. */
+  .navbar .navbar-collapse > [class*="col-"] {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 0;
+  }
+  .navbar .navbar-collapse .navbar-nav { padding: .25rem 0; }
+  .navbar .navbar-collapse .navbar-nav.justify-content-end { flex-direction: row; gap: 1rem; }
+  .navbar .navbar-brand svg { width: 4.5rem; }
+}
+
+@media (max-width: 767.98px) {
+
+  /* ---------- En-tête de page : retour, titre, message empilés ---------- */
+  .navbar + nav > .row > [class*="col-"] {
+    flex: 0 0 100%;
+    max-width: 100%;
+    text-align: left !important;
+  }
+  .navbar + nav h1 { font-size: 1.6rem; }
+
+  /* ---------- Bandeau des listes (recherche, filtres, pagination) ---------- */
+  nav[aria-label="Pagination"] > .row > [class*="col-"] {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  nav[aria-label="Pagination"] .form-inline > [class*="col-"] { flex: 0 0 auto; max-width: none; width: auto; }
+  nav[aria-label="Pagination"] .form-inline > .form-group { flex: 1 1 100%; max-width: 100%; margin-bottom: .5rem; }
+  nav[aria-label="Pagination"] #recherche { flex: 1 1 auto; max-width: 100%; }
+  nav[aria-label="Pagination"] .pagination { flex-wrap: wrap; }
+  /* Filtres (boutons radio) : rond à sa taille normale, devant son libellé. */
+  nav[aria-label="Pagination"] .form-inline > [class*="col-"]:has(> .form-check-input) {
+    display: flex;
+    align-items: center;
+    padding: 0 .75rem 0 0;
+  }
+  nav[aria-label="Pagination"] .form-check-input {
+    position: static;
+    width: auto;
+    height: auto;
+    margin: 0 .35rem 0 0;
+  }
+  nav[aria-label="Pagination"] .form-check-label { width: auto; }
+
+  /* ---------- Listes : une carte par ligne ---------- */
+  table.table thead { display: none; } /* titres de colonnes remplacés par les libellés */
+  table.table,
+  table.table tbody { display: block; width: 100%; }
+  table.table tbody tr.row {
+    margin: 0 0 .75rem;
+    padding: .75rem .9rem;
+    border: 1px solid var(--cdf-bordure, rgba(0, 0, 0, .125)); /* --cdf-bordure : thème sombre */
+    border-radius: .5rem;
+  }
+  table.table tbody tr.row > td {
+    flex: 0 0 100%;
+    max-width: 100%;
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    padding: .1rem 0;
+    border: 0;
+    text-align: left !important;
+  }
+  table.table tbody td[data-label]::before {
+    content: attr(data-label);
+    flex: 0 0 6.5rem;
+    font-size: .8rem;
+    opacity: .7;
+  }
+  table.table tbody td[data-carte="titre"] {
+    order: -1; /* en tête de carte, même si la cellule n'est pas la première */
+    font-weight: 600;
+    font-size: 1.05rem;
+    padding-bottom: .25rem;
+  }
+  table.table tbody td[data-carte="actions"] {
+    order: 10;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .4rem;
+    margin-top: .5rem;
+    padding-top: .6rem;
+    border-top: 1px solid var(--cdf-bordure, rgba(0, 0, 0, .1));
+  }
+  /* Boutons d'action : cibles tactiles confortables. */
+  table.table tbody td[data-carte="actions"] .btn-sm {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* ---------- Formulaires ---------- */
+  /* Libellés alignés à gauche une fois empilés au-dessus des champs. */
+  form .col-form-label { text-align: left !important; }
+  /* Colonnes vides servant de cales autour des grilles (inventaire, historique). */
+  form .form-group.row > [class*="col-"]:empty { display: none; }
+
+  /* Grilles d'articles et d'historique : chaque ligne sur deux lignes — l'article en haut,
+     les quantités côte à côte en dessous, chacune avec son libellé (data-label) à la place
+     de l'en-tête de colonnes. */
+  form #tableau { flex: 0 0 100%; max-width: 100%; }
+  form #tableau > .row.bg-gris,
+  form #tableau > .row.bg-dark { display: none; }
+  form #tableau > .row {
+    flex-wrap: wrap;
+    margin: 0;
+    padding: .5rem .25rem;
+    border-bottom: 1px solid var(--cdf-bordure, rgba(0, 0, 0, .1));
+  }
+  form #tableau > .row > [data-carte="titre"] {
+    flex: 0 0 100%;
+    max-width: 100%;
+    padding: 0 .25rem .3rem;
+    font-weight: 600;
+  }
+  form #tableau > .row > [data-carte="titre"] .col-form-label { padding: 0; }
+  form #tableau > .row > [data-label] { flex: 1 1 0; max-width: none; min-width: 0; padding: 0 .25rem; }
+  form #tableau > .row > [data-label="Commentaire"] { flex-basis: 100%; margin-top: .35rem; }
+  form #tableau > .row > [data-label]::before {
+    content: attr(data-label);
+    display: block;
+    font-size: .7rem;
+    opacity: .75;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Boutons d'action d'un formulaire (« Liste des articles » : RC, Annuler, Valider,
+     Envoyer) : côte à côte sous le titre, au lieu d'une colonne. */
+  form .form-group.row:has(> [class*="col-"] > .btn-lg) > [class*="col-"] { flex: 0 0 100%; max-width: 100%; }
+  form .form-group.row > [class*="col-"]:has(> .btn-lg) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .5rem;
+    font-size: 0; /* neutralise les &nbsp; entre les boutons */
+  }
+
+  /* Bloc repliable (« Informations Adhérent ») : flèche indiquant l'état. */
+  details.cdf-repliable > summary h2 { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+  details.cdf-repliable > summary h2::after {
+    content: "\25BE"; /* ▾ */
+    display: inline-block;
+    font-size: .8em;
+    transition: transform .2s;
+  }
+  details.cdf-repliable:not([open]) > summary h2::after { transform: rotate(-90deg); }
+
+  /* ---------- Écran Impressions : blocs empilés ---------- */
+  .border-vert.bg-light {
+    flex: 0 0 100%;
+    max-width: 100%;
+    height: auto !important;
+    margin-bottom: 1rem;
+  }
+  .row > .col-2:has(+ .border-vert.bg-light) { display: none; } /* colonne vide entre les blocs */
+  .border-vert.bg-light .form-group.row {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: .5rem;
+    margin: 0;
+  }
+  .border-vert.bg-light .form-group.row > * { padding: 0; max-width: none; }
+  .border-vert.bg-light .form-group.row > .col-form-label { flex: 0 0 100%; }
+  .border-vert.bg-light .form-group.row > [class*="col-"]:not(.col-form-label):has(input, select) { flex: 1 1 0; min-width: 0; }
+  .border-vert.bg-light .form-group.row > [class*="col-"]:has(> .btn) { flex: 0 0 auto; }
+  .border-vert.bg-light .form-group.row > .col-1:not(:has(*)) { display: none; } /* cales */
+  .border-vert.bg-light .form-group.row > label.col-1 { flex: 0 0 auto; }
+
+  /* ---------- Pastille d'environnement : en haut à droite, dans la barre de menu ---------- */
+  /* (en bas à gauche, elle recouvrait le contenu des cartes) */
+  .cdf-env-badge { top: .9rem; right: .75rem; bottom: auto; left: auto; }
+
+  /* ---------- Bibliothèques tierces ---------- */
+  /* Boîtes de confirmation : la largeur est fixée en JS (30 %) — illisible sur téléphone. */
+  .jconfirm .jconfirm-box { width: calc(100% - 2rem) !important; }
+}
+
+/* ---------- Petits ordinateurs (992 à 1 200 px) : menu déplié, mais place comptée ---------- */
+/* Les zones logo / rubriques / icônes de la barre sont en col-1 / col-9 / col-2 : à cette
+   largeur, col-2 est trop étroite pour les 4 icônes. Chaque zone prend la largeur de son
+   contenu, les rubriques le reste. */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .navbar .navbar-collapse > .col-1,
+  .navbar .navbar-collapse > .col-2 { flex: 0 0 auto; max-width: none; width: auto; }
+  .navbar .navbar-collapse > .col-1 .navbar-brand svg { width: 4.5rem; }
+  .navbar .navbar-collapse > .col-9 { flex: 1 1 0; max-width: none; min-width: 0; }
+  .navbar .navbar-collapse > .col-9 .nav-item { margin-right: .25rem !important; }
+}

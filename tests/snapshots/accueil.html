@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="assets/vendor/bootstrap/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="assets/vendor/fontawesome/css/all520.css" />
 	<link rel="stylesheet" href="assets/css/styles.css" />
+	<link rel="stylesheet" href="assets/css/responsive.css" />
 	<link rel="stylesheet" href="assets/css/moderne.css" />
 
 	<link href="assets/vendor/fontawesome/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" />

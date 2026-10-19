@@ -31,6 +31,14 @@ $(document).ready(function(){
 		$('[data-toggle="tooltip"]').tooltip()
 	})
 
+	// Blocs repliables (<details class="cdf-repliable">) : ouverts sur ordinateur, repliés par
+	// défaut sur téléphone (même seuil que responsive.css).
+	$(function () {
+		if (window.matchMedia && window.matchMedia('(max-width: 767.98px)').matches) {
+			$('details.cdf-repliable').removeAttr('open');
+		}
+	})
+
 
 	$("#recherche").on("keyup", function() {
 		var value = $(this).val().toLowerCase();
