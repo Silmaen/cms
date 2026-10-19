@@ -154,10 +154,10 @@
 				<!--{/if}-->
 
 				<tr class="row">
-					<td class="col-6 text-left">&nbsp;<!--{$picto_etat}--> &nbsp;<!--{$liste_items[liste_items].date_inventaire|date_format:"%d-%m-%Y"}--></td>
-					<td class="col-2 text-left"><!--{$liste_items[liste_items].libelle_type}--></td>
-					<td class="col-2 text-left"><!--{$liste_items[liste_items].libelle_statut}--></td>
-					<td class="col-2 text-center">
+					<td class="col-6 text-left" data-carte="titre">&nbsp;<!--{$picto_etat}--> &nbsp;<!--{$liste_items[liste_items].date_inventaire|date_format:"%d-%m-%Y"}--></td>
+					<td class="col-2 text-left" data-label="Type"><!--{$liste_items[liste_items].libelle_type}--></td>
+					<td class="col-2 text-left" data-label="Statut"><!--{$liste_items[liste_items].libelle_statut}--></td>
+					<td class="col-2 text-center" data-carte="actions">
 						<a href="inventaires_formulaire.php?action=modifier&id_inventaire=<!--{$liste_items[liste_items].id_inventaire}-->" class="btn btn-primary btn-sm" role="button" data-toggle="tooltip" data-placement="bottom" title="Modifier" aria-pressed="true"><i class="fas fa-edit"></i></a>
 						
 						<a href="fiche_inventaire.php?action=imprimer&id_inventaire=<!--{$liste_items[liste_items].id_inventaire}-->" class="btn btn-orange btn-sm" role="button" data-toggle="tooltip" data-placement="bottom" title="Imprimer un inventaire vierge" aria-pressed="true"><i class="fas fa-print"></i></a>

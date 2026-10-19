@@ -158,9 +158,9 @@
 				<!--{/if}-->
 
 				<tr class="row">
-					<td class="col-6 text-left">&nbsp;<!--{$picto_etat}--> &nbsp; <!--{$liste_items[liste_items].nom_utilisateur}--> <!--{$liste_items[liste_items].prenom_utilisateur}--></td>
-					<td class="col-4 text-left"><!--{$liste_items[liste_items].libelle_utilisateur_groupe}--></td>
-					<td class="col-2 text-center">
+					<td class="col-6 text-left" data-carte="titre">&nbsp;<!--{$picto_etat}--> &nbsp; <!--{$liste_items[liste_items].nom_utilisateur}--> <!--{$liste_items[liste_items].prenom_utilisateur}--></td>
+					<td class="col-4 text-left" data-label="Groupe"><!--{$liste_items[liste_items].libelle_utilisateur_groupe}--></td>
+					<td class="col-2 text-center" data-carte="actions">
 						<a href="admin_utilisateurs_formulaire.php?action=modifier&id_utilisateur=<!--{$liste_items[liste_items].id_utilisateur}-->" class="btn btn-primary btn-sm" role="button" data-toggle="tooltip" data-placement="bottom" title="Modifier" aria-pressed="true"><i class="fas fa-edit"></i></a>
 	
 						<a href="mdp_perdu.php?email=<!--{$liste_items[liste_items].email_utilisateur}-->" class="btn btn-info btn-sm" role="button" data-toggle="tooltip" data-placement="bottom" title="Envoyer" aria-pressed="true"><i class="fas fa-envelope"></i></a>

@@ -565,6 +565,10 @@ body[data-ui="moderne"] .jconfirm .jconfirm-box .jconfirm-buttons button {
   font-weight: 500;
   border-radius: .5rem;
 }
+/* Lignes colorées des grilles (article réservé : bg-vert, stock insuffisant : bg-danger) :
+   le libellé gris des formulaires y serait illisible. */
+body[data-ui="moderne"] form[id^="formulaire-"] .row:is(.bg-vert, .bg-danger) .col-form-label { color: #fff; font-weight: 600; }
+
 /* En-têtes des grilles dans les formulaires (articles d'un inventaire, historique des
    règlements) : comme les en-têtes de tableaux. */
 body[data-ui="moderne"] form[id^="formulaire-"] .row.bg-dark,
@@ -581,3 +585,54 @@ body[data-ui="moderne"] form[id^="formulaire-"] .row.bg-gris {
 }
 body[data-ui="moderne"] form[id^="formulaire-"] .row.bg-dark > h5,
 body[data-ui="moderne"] form[id^="formulaire-"] .row.bg-gris > h5 { font-size: inherit; font-weight: inherit; margin: 0; }
+
+/* ---------- Petits écrans (téléphones) ---------- */
+/* Complète responsive.css (commun aux deux interfaces) là où les règles ci-dessus, plus
+   spécifiques, imposent une disposition de bureau. Même seuil : 768 px. */
+@media (max-width: 767.98px) {
+  /* En-tête de page : une colonne, message sous le titre. */
+  body[data-ui="moderne"] .navbar + nav > .row { grid-template-columns: minmax(0, 1fr); margin: .75rem .75rem .25rem !important; }
+  body[data-ui="moderne"] .navbar + nav > .row > :nth-child(3) { grid-column: 1; grid-row: 3; justify-self: start; margin-top: .4rem; }
+
+  /* Bandeau des listes : tout à gauche, sur plusieurs lignes. */
+  body[data-ui="moderne"] nav[aria-label="Pagination"] { margin: 0 .5rem 1rem; padding: .75rem; }
+  body[data-ui="moderne"] nav[aria-label="Pagination"] > .row > :last-child { justify-content: flex-start; }
+  body[data-ui="moderne"] nav[aria-label="Pagination"] .form-inline > .form-group,
+  body[data-ui="moderne"] #recherche { flex: 1 1 100%; max-width: 100%; }
+
+  /* Listes en cartes : le tableau s'efface, chaque ligne est une carte. */
+  body[data-ui="moderne"] .table { background: none; box-shadow: none; border-radius: 0; overflow: visible; padding: 0 .5rem; }
+  body[data-ui="moderne"] .table tbody tr.row {
+    flex-wrap: wrap;
+    margin: 0 0 .75rem;
+    background-color: var(--ui-surface);
+    border: 0;
+    border-radius: var(--ui-rayon);
+    box-shadow: var(--ui-ombre);
+  }
+  body[data-ui="moderne"] .table tbody tr.row > :last-child {
+    flex: 0 0 100%;
+    max-width: 100%;
+    white-space: normal;
+    text-align: left !important;
+    padding: .6rem 0 0;
+    border-top: 1px solid var(--ui-bordure);
+  }
+  /* 7 boutons sur une ligne dès 360 px : 2,35 rem chacun, groupes séparés de .4 rem en plus. */
+  body[data-ui="moderne"] .table tbody td:last-child { gap: .35rem; }
+  body[data-ui="moderne"] .table tbody td:last-child .btn-sm { width: 2.35rem; height: 2.35rem; min-width: 0; min-height: 0; margin-left: 0; }
+  body[data-ui="moderne"] .table tbody td:last-child .btn-sm.btn-success,
+  body[data-ui="moderne"] .table tbody td:last-child .btn-sm.btn-danger { margin-left: .4rem; }
+  body[data-ui="moderne"] .table tbody td:last-child .btn-sm.btn-success + .btn-sm.btn-warning { margin-left: 0; }
+
+  /* Formulaires : une seule colonne, libellé puis champ. */
+  body[data-ui="moderne"] form[id^="formulaire-"] { padding: 1rem; margin: 0 .5rem 1.5rem; max-width: calc(100% - 1rem); }
+  body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row:has(> .col-form-label) { grid-template-columns: minmax(0, 1fr); }
+  body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row:has(> .col-form-label) > * { grid-column: 1 / -1 !important; grid-row: auto !important; }
+  body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row:has(> .col-form-label) > .col-form-label { margin-top: .5rem; }
+  /* Paires vides qui servaient de cales d'alignement sur ordinateur. */
+  body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row:has(> .col-form-label) > .col-form-label:empty,
+  body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row:has(> .col-form-label) > div:not(:has(*)) { display: none; }
+  body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row.float-right { margin: 1rem -1rem -1rem !important; padding: .75rem 1rem; gap: .5rem; flex-wrap: nowrap; }
+  body[data-ui="moderne"] form[id^="formulaire-"] .form-group.row.float-right .btn-lg { padding: .5rem .8rem; font-size: .9rem; }
+}

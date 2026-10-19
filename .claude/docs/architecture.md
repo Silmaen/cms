@@ -82,6 +82,16 @@ De même, l'**interface** (`classique` par défaut / `moderne`) est une préfér
 sélecteur commence par `body[data-ui="moderne"]` (le classique n'est jamais touché) ;
 ses variables `--ui-*` reprennent celles du thème sombre quand il est actif.
 Mêmes templates pour les deux interfaces : ne pas dupliquer d'écran.
+
+**Petits écrans** : `www/assets/css/responsive.css` (commun aux deux interfaces, chargé
+avant `moderne.css`), tout en media queries — rien ne change au-delà de 1 200 px. Sous
+768 px, les listes deviennent des cartes : chaque `<td>` d'un `*_liste.tpl` porte
+`data-label="…"` (libellé affiché), ou `data-carte="titre"` / `data-carte="actions"`.
+Toute nouvelle colonne de liste doit recevoir l'un de ces attributs — de même pour les
+cellules des grilles de formulaire (`#tableau`). Un bloc secondaire peut être enveloppé
+dans `<details class="cdf-repliable" open><summary>titre</summary>…</details>` : ouvert
+sur ordinateur, replié par défaut sur téléphone (`scripts.js`). Les ajustements
+mobiles propres à l'interface moderne sont dans le bloc `@media` en fin de `moderne.css`.
 Ses icônes : les classes Font Awesome des templates sont redessinées en CSS avec
 Bootstrap Icons (`www/assets/vendor/bootstrap-icons/`) ; une nouvelle icône FA
 utilisée dans un template doit recevoir sa correspondance dans `moderne.css`,

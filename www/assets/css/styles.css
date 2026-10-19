@@ -47,6 +47,25 @@ body[data-env="local"]   { --cdf-primaire: #7d3fb8; }
   border-color: var(--cdf-primaire) !important;
 }
 
+/* Les lignes des listes (<tr class="row">) et la pagination du bas de liste (enfant direct
+   de <body>) ne sont pas dans un conteneur Bootstrap : sans cela, les marges négatives de
+   .row (-15 px) les font dépasser à droite de l'écran, et la page défile de côté. Le
+   bandeau du haut, lui, est dans un .container-fluid : ses marges restent normales. */
+table.table tr.row,
+body > nav[aria-label="Pagination"] > .row {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+/* Blocs repliables (<details class="cdf-repliable"><summary>titre</summary>…) : le titre a
+   le même rendu que l'ancien bloc (pas de triangle natif) ; un clic le replie. */
+details.cdf-repliable > summary {
+  display: block;
+  list-style: none;
+  cursor: pointer;
+}
+details.cdf-repliable > summary::-webkit-details-marker { display: none; }
+
 /* ------------------------------------------------------------------ */
 /* Bandeau d'environnement (affiché hors production).                 */
 /* Pastille fixe, discrète, visible sur toutes les pages (y compris    */

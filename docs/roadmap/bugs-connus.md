@@ -7,6 +7,16 @@
 >
 > Sévérité : 🔴 casse une fonctionnalité · 🟠 comportement faux/silencieux · 🟡 latent / à confirmer
 
+## 🔴 Fiche adhérent — dons de l'historique toujours à 0 (MySQL 8)
+
+`www/clients_formulaire.php`, lignes 226 et 267 (historique des règlements, cas `modifier`).
+
+La requête des dons se termine par `GROUP BY t1.annee_reservation DESC` : le tri dans un
+`GROUP BY` a été **supprimé en MySQL 8.0.13**. Sur MySQL 8 (local 8.4, **OVH 8.0.46**),
+`execute()` échoue : la colonne « Dons € » de l'historique reste à 0, et des avertissements
+SQL s'affichent en haut de la fiche quand les erreurs PHP sont visibles. Correctif :
+`GROUP BY t1.annee_reservation ORDER BY t1.annee_reservation DESC`.
+
 ## 🔴 `copier-valider` d'un utilisateur — INSERT invalide
 
 `www/admin_utilisateurs_formulaire.php`, cas `copier-valider`.
