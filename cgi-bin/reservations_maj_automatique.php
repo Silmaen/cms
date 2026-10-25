@@ -22,7 +22,7 @@ SchemaMettreAJour($connexion);
 $resultat_cron ="fichier appelé <br/>";
 
 // CHANGEMENT DE L'ETAT DES RESERVATIONS DONT LA DATE DE RETOUR > AUJOURD'HUI
-$sql=$connexion->prepare("SELECT id_reservation FROM reservations WHERE date_retour<='".date("Y-m-d")."' AND id_etat=2");
+$sql=$connexion->prepare("SELECT id_reservation FROM reservations WHERE date_retour<='".date("Y-m-d")."' AND id_etat=1");
 $sql_exec=$sql->execute();
 if(!$sql_exec) echo "SELECT - DONNEES : Pb d'accès à la table reservations";
 else
