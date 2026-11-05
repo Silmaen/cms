@@ -80,4 +80,22 @@ final class FonctionsGeneralPuresTest extends TestCase
 		// Bizarrerie figée : aucun else → variable non définie → null.
 		$this->assertNull(@GestionUtilisateursEtats('4'));
 	}
+
+	// ------------------------------------------------------------ En-têtes e-mail
+
+	public function testEnTetesMailEnAsciiSansSubject(): void
+	{
+		$h = GestionEnTetesMail();
+		// Un en-tête ne doit contenir que de l'ASCII ; mail() ajoute lui-même le Subject.
+		$this->assertMatchesRegularExpression('/^[\x20-\x7E\r\n]*$/', $h);
+		$this->assertStringNotContainsStringIgnoringCase('subject:', $h);
+		$this->assertStringContainsString("Bcc: no-reply@cdf-genay.com\r\n", $h);
+		$this->assertStringNotContainsString(" \r\n", $h);
+		$this->assertStringEndsNotWith("\n", $h);
+	}
+
+	public function testEnTetesMailSansCopieCachee(): void
+	{
+		$this->assertStringNotContainsString('Bcc:', GestionEnTetesMail(false));
+	}
 }
