@@ -29,9 +29,6 @@ if((isset($_POST["email"]) && $_POST["email"]!="") OR (isset($_GET["email"]) && 
 		}
 	}
 
-	$encoding = "utf-8";
-	$from_name = "Comité des Fêtes de Genay";
-	$from_mail = "no-reply@cdf-genay.com";
 	$mail_subject = $prenom_utilisateur." ".$nom_utilisateur." : Réinitialisation de votre mot de passe sur le site www.cdf-genay.com";
 	$mail_to = $email_temp;
 
@@ -44,24 +41,7 @@ if((isset($_POST["email"]) && $_POST["email"]!="") OR (isset($_GET["email"]) && 
 		$mail_message .= "<br /><br /> Comité des Fêtes de Genay";
 		$mail_message .= "<br /><br /> http://www.cdf-genay.com";
 
-	// Preferences for Subject field
-	$subject_preferences = array(
-		"input-charset" => $encoding,
-		"output-charset" => $encoding,
-		"line-length" => 76,
-		"line-break-chars" => "\r\n"
-	);
-
-	// Mail header
-	$header = "Content-type: text/html; charset=".$encoding." \r\n";
-	$header .= "From: ".$from_name." <".$from_mail."> \r\n";
-	$header .= "MIME-Version: 1.0 \r\n";
-	$header .= "Content-Transfer-Encoding: 8bit \r\n";
-	$header.= "Bcc: no-reply@cdf-genay.com \r\n";
-	$header .= "Date: ".date("r (T)")." \r\n";
-
-	// Send mail
-	mail($mail_to, $mail_subject, $mail_message, $header);
+	GestionEnvoiMail($mail_to, $mail_subject, $mail_message);
 
 	if(isset($_GET["email"]) && $_GET["email"]!="")
 	{

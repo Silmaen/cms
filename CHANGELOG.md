@@ -5,6 +5,8 @@ Ce qui est livré. Ce qui est prévu est dans [`docs/roadmap.md`](docs/roadmap.m
 ## En développement
 
 - Tâche planifiée : les réservations dont la date de retour est passée sont de nouveau archivées (mauvais filtre `id_etat` conservé lors de la fusion prod/recette).
+- E-mails du site (tâche planifiée, confirmation et annulation de réservation, mot de passe perdu) de nouveau conformes : un seul `Subject`, sujet et expéditeur accentués encodés, `Bcc` valide ; envoi centralisé dans `GestionEnvoiMail()`.
+- Tâche planifiée : un échec d'envoi de l'e-mail récapitulatif est signalé, et la date des retours y figure.
 - Téléphone : grilles d'articles (réservation, inventaire, historique adhérent) sur deux lignes avec libellés au lieu d'un défilement horizontal ; boutons d'action côte à côte ; bloc « Informations Adhérent » replié par défaut.
 - Listes : plus de défilement horizontal de 15 px sur ordinateur (marges négatives des lignes hors conteneur).
 - **Affichage sur téléphone et tablette**, dans les deux interfaces : listes en cartes (libellés, actions en bas), menu replié sous 992 px, formulaires et impressions sur une colonne, grilles d'articles défilables, plus aucun défilement horizontal de 360 à 1 200 px.
