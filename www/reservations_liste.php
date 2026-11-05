@@ -210,11 +210,7 @@ if(isset($_GET["action"]) AND ($_GET["action"]=="supprimer" OR $_GET["action"]==
 
 		if($email_temp!="")
 		{
-			$encoding = "utf-8";
-			$from_name = "Comité des Fêtes de Genay";
-			$from_mail = "no-reply@cdf-genay.com";
 			$mail_subject = $prenom." ".$nom." : Annulation de votre réservation auprès du Comité des Fêtes de Genay";
-			$mail_to = $email_temp;
 			$mail_to = $email_temp;
 			$mail_message =  "Bonjour ".$prenom." ".$nom.",
 				<br /><br /> Nous vous confirmons l'annulation de votre réservation du ".GestionDate($row["date_depart"],'0')." au ".GestionDate($row["date_retour"],'0')." réalisée auprès du Comité des Fêtes de Genay.
@@ -222,25 +218,7 @@ if(isset($_GET["action"]) AND ($_GET["action"]=="supprimer" OR $_GET["action"]==
 				<br /><br /> Comité des Fêtes de Genay
 				<br /><br /> http://www.cdf-genay.com";
 
-			// Preferences for Subject field
-			$subject_preferences = array(
-				"input-charset" => $encoding,
-				"output-charset" => $encoding,
-				"line-length" => 76,
-				"line-break-chars" => "\r\n"
-			);
-
-			// Mail header
-			$header = "Content-type: text/html; charset=".$encoding." \r\n";
-			$header .= "From: ".$from_name." <".$from_mail."> \r\n";
-			$header .= "MIME-Version: 1.0 \r\n";
-			$header .= "Content-Transfer-Encoding: 8bit \r\n";
-			$header .= "Bcc: no-reply@cdf-genay.com \r\n";
-			$header .= "Date: ".date("r (T)")." \r\n";
-			$header .= iconv_mime_encode("Subject", $mail_subject, $subject_preferences);
-
-			// Send mail
-			mail($mail_to, $mail_subject, $mail_message, $header);
+			GestionEnvoiMail($mail_to, $mail_subject, $mail_message);
 		}
 	}
 }

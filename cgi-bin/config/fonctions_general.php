@@ -233,4 +233,23 @@ function GestionUtilisateursEtats($id_utilisateur_groupe)
 	if($id_utilisateur_groupe=='3'){$etat_utilisateur="1";} // Cet utilisateur a le droit de voir les items ETAT=1 => Actif
 	return $etat_utilisateur;
 }
+
+// En-têtes d'un e-mail HTML du site. Le nom d'expéditeur est encodé (RFC 2047) : un
+// en-tête ne doit contenir que de l'ASCII. Pas de Subject ici : mail() l'ajoute.
+function GestionEnTetesMail($copie_cachee=true)
+{
+	$header = "Content-Type: text/html; charset=utf-8\r\n";
+	$header .= "From: ".mb_encode_mimeheader("Comité des Fêtes de Genay", "UTF-8", "B")." <no-reply@cdf-genay.com>\r\n";
+	$header .= "MIME-Version: 1.0\r\n";
+	$header .= "Content-Transfer-Encoding: 8bit\r\n";
+	if($copie_cachee) $header .= "Bcc: no-reply@cdf-genay.com\r\n";
+	$header .= "Date: ".date("r");
+	return $header;
+}
+
+// Envoie un e-mail HTML ; renvoie false si mail() refuse l'envoi.
+function GestionEnvoiMail($mail_to, $mail_subject, $mail_message, $copie_cachee=true)
+{
+	return mail($mail_to, mb_encode_mimeheader($mail_subject, "UTF-8", "B"), $mail_message, GestionEnTetesMail($copie_cachee));
+}
 ?>

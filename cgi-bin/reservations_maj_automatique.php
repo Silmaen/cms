@@ -17,6 +17,7 @@ catch(PDOException $e){
 
 // Mise à niveau du schéma à chaud (base restaurée depuis une sauvegarde antérieure).
 require_once(__DIR__ . '/../metier/schema.php');
+require_once(__DIR__ . '/config/fonctions_general.php'); // GestionEnvoiMail()
 SchemaMettreAJour($connexion);
 
 $resultat_cron ="fichier appelé <br/>";
@@ -48,9 +49,6 @@ else
 		}
 	}
 
-	$encoding = "utf-8";
-	$from_name = "Comité des Fêtes de Genay";
-	$from_mail = "no-reply@cdf-genay.com";
 	$mail_subject = "Cron du ".date("d-m-Y");
 	$mail_to = "no-reply@cdf-genay.com";
 	$mail_message =  $resultat_cron;
@@ -59,27 +57,11 @@ else
 	$mail_message .= "<br />Télécharger le PDF avec les réservations au départ le ".date("d-m-Y")." en cliquant sur le lien suivant :<br />";
 	$mail_message .= "http://www.cdf-genay.com/impressions_automatique_reservations_jour.php?action=imprimer&date_depart_reservation=".date("Y-m-d");
 	$mail_message .= "<br /><br />";
-	$mail_message .= "<br />Télécharger le PDF avec les retours du  en cliquant sur le lien suivant :<br />";
+	$mail_message .= "<br />Télécharger le PDF avec les retours du ".date("d-m-Y")." en cliquant sur le lien suivant :<br />";
 	$mail_message .= "https://www.cdf-genay.com/impressions_reservations_retour.php?date_retour_reservation=".date("Y-m-d");
 
-	// Preferences for Subject field
-	$subject_preferences = array(
-		"input-charset" => $encoding,
-		"output-charset" => $encoding,
-		"line-length" => 76,
-		"line-break-chars" => "\r\n"
-	);
-
-	// Mail header
-	$header = "Content-type: text/html; charset=".$encoding." \r\n";
-	$header .= "From: ".$from_name." <".$from_mail."> \r\n";
-	$header .= "MIME-Version: 1.0 \r\n";
-	$header .= "Content-Transfer-Encoding: 8bit \r\n";
-	$header .= "Date: ".date("r (T)")." \r\n";
-	$header .= iconv_mime_encode("Subject", $mail_subject, $subject_preferences);
-
-	// Send mail
-	mail($mail_to, $mail_subject, $mail_message, $header);
+	// Pas de copie cachée : le destinataire est déjà no-reply.
+	if(!GestionEnvoiMail($mail_to, $mail_subject, $mail_message, false)) echo "Envoi de l'e-mail du cron refusé par mail()\n";
 }
 
 ?>
