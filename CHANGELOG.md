@@ -4,6 +4,9 @@ Ce qui est livré. Ce qui est prévu est dans [`docs/roadmap.md`](docs/roadmap.m
 
 ## En développement
 
+- Mot de passe perdu : plus d'e-mail pour une adresse inconnue ou un compte inactif, un seul envoi par compte toutes les 15 minutes, champ piège anti-robots, envoi par lien réservé aux utilisateurs connectés, plus de copie cachée.
+- Liens envoyés par e-mail (mot de passe perdu, tâche planifiée) vers l'adresse de l'environnement courant au lieu de la prod, en https ; un serveur peut déclarer son environnement à la tâche planifiée (`CDF_ENV_SERVEUR` dans `config_secrets.php`).
+- Lien de réinitialisation du mot de passe : jeton aléatoire valable une heure et à usage unique (au lieu de la clé permanente du compte), règles du mot de passe vérifiées côté serveur et messages d'échec affichés.
 - Tâche planifiée : les réservations dont la date de retour est passée sont de nouveau archivées (mauvais filtre `id_etat` conservé lors de la fusion prod/recette).
 - E-mails du site (tâche planifiée, confirmation et annulation de réservation, mot de passe perdu) de nouveau conformes : un seul `Subject`, sujet et expéditeur accentués encodés, `Bcc` valide ; envoi centralisé dans `GestionEnvoiMail()`.
 - Tâche planifiée : un échec d'envoi de l'e-mail récapitulatif est signalé, et la date des retours y figure.

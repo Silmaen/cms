@@ -15,7 +15,9 @@
 //        recette.cdf-genay.com             -> recette
 //        test.cdf-genay.com                -> test
 //        localhost / 127.0.0.1 / *.local   -> local
-//   3. Défaut (ex. CLI/cron sans nom d'hôte) : 'prod' (cas le plus sûr :
+//   3. Sans nom d'hôte (CLI/cron) : la constante CDF_ENV_SERVEUR si le fichier
+//      hors-git config_secrets.php du serveur la définit (OVH ne permet pas de
+//      variable d'environnement pour un cron), sinon 'prod' (cas le plus sûr :
 //      aucun bandeau d'alerte n'est affiché).
 //
 // Les identifiants de base de données sont résolus séparément : voir
@@ -40,7 +42,11 @@ if (!function_exists('cdfDetecterEnvironnement')) {
 		$hote = preg_replace('/:\d+$/', '', $hote);
 
 		if ($hote === '') {
-			// Contexte CLI (cron) sans nom d'hôte : on retombe sur le défaut sûr.
+			// Contexte CLI (cron) sans nom d'hôte : environnement déclaré par le serveur,
+			// sinon le défaut sûr.
+			if (defined('CDF_ENV_SERVEUR') && in_array(CDF_ENV_SERVEUR, array('prod', 'recette', 'test', 'local'), true)) {
+				return CDF_ENV_SERVEUR;
+			}
 			return 'prod';
 		}
 		if ($hote === 'localhost' || $hote === '127.0.0.1' || substr($hote, -6) === '.local') {
@@ -54,6 +60,25 @@ if (!function_exists('cdfDetecterEnvironnement')) {
 		}
 		// www.cdf-genay.com, cdf-genay.com, ...
 		return 'prod';
+	}
+}
+
+if (!function_exists('cdfUrlSite')) {
+
+	// Adresse du site pour les liens envoyés par e-mail. Fixée par environnement : le nom
+	// d'hôte de la requête est choisi par le client et ne doit pas finir dans un lien.
+	// Seul le local, sans adresse fixe, reprend l'hôte (localhost:port).
+	function cdfUrlSite($env, $hote = '')
+	{
+		$adresses = array(
+			'prod'    => 'https://www.cdf-genay.com',
+			'recette' => 'https://recette.cdf-genay.com',
+			'test'    => 'https://test.cdf-genay.com',
+		);
+		if (isset($adresses[$env])) {
+			return $adresses[$env];
+		}
+		return 'http://' . ($hote !== '' ? $hote : 'localhost:8080');
 	}
 }
 

@@ -163,7 +163,7 @@
 					<td class="col-2 text-center" data-carte="actions">
 						<a href="admin_utilisateurs_formulaire.php?action=modifier&id_utilisateur=<!--{$liste_items[liste_items].id_utilisateur}-->" class="btn btn-primary btn-sm" role="button" data-toggle="tooltip" data-placement="bottom" title="Modifier" aria-pressed="true"><i class="fas fa-edit"></i></a>
 	
-						<a href="mdp_perdu.php?email=<!--{$liste_items[liste_items].email_utilisateur}-->" class="btn btn-info btn-sm" role="button" data-toggle="tooltip" data-placement="bottom" title="Envoyer" aria-pressed="true"><i class="fas fa-envelope"></i></a>
+						<a href="mdp_perdu.php?email=<!--{$liste_items[liste_items].email_utilisateur|escape:'url'}-->" class="btn btn-info btn-sm" role="button" data-toggle="tooltip" data-placement="bottom" title="Envoyer" aria-pressed="true"><i class="fas fa-envelope"></i></a>
 						
 						<!--{if $smarty.session.id_utilisateur_groupe<=2}-->
 						
