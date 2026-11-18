@@ -53,8 +53,10 @@ calcule une valeur parmi `prod` / `recette` / `test` / `local`, dans cet ordre :
    - `recette.cdf-genay.com` → `recette`
    - `test.cdf-genay.com` → `test`
    - `localhost` / `127.0.0.1` → `local`
-3. Sinon (ex. tâche cron sans nom d'hôte) → `prod` par défaut (le cas le plus sûr :
-   aucun bandeau affiché).
+3. Sinon (tâche cron sans nom d'hôte) → la constante `CDF_ENV_SERVEUR` si le
+   `config_secrets.php` du serveur la définit (à faire sur **recette** et **test** si
+   une tâche planifiée y tourne, sinon ses liens pointent vers la prod), sinon `prod`
+   par défaut (le cas le plus sûr : aucun bandeau affiché).
 
 Le même code se comporte donc correctement partout, **sans configuration par branche**.
 

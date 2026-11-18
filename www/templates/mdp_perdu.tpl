@@ -22,6 +22,11 @@
 						<input type="email" class="form-control form-control-danger" id="email" name="email" placeholder="Email" required autofocus>
 						<div class="invalid-feedback">Veuillez saisir un email valide</div>
 					</div>
+					<!-- Champ piège anti-robots : invisible, à laisser vide. -->
+					<div style="position: absolute; left: -10000px;" aria-hidden="true">
+						<label for="site_web">Ne pas remplir ce champ</label>
+						<input type="text" id="site_web" name="site_web" value="" tabindex="-1" autocomplete="off">
+					</div>
 				<div class="form-group row justify-content-center">
 					<button id="btnSubmit" type="submit" class="btn btn-vert">Envoyer</button>
 				</div>	
