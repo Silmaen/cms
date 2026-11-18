@@ -11,8 +11,8 @@
 	
 		<div class="container-fluid col-12" style="max-width: 600px;">
 			<form id="reinitialisation" name="reinitialisation" class="needs-validation text-center" action="mdp_reinitialiser.php" method="POST">
-			<input type="hidden" id="email" name="email" value="<!--{$email}-->">
-			<input type="hidden" id="cle" name="cle" value="<!--{$cle}-->">
+			<input type="hidden" id="email" name="email" value="<!--{$email|escape}-->">
+			<input type="hidden" id="cle" name="cle" value="<!--{$cle|escape}-->">
 				
 				<h3 class="mb-3 font-weight-normal">Veuillez saisir votre mot de passe</h3>
 				
@@ -53,7 +53,7 @@
 	<!--{else}-->
 	
 		<!--{if $message_mdp!=""}-->
-			<div class="container-fluid col-12 text-center" style="max-width: 600px;"
+			<div class="container-fluid col-12 text-center" style="max-width: 600px;">
 				<h6 class="mb-3 text-danger font-weight-bold text-center"><!--{$message_mdp}--></h6>
 				<br />
 				<h6 class="mb-3 text-success font-weight-bold text-center">

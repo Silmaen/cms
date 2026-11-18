@@ -3,6 +3,8 @@
 // Identifiants BDD résolus par le mécanisme unifié (variables d'environnement
 // CDF_DB_* en local, sinon config_secrets.php sur OVH).
 require_once(__DIR__ . '/config/identifiants_bdd.php'); // définit serveur/bdd/utilisateur/mdp
+// Après les identifiants : config_secrets.php peut déclarer CDF_ENV_SERVEUR (liens du mail).
+require_once(__DIR__ . '/config/environnement.php');
 
 $connexion="mysql:dbname=".bdd.";host=".serveur.";charset=utf8"; // charset : équivaut à SET NAMES utf8
 try{
@@ -55,10 +57,10 @@ else
 	$mail_message .= "<br /><br />";
 	$mail_message .= "<br /><br />";
 	$mail_message .= "<br />Télécharger le PDF avec les réservations au départ le ".date("d-m-Y")." en cliquant sur le lien suivant :<br />";
-	$mail_message .= "http://www.cdf-genay.com/impressions_automatique_reservations_jour.php?action=imprimer&date_depart_reservation=".date("Y-m-d");
+	$mail_message .= cdfUrlSite(CDF_ENV)."/impressions_automatique_reservations_jour.php?action=imprimer&date_depart_reservation=".date("Y-m-d");
 	$mail_message .= "<br /><br />";
 	$mail_message .= "<br />Télécharger le PDF avec les retours du ".date("d-m-Y")." en cliquant sur le lien suivant :<br />";
-	$mail_message .= "https://www.cdf-genay.com/impressions_reservations_retour.php?date_retour_reservation=".date("Y-m-d");
+	$mail_message .= cdfUrlSite(CDF_ENV)."/impressions_reservations_retour.php?date_retour_reservation=".date("Y-m-d");
 
 	// Pas de copie cachée : le destinataire est déjà no-reply.
 	if(!GestionEnvoiMail($mail_to, $mail_subject, $mail_message, false)) echo "Envoi de l'e-mail du cron refusé par mail()\n";

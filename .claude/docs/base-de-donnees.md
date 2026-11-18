@@ -35,7 +35,9 @@ Créées par migration (`metier/schema.php`) : `admin_schema`, `admin_utilisateu
   `id_type_inventaire`, `id_etat`, `id_membre_auteur`.
 - **admin_utilisateurs** : `id_utilisateur`(PK), `id_utilisateur_groupe`,
   `prenom_utilisateur`, `nom_utilisateur`, `email_utilisateur`,
-  `mdp_utilisateur` (SHA-256 salé), `items_par_page`.
+  `mdp_utilisateur` (SHA-256 salé), `items_par_page`, `jeton_mdp` (empreinte SHA-256 du
+  jeton de réinitialisation, NULL une fois utilisé) et `date_jeton_mdp` (émission : expiration
+  1 h, une demande par 15 min) — ces deux colonnes viennent de la migration 2.
 - **admin_utilisateurs_session** : `id_utilisateur`, `id_admin_menu`, `colonne`,
   `colonne_titre_fr`, `largeur`, `ordre`, `sens_tri`, `tri_utilisateur`,
   `items_par_page`.
