@@ -76,6 +76,10 @@ if(isset($_GET["envoi"]) AND $_GET["envoi"]=="ok")
 {
 	$message_formulaire ="Email envoyé à ".$_GET["email"];
 }
+if(isset($_GET["envoi"]) AND $_GET["envoi"]=="echec")
+{
+	$message_formulaire ="Aucun email envoyé à ".$_GET["email"]." : ce n'est pas un compte actif, ou l'envoi a échoué";
+}
 
 // CALCULS POUR L'AFFICHAGE (pagination) — extrait dans PaginationOffset()
 $pagination = PaginationOffset(isset($_GET['page']) ? $_GET['page'] : null, $_SESSION['nombre_de_pages'], $_SESSION['items_par_page']);

@@ -1,31 +1,41 @@
 <?php
 require_once('../cgi-bin/config/config_general.php');
 require_once('../cgi-bin/config/fonctions_general.php');
+require_once('../metier/utilisateurs.php');
+
+// Le lien arrive en GET ; le formulaire renvoie la clé et l'e-mail en POST.
+$cle = isset($_POST["cle"]) ? $_POST["cle"] : (isset($_GET["cle"]) ? $_GET["cle"] : "");
+$email = isset($_POST["email"]) ? $_POST["email"] : (isset($_GET["email"]) ? $_GET["email"] : "");
 
 $smarty->assign('message_mdp',"");
-$smarty->assign('cle',$_GET["cle"]);
-$smarty->assign('email',$_GET["email"]);
+$smarty->assign('cle',$cle);
+$smarty->assign('email',$email);
 
-if(isset($_POST["mdp1"]) && $_POST["mdp1"]!="" AND isset($_POST["mdp2"]) && $_POST["mdp2"]!="" AND isset($_POST["cle"]) && $_POST["cle"]!="" AND isset($_POST["email"]) && $_POST["email"]!="" AND $_POST["mdp1"]===$_POST["mdp2"])
+if(isset($_POST["mdp1"]) && $_POST["mdp1"]!="" AND isset($_POST["mdp2"]) && $_POST["mdp2"]!="")
 {
-	$connexion->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
-
-	$sql=$connexion->prepare("SELECT t1.id_utilisateur FROM admin_utilisateurs AS t1 WHERE (t1.email_utilisateur = :email AND t1.cle_utilisateur= :cle)");
-	$sql_exec=$sql->execute([":email"=>$_POST["email"], ":cle"=>$_POST["cle"]]);
-	if(!$sql_exec) echo "VALIDER - DONNEES : Pb d'accès à la table utilisateurs";
+	if($_POST["mdp1"]!==$_POST["mdp2"])
+	{
+		$smarty->assign('message_mdp',"Les deux mots de passe saisis sont différents.");
+	}
+	else if(!MdpRespectePolitique($_POST["mdp1"]))
+	{
+		$smarty->assign('message_mdp',"Le mot de passe ne respecte pas les règles ci-dessous.");
+	}
 	else
 	{
-		foreach ($sql->fetchAll() as $row)
+		$id_utilisateur = MdpJetonVerifier($connexion, $email, $cle, time());
+		if($id_utilisateur===null)
 		{
-
-			$sql=$connexion->prepare("UPDATE admin_utilisateurs SET mdp_utilisateur=:mdp_utilisateur WHERE (id_utilisateur=:id_utilisateur)");
-			$sql_exec=$sql->execute([":id_utilisateur"=>$row["id_utilisateur"], ":mdp_utilisateur"=>GestionHashage($_POST["mdp1"])]);
-			if(!$sql_exec) echo "Update-Valider : Pb d'accès à la table admin_utilisateurs";
-			else
-			{
-				$smarty->assign('message_mdp',"Votre mot de passe a été actualisé.");
-				$smarty->assign('resultat',"1");
-			}
+			$smarty->assign('message_mdp',"Ce lien est invalide ou a expiré. Refaites une demande depuis « J'ai perdu mon mot de passe ».");
+		}
+		else if(!MdpReinitialiser($connexion, $id_utilisateur, GestionHashage($_POST["mdp1"])))
+		{
+			echo "Update-Valider : Pb d'accès à la table admin_utilisateurs";
+		}
+		else
+		{
+			$smarty->assign('message_mdp',"Votre mot de passe a été actualisé.");
+			$smarty->assign('resultat',"1");
 		}
 	}
 }

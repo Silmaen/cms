@@ -26,6 +26,7 @@ function SchemaMigrations()
 {
 	return array(
 		1 => 'SchemaMigration1PreferencesUtilisateurs',
+		2 => 'SchemaMigration2JetonMotDePasse',
 	);
 }
 
@@ -128,4 +129,26 @@ function SchemaMigration1PreferencesUtilisateurs($connexion)
 		date_modification datetime DEFAULT NULL,
 		PRIMARY KEY (id_utilisateur, cle)
 	) ENGINE=MyISAM DEFAULT CHARSET=utf8") !== false;
+}
+
+/**
+ * 2 — Jeton de réinitialisation du mot de passe : empreinte du jeton et date d'émission
+ * (sert à l'expiration du lien et à limiter le nombre de demandes).
+ */
+function SchemaMigration2JetonMotDePasse($connexion)
+{
+	$colonnes = array(
+		'jeton_mdp' => "ALTER TABLE admin_utilisateurs ADD COLUMN jeton_mdp varchar(64) DEFAULT NULL",
+		'date_jeton_mdp' => "ALTER TABLE admin_utilisateurs ADD COLUMN date_jeton_mdp datetime DEFAULT NULL",
+	);
+	foreach ($colonnes as $colonne => $ajout) {
+		$sql = $connexion->prepare("SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='admin_utilisateurs' AND COLUMN_NAME=:colonne");
+		if (!$sql->execute([":colonne" => $colonne])) {
+			return false;
+		}
+		if (intval($sql->fetchColumn()) === 0 && $connexion->exec($ajout) === false) {
+			return false;
+		}
+	}
+	return true;
 }

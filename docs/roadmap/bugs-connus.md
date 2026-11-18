@@ -41,9 +41,6 @@
 | 🟠 | `GestionDate()` : date mal formée = erreur fatale | Transverses |
 | 🟠 | Un compte supprimé ou archivé peut toujours se connecter | Authentification et session |
 | 🟠 | Session jamais régénérée, cookie non protégé | Authentification et session |
-| 🟠 | Lien de réinitialisation du mot de passe permanent et devinable | Authentification et session |
-| 🟠 | `mdp_perdu.php` envoie un mail même pour un e-mail inconnu | Authentification et session |
-| 🟠 | Liens envoyés par e-mail figés sur la prod, paramètres non encodés | Authentification et session |
 | 🟠 | Stock « Dispo » faux en mode Modifier (chevauchement incomplet) | Réservations |
 | 🟠 | Stock faux en mode Copier | Réservations |
 | 🟠 | Aucun contrôle serveur des quantités ni des dates | Réservations |
@@ -72,7 +69,6 @@
 | 🟡 | DELETE physique + réinsertion sans transaction | Transverses |
 | 🟡 | Fuseau horaire non fixé | Transverses |
 | 🟡 | `GestionIdentification()` lit `$_POST` sans `isset()` | Authentification et session |
-| 🟡 | `mdp_reinitialiser` : échecs silencieux et HTML cassé | Authentification et session |
 | 🟡 | Échec de connexion BDD : identifiant MySQL affiché | Authentification et session |
 | 🟡 | Formulaire de groupe : avertissements et droits manquants | Administration |
 | 🟡 | Migration en échec : toutes les redirections cassées | Administration |
@@ -233,37 +229,10 @@ déconnexion (`index.php:15-17`) ne supprime pas le cookie ; `use_strict_mode`,
 `cookie_httponly` et `cookie_secure` non activés (`config_general.php:4-5`) → fixation de
 session, cookie lisible en cas de XSS.
 
-### 🟠 Lien de réinitialisation du mot de passe permanent et devinable
-
-`mdp_reinitialiser.php:13-22` : le jeton est `cle_utilisateur = uniqid()` créé une fois à la
-création du compte (`admin_utilisateurs_formulaire.php:134`) — basé sur l'horloge, sans
-expiration, jamais renouvelé, sans limite de tentatives.
-
-### 🟠 `mdp_perdu.php` envoie un mail même pour un e-mail inconnu
-
-`mdp_perdu.php:7-44` : aucune garde, `GestionEnvoiMail` part vers l'adresse saisie (y compris
-en GET, sans authentification) avec des variables non définies. Avec les erreurs affichées,
-les avertissements révèlent si le compte existe.
-
-### 🟠 Liens envoyés par e-mail figés sur la prod, paramètres non encodés
-
-`mdp_perdu.php:26` (`http://www.cdf-genay.com/...&email=` brut), `admin_utilisateurs_liste.tpl:166`,
-`reservations_maj_automatique.php:58` (http) et `:61` (https). Depuis recette/test, le lien
-pointe vers la prod (si la base recette est une copie, il réinitialise le mot de passe de
-prod — à confirmer). Un e-mail contenant `+` devient un espace : réinitialisation en échec
-silencieux.
-
 ### 🟡 `GestionIdentification()` lit `$_POST` sans `isset()`
 
 `fonctions_general.php:52`. Sans session, avec `display_errors` actif, les avertissements
 précèdent le `header("Location:index.php")` : page blanche au lieu de la connexion.
-
-### 🟡 `mdp_reinitialiser` : échecs silencieux et HTML cassé
-
-`mdp_reinitialiser.php:6-7,13-30` : le formulaire poste sans la query-string, donc
-`$_GET["cle"]`/`["email"]` absents au POST ; clé fausse → aucun message. Politique de mot de
-passe uniquement côté client (`pattern`). `mdp_reinitialiser.tpl:56` : `<div … style="…"`
-sans `>`, le message de succès est absorbé.
 
 ### 🟡 Échec de connexion BDD : identifiant MySQL affiché
 

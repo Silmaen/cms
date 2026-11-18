@@ -31,6 +31,8 @@ final class SchemaTest extends DatabaseTestCase
 		$this->assertTrue(SchemaMettreAJour($this->pdo));
 		$this->assertSame(SchemaVersionCode(), SchemaVersionBase($this->pdo));
 		$this->assertTrue($this->tableExiste('admin_utilisateurs_preferences'));
+		$this->assertSame(1, $this->pdo->query("SHOW COLUMNS FROM admin_utilisateurs LIKE 'jeton_mdp'")->rowCount());
+		$this->assertSame(1, $this->pdo->query("SHOW COLUMNS FROM admin_utilisateurs LIKE 'date_jeton_mdp'")->rowCount());
 	}
 
 	public function testMiseAJourEstIdempotente(): void

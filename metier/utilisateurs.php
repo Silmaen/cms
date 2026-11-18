@@ -207,3 +207,107 @@ function UtilisateurModifierSansMdp($connexion, $idUtilisateur, $nom, $prenom, $
 	$sql = $connexion->prepare("UPDATE admin_utilisateurs SET nom_utilisateur=:nom_utilisateur, prenom_utilisateur=:prenom_utilisateur, telephone_utilisateur=:telephone_utilisateur, email_utilisateur=:email_utilisateur, id_utilisateur_groupe=:id_utilisateur_groupe, date_modification=:date_modification, id_membre_auteur=:id_membre_auteur WHERE (id_utilisateur=:id_utilisateur)");
 	return $sql->execute([":id_utilisateur" => $idUtilisateur, ":nom_utilisateur" => $nom, ":prenom_utilisateur" => $prenom, ":telephone_utilisateur" => $telephone, ":email_utilisateur" => $email, ":id_utilisateur_groupe" => $idGroupe, ":date_modification" => date("Y-m-d"), ":id_membre_auteur" => $idMembreAuteur]);
 }
+
+///////////////////////////////////////
+// Réinitialisation du mot de passe //
+///////////////////////////////////////
+
+/**
+ * Durée de validité d'un lien de réinitialisation, en secondes.
+ *
+ * @return int
+ */
+function MdpJetonDureeValidite()
+{
+	return 3600;
+}
+
+/**
+ * Délai minimal entre deux e-mails de réinitialisation pour un même compte, en secondes.
+ *
+ * @return int
+ */
+function MdpDelaiEntreDemandes()
+{
+	return 900;
+}
+
+/**
+ * Le mot de passe respecte-t-il la politique affichée (8 caractères sans espace, au
+ * moins une minuscule, une majuscule et un chiffre) ? Même règle que le `pattern` HTML.
+ *
+ * @return bool
+ */
+function MdpRespectePolitique($mdp)
+{
+	return preg_match('/^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])\S{8,}$/', $mdp) === 1;
+}
+
+/**
+ * Prépare une demande « mot de passe perdu » : si l'adresse est celle d'un compte actif
+ * et qu'aucun e-mail n'est parti depuis MdpDelaiEntreDemandes(), émet un nouveau jeton
+ * aléatoire (seule son empreinte est stockée ; l'ancien lien devient invalide).
+ * $forcer ignore le délai (envoi demandé par un administrateur connecté).
+ *
+ * @return array|null null si rien ne doit être envoyé ; sinon la ligne de l'utilisateur
+ *                    (nom, prénom, e-mail) complétée du jeton en clair (`jeton`).
+ */
+function MdpPerduDemander($connexion, $email, $maintenant, $forcer = false)
+{
+	if (filter_var($email, FILTER_VALIDATE_EMAIL) === false) {
+		return null;
+	}
+	$sql = $connexion->prepare("SELECT id_utilisateur, nom_utilisateur, prenom_utilisateur, email_utilisateur, date_jeton_mdp FROM admin_utilisateurs WHERE (email_utilisateur = :email AND id_etat = 1) LIMIT 1");
+	if (!$sql->execute([":email" => $email])) {
+		return null;
+	}
+	$row = $sql->fetch();
+	if (!$row) {
+		return null;
+	}
+	if (!$forcer && $row["date_jeton_mdp"] !== null && $maintenant - strtotime($row["date_jeton_mdp"]) < MdpDelaiEntreDemandes()) {
+		return null;
+	}
+
+	$jeton = bin2hex(random_bytes(32));
+	$sql = $connexion->prepare("UPDATE admin_utilisateurs SET jeton_mdp = :jeton_mdp, date_jeton_mdp = :date_jeton_mdp WHERE (id_utilisateur = :id_utilisateur)");
+	if (!$sql->execute([":jeton_mdp" => hash('sha256', $jeton), ":date_jeton_mdp" => date("Y-m-d H:i:s", $maintenant), ":id_utilisateur" => $row["id_utilisateur"]])) {
+		return null;
+	}
+	$row["jeton"] = $jeton;
+	return $row;
+}
+
+/**
+ * Vérifie un lien de réinitialisation : compte actif, jeton correct et non expiré.
+ *
+ * @return int|null l'identifiant de l'utilisateur, ou null si le lien est invalide.
+ */
+function MdpJetonVerifier($connexion, $email, $jeton, $maintenant)
+{
+	if (!is_string($jeton) || $jeton === '') {
+		return null;
+	}
+	$sql = $connexion->prepare("SELECT id_utilisateur, jeton_mdp, date_jeton_mdp FROM admin_utilisateurs WHERE (email_utilisateur = :email AND id_etat = 1 AND jeton_mdp IS NOT NULL)");
+	if (!$sql->execute([":email" => $email])) {
+		return null;
+	}
+	foreach ($sql->fetchAll() as $row) {
+		if (hash_equals($row["jeton_mdp"], hash('sha256', $jeton)) && $maintenant - strtotime($row["date_jeton_mdp"]) <= MdpJetonDureeValidite()) {
+			return intval($row["id_utilisateur"]);
+		}
+	}
+	return null;
+}
+
+/**
+ * Enregistre le nouveau mot de passe (déjà haché) et consomme le jeton : le lien ne
+ * sert qu'une fois. La date d'émission est gardée pour le délai entre demandes.
+ *
+ * @return bool résultat de l'exécution.
+ */
+function MdpReinitialiser($connexion, $idUtilisateur, $mdpHache)
+{
+	$sql = $connexion->prepare("UPDATE admin_utilisateurs SET mdp_utilisateur = :mdp_utilisateur, jeton_mdp = NULL WHERE (id_utilisateur = :id_utilisateur)");
+	return $sql->execute([":mdp_utilisateur" => $mdpHache, ":id_utilisateur" => $idUtilisateur]);
+}
